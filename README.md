@@ -1,4 +1,4 @@
-# Routux — Routes the Redux Way
+# Routedux — Routes the Redux Way
 
 Routux routes URLs to Redux actions and vice versa. 
 
@@ -28,7 +28,7 @@ is a pure function of Redux state, and model logic is entirely encapsulated in R
 ## Routing in 25 lines
 
 ```javascript
-import installBrowserRouter from 'routux';
+import installBrowserRouter from 'routedux';
 import {createStore, compose, applyMiddleware} from 'redux';
 
 const LOAD_USER = 'LOAD_USER';
