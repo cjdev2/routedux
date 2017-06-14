@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should display when state is truthy 1`] = `
+<div>
+  Hello
+</div>
+`;
+
+exports[`should handle arrays in the state tree 1`] = `
+<div>
+  Hello
+</div>
+`;
+
+exports[`should handle paths in the state tree 1`] = `
+<div>
+  Hello
+</div>
+`;

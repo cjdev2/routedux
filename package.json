@@ -1,0 +1,28 @@
+{
+  "name": "routux",
+  "contributors": [
+    {"name": "Maximilian Summe", "email": "msumme@gmail.com"},
+    {"name": "Edward Langley", "email": "el-os@elangley.org"}
+  ],
+  "version": "0.1.0",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "ramda": "^0.24.1",
+    "react": "^15.6.0",
+    "react-dom": "^15.6.0",
+    "redux": "^3.6.0"
+  },
+  "devDependencies": {
+    "enzyme": "^2.8.2",
+    "enzyme-to-json": "^1.5.1",
+    "react-scripts": "1.0.7",
+    "react-test-renderer": "^15.5.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
