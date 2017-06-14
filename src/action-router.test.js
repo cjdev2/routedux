@@ -15,18 +15,9 @@ function createLocation(path) {
   };
 }
 
-function createFakeWindow() {
+function createFakeWindow(path='/path/to/thing') {
   const window = {
-    location: {
-      hash: '#hash',
-      host: 'example.com',
-      hostname: 'example',
-      origin: '',
-      href: '',
-      pathname: '/path/to/thing',
-      port: 80,
-      protocol: 'https:'
-    },
+    location: createLocation(path),
     history: {
       pushState: jest.fn(),
       replaceState: jest.fn()
@@ -49,8 +40,8 @@ function createFakeWindow() {
   return window;
 }
 
-function setupTest(routesConfig) {
-  const window = createFakeWindow();
+function setupTest(routesConfig, path='/path/to/thing') {
+  const window = createFakeWindow(path);
   const mockPushState = window.history.pushState;
 
   const {middleware, enhancer} = installBrowserRouter(routesConfig, window);
@@ -223,6 +214,22 @@ it("router should give precedence to exact match first in equally-specific route
 
   // when
   fireUrlChange("/something/something");
+
+  // then
+  expect(actionsDispatched()).toEqual([{type: 'ACTION_NAME', dynamic: 'something'}]);
+
+});
+
+it("router handles the current location when initialized", () => {
+  // given
+  const routesConfig = [
+    ["/something/:dynamic", "ACTION_NAME", {}],
+    ["/:dyn/something", "ACTION_NAME", {}],
+  ];
+
+  // when
+  /// We break the pattern because we're testing store construction.
+  const {actionsDispatched} = setupTest(routesConfig, '/something/something');
 
   // then
   expect(actionsDispatched()).toEqual([{type: 'ACTION_NAME', dynamic: 'something'}]);

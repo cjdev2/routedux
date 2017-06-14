@@ -262,6 +262,7 @@ function createActionDispatcher(routesConfig, window) {
       return (reducer, finalInitialState, enhancer) => {
         let theStore = nextStoreCreator(reducer, finalInitialState, enhancer);
         this.activateDispatcher(theStore);
+        this.receiveLocation(window.location);
         return theStore;
       }
     },
@@ -272,7 +273,9 @@ function createActionDispatcher(routesConfig, window) {
       }
 
       const location = ev.detail;
-
+      this.receiveLocation(location);
+    },
+    receiveLocation(location) {
       const match = matchRoute(location, compiledRouteMatchers);
       if(match) {
         const action = constructAction(match);
