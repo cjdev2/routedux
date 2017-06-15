@@ -1,8 +1,10 @@
-# Routedux — Routes the Redux Way [![npm version](https://badge.fury.io/js/routedux.svg)](https://badge.fury.io/js/routedux) [![Build Status](https://travis-ci.org/cjdev/routedux.svg?branch=master)](https://travis-ci.org/cjdev/routedux)
+# Routedux — Routes the Redux Way [![npm version](https://badge.fury.io/js/routedux.svg)](https://badge.fury.io/js/routedux) [![Build Status](https://travis-ci.org/cjdev/routedux.svg?branch=master)](https://travis-ci.org/cjdev/routedux) 
 
-Routedux routes URLs to Redux actions and vice versa. 
+<img alt="Route Dux" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Ducks_crossing_the_road_sign.png/92px-Ducks_crossing_the_road_sign.png" align="right" />
 
-Your application doesn't need to know it lives in a browser, but your users want pretty urls and deep links.
+Routedux (:duck: :duck: :duck:) routes URLs to Redux actions and vice versa. 
+
+Your application doesn't need to know it lives in a browser, but your users want pretty urls and deep links. 
 
 ## Wait, my application doesn't need to know it lives in a browser?
 
@@ -20,7 +22,7 @@ We think that's a good thing, but we also don't think the idea of url paths shou
 When you are developing a redux application, you want your UI to be a pure function of the current state tree.  
 
 By adding routes to that, it makes it harder to test.  And this difficulty can be compounded by other decisions about how
-to add routes to your application.
+to add routes to your application. 
 
 ## An alternative approach
 
