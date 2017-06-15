@@ -4,28 +4,41 @@ Routux routes URLs to Redux actions and vice versa.
 
 Your application doesn't need to know it lives in a browser, but your users want pretty urls and deep links.
 
-## Wait, why would you want to do that?  Aren't URLs pretty essential for web applications?
+## Wait, my application doesn't need to know it lives in a browser?
 
-React Router is the currently-accepted way to do routing in React applications.  We found some issues with that, and 
-we basically agree with Formidable Labs that [React Router is the wrong way to route in Redux apps.](http://formidable.com/blog/2016/07/11/let-the-url-do-the-talking-part-1-the-pain-of-react-router-in-redux/)
+URLs are great for finding things on the internet.  But a single page application is not the same as a collection of 
+resources that lives on a remote server.
+
+A single page application is a web application only in the sense that it lives on the web.  URLs are are not essential
+to it working well.  
+
+URLs give users accessing your application in a browser the ability to bookmark a particular view in your application
+so that their expectation of browser-based applications will continue to work.
+
+We think that's a good thing, but we also don't think the idea of url paths should be littered through your application.
+
+When you are developing a redux application, you want your UI to be a pure function of the current state tree.  
+
+By adding routes to that, it makes it harder to test.  And this difficulty can be compounded by other decisions about how
+to add routes to your application.
+
+## An alternative approach
+
+React Router is the currently-accepted way to do URL routing in React applications.  For a standard React application without
+Redux, this solution isn't too bad.  But once you add Redux, things get difficult.
+
+We basically discovered the same lessons as Formidable Labs: [React Router is the wrong way to route in Redux apps.](http://formidable.com/blog/2016/07/11/let-the-url-do-the-talking-part-1-the-pain-of-react-router-in-redux/)
 
 However, we don't think their solution ([redux-little-router](https://github.com/FormidableLabs/redux-little-router)) 
-goes far enough, as it still embeds the idea of routes throughout your React component structure.
+goes far enough, as it still embeds the idea of routes throughout your user interface.
 
-We think a cleaner separation would be to think of UI state as another part of the state tree, along with the data model.
-
-This allows your application to determine how to display itself without reference to being on the world-wide web.
-
-It also means that you can express all UI transitions as actions instead of URL changes, making your application portable
-to non-web environments without requiring some other routing technology.  
-
-If you'd like to make it a mobile app, just remove the routes, and as long as you're not relying on links and urls, everything
-works just as before.
+Once you separate URLs from your application state, you can easily port it to other environments that don't know what
+URLs are, and by simply removing the routing declaration, things will work as before.  
 
 As an added (and we think absolutely essential) benefit, your entire application becomes easier to test, as rendering
-is a pure function of Redux state, and model logic is entirely encapsulated in Redux outside of the app.
+is a pure function of Redux state, and model logic and route actions are entirely encapsulated in Redux outside of the app.
 
-## Routing in 25 lines
+## Simple Routing in 25 lines
 
 ```javascript
 import installBrowserRouter from 'routedux';
@@ -61,7 +74,7 @@ Any time a handled action fires the url in the address bar will change, and if t
 the corresponding action will fire (unless the action was initiated by a url change).
 
 
-## Route precedence examples (how we resolve seeming ambiguity)
+## Route matching precedence - which route matches best?
 
 Route precedence is a function of the type of matching done in each segment and the order in which the wildcard segments
 match.  Exact matches are always preferred to wildcards moving from left to right.  
@@ -78,7 +91,7 @@ match.  Exact matches are always preferred to wildcards moving from left to righ
 
 ```
 
-## Usage with fragment
+## Fragment component
 
 ```javascript
 
@@ -108,14 +121,6 @@ const view = (
   </PageFrame>
 )
 
-///////
-
-const state = {
-  menu: {
-    prop: true
-  }
-}
-
 // If property is missing in path, it's falsy.
 
 const view = (
@@ -134,8 +139,7 @@ const view = (
 
 ```
 
-
-
-
-
+Given that every UI state will be in your state tree as a function of your reducer logic, you can express any restriction
+on which parts of the UI display, even those that have nothing to do with the specific transformations caused by 
+your URL actions.
 
