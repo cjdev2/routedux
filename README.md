@@ -1,6 +1,6 @@
 # Routedux — Routes the Redux Way [![npm version](https://badge.fury.io/js/routedux.svg)](https://badge.fury.io/js/routedux) [![Build Status](https://travis-ci.org/fiddlerwoaroof/routux.svg?branch=master)](https://travis-ci.org/fiddlerwoaroof/routux)
 
-Routux routes URLs to Redux actions and vice versa. 
+Routedux routes URLs to Redux actions and vice versa. 
 
 Your application doesn't need to know it lives in a browser, but your users want pretty urls and deep links.
 
