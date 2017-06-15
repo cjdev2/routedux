@@ -1,6 +1,27 @@
-import R from 'ramda';
+//@flow
 
-function mostSpecificRouteMatch(match1, match2) {
+import R from 'ramda';
+import types from 'ramda';
+
+type Action = {type: string, [string]: any};
+
+type RouteConfig = Array<[string, string, {[string]: any}]>;
+
+type Route = {
+  routeMatcher: (string) => null | {[string]: any},
+  path: string,
+  action: string,
+  routeParams: Array<string>,
+  extraParams: {},
+  extractedParams: {[string]: any}
+};
+
+type Matcher = {
+  type: string,
+  route: Route
+}
+
+function mostSpecificRouteMatch(match1: ?Route, match2: Route): Route {
 
   if (!match1) {
     return match2;
@@ -34,11 +55,14 @@ function mostSpecificRouteMatch(match1, match2) {
 }
 
 // do something with routes.
-function matchRoute(loc, matchers) {
+function matchRoute(loc: Location, matchers: CompiledRouteMatchers): null | Route {
 
   const inputPath = loc.pathname;
 
-  const buildMatch = (extractedParams, route) => Object.assign({extractedParams}, route);
+  const routeProto = makeRoute('', '', {});
+  const buildMatch = (extractedParams: {[string]: any}, route: Route): Route => {
+    return Object.assign({}, routeProto, {extractedParams}, route);
+  }
 
   let match = null;
   for (const path in matchers) {
@@ -47,7 +71,7 @@ function matchRoute(loc, matchers) {
 
     const matchedParams = pathMatcher(inputPath);
 
-    if (pathMatcher(inputPath)) {
+    if (matchedParams) {
       if (matcherType === 'exact') {
         match = buildMatch(matchedParams, route);
         break;
@@ -61,7 +85,7 @@ function matchRoute(loc, matchers) {
 
 }
 
-function mostSpecificActionMatch(match1, match2) {
+function mostSpecificActionMatch(match1: ?Route, match2: Route): Route {
 
   if (!match1) {
     return match2;
@@ -73,7 +97,7 @@ function mostSpecificActionMatch(match1, match2) {
 }
 
 // matchers is {action : [routeMatcher]} structure
-function matchAction(action, matchers) {
+function matchAction(action: Action, matchers: CompiledActionMatchers): null | Route {
   // match on params in action vs possible actions if more than 1
   let match = null;
 
@@ -85,9 +109,10 @@ function matchAction(action, matchers) {
   // 2. wildcards /  exact extra params match with remaining wildcard
   // 3. no-wildcard / exact extra params match
 
+  const routeProto = makeRoute('', '', {});
   for (const {type: matcherType, route} of routes) {
     if (matcherType === "exact" && R.equals(route.extraParams, args)) {
-      match = Object.assign({extractedParams: {}}, route);
+      match = Object.assign({}, routeProto, {extractedParams: {}}, route);
       // case 3
       break; // most specific
     } else if (matcherType === "wildcard") {
@@ -99,7 +124,7 @@ function matchAction(action, matchers) {
 
       if (intersectCount === route.routeParams.length && intersectCount === unallocatedArgKeys.length) {
         const extractedParams = R.pick(unallocatedArgKeys, args);
-        match = mostSpecificActionMatch(match, Object.assign({extractedParams}, route));
+        match = mostSpecificActionMatch(match, Object.assign({}, routeProto, {extractedParams}, route));
       }
     }
   }
@@ -130,14 +155,13 @@ function extractParams(path) {
   return params;
 }
 
-function normalizePathParts(path) {
+function normalizePathParts(path: string): Array<string> {
   const rawPathParts = R.split('/', path);
   const normalizedPathParts = R.filter(p => p !== "", rawPathParts);
   return normalizedPathParts;
 }
 
-
-function makeRoute(path, action, extraParams) {
+function makeRoute(path: string, action: string, extraParams: {[string]: any}): Matcher {
 
   let type = "exact";
   if (path.indexOf(":") !== -1) {
@@ -146,9 +170,9 @@ function makeRoute(path, action, extraParams) {
 
   const normalizedPathParts = normalizePathParts(path);
 
-  const routeMatcher = function (inputPath) {
+  const routeMatcher = function (inputPath: string): null | {[string]: any} {
     const normMatchPath = normalizedPathParts;
-    const normInputPath = normalizePathParts(inputPath);
+    const normInputPath: Array<string> = normalizePathParts(inputPath);
 
     if (R.equals(normalizedPathParts, normInputPath)) {
       return {};
@@ -158,10 +182,10 @@ function makeRoute(path, action, extraParams) {
     const matchLength = normMatchPath.length;
 
     if (inputLength !== matchLength) {
-      return false;
+      return null;
     }
 
-    const f = (acc, [match, input]) => {
+    const f = (acc: {[string]: any}, [match: string, input: string]): null | {[string]: any} => {
       if (acc === null) {
         return null;
       }
@@ -193,13 +217,21 @@ function makeRoute(path, action, extraParams) {
   }
 }
 
-function getRouteByPath(pattern, matchers) {
+type CompiledRouteMatchers = {[string]: Matcher};
+type CompiledActionMatchers = {[string]: Array<Matcher>};
+
+type CompiledRoutes = {
+  compiledRouteMatchers: CompiledRouteMatchers,
+  compiledActionMatchers: CompiledActionMatchers
+};
+
+function getRouteByPath(pattern: string, matchers: CompiledRoutes) {
   return matchers.compiledRouteMatchers[pattern];
 }
 
-function compileRoutes(routesConfig) {
-  let compiledActionMatchers = {};
-  let compiledRouteMatchers = {};
+function compileRoutes(routesConfig: Array<[string,string,{[string]: any}]>): CompiledRoutes {
+  let compiledRouteMatchers: CompiledRouteMatchers = {};
+  let compiledActionMatchers: CompiledActionMatchers = {};
 
   for (let [path, action, extraParams] of routesConfig) {
 
@@ -228,7 +260,7 @@ function compileRoutes(routesConfig) {
 
 ///////
 
-function constructAction(match) {
+function constructAction(match: Match) : Action {
   return {type: match.action, ...match.extractedParams, ...match.extraParams};
 }
 
@@ -249,48 +281,48 @@ function constructPath(match) {
   return resultParts.join('/');
 }
 
-function createActionDispatcher(routesConfig, window) {
+function createActionDispatcher(routesConfig: RouteConfig, window: window) {
   let {compiledActionMatchers, compiledRouteMatchers} = compileRoutes(routesConfig);
 
   let actionDispatcher = {
     store: null,
-    activateDispatcher(store) {
+    activateDispatcher(store: {[string]: any}) {
       window.addEventListener('urlchanged', this);
       this.store = store;
     },
-    enhanceStore(nextStoreCreator) {
-      return (reducer, finalInitialState, enhancer) => {
-        let theStore = nextStoreCreator(reducer, finalInitialState, enhancer);
+    enhanceStore(nextStoreCreator: (any,any,any) => {[string]: any}) {
+      return (reducer: (any, Action) => any, finalInitialState: {[string]: any}, enhancer: any) => {
+        let theStore: {[string]: any} = nextStoreCreator(reducer, finalInitialState, enhancer);
         this.activateDispatcher(theStore);
         this.receiveLocation(window.location);
         return theStore;
       }
     },
-    handleEvent(ev) {
+    handleEvent(ev : CustomEvent) {
 
       if (!this.store) {
         throw new Error("You must call activateDispatcher with redux store as argument");
       }
 
-      const location = ev.detail;
+      const location: Location = ev.detail;
       this.receiveLocation(location);
     },
-    receiveLocation(location) {
+    receiveLocation(location : Location) {
       const match = matchRoute(location, compiledRouteMatchers);
       if(match) {
-        const action = constructAction(match);
+        const action: Action = constructAction(match);
 
         this.store.dispatch(action);
       }
     },
-    receiveAction(action) {
+    receiveAction(action: Action) {
       let matcher = matchAction(action, compiledActionMatchers);
       if(matcher) {
         let path = constructPath(matcher);
         window.history.pushState({}, '', path);
       }
     },
-    handlesAction(action) {
+    handlesAction(action: Action) {
       return matchesAction(action, compiledActionMatchers);
     }
   };
@@ -301,7 +333,7 @@ function createActionDispatcher(routesConfig, window) {
 }
 
 function buildMiddleware(actionDispatcher) {
-  return store => next => action => {
+  return (store: any) => (next: any) => (action: Action) => {
     if (actionDispatcher.handlesAction(action)) {
         actionDispatcher.receiveAction(action, store);
     }
