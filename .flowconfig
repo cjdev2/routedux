@@ -3,5 +3,6 @@
 [include]
 
 [libs]
+flow-typed/npm/ramda_v0.x.x.js
 
 [options]
