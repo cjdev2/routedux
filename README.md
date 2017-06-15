@@ -1,4 +1,4 @@
-# Routedux — Routes the Redux Way
+# Routedux — Routes the Redux Way [![npm version](https://badge.fury.io/js/routedux.svg)](https://badge.fury.io/js/routedux)
 
 Routux routes URLs to Redux actions and vice versa. 
 
