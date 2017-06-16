@@ -1,28 +1,38 @@
 import R from 'ramda';
 
+function pathSplit(path) {
+  return path.split('/');
+}
+
 function mostSpecificRouteMatch(match1, match2) {
 
   if (!match1) {
     return match2;
   }
 
-  const match1ParamLength = match1.routeParams.length;
-  const match2ParamLength = match2.routeParams.length;
+  const paramLength1 = match1.routeParams.length;
+  const paramLength2 = match2.routeParams.length;
 
   let result = null;
-  if (match1ParamLength === match2ParamLength) {
-    for (let [segment1, segment2] of R.zip(match1.path.split("/"), match2.path.split("/"))) {
-      if (R.head(segment1) === ":") {
+
+  if (paramLength1 === paramLength2) {
+    let path1Parts = pathSplit(match1.path);
+    let path2Parts = pathSplit(match2.path);
+
+    for (let [segment1, segment2] of R.zip(path1Parts, path2Parts)) {
+      if (isWildcard(segment1)) {
         result = match2;
-        break;
-      } else if (R.head(segment2) === ":") {
+      } else if (isWildcard(segment2)) {
         result = match1;
+      }
+
+      if (result !== null) {
         break;
       }
     }
-  } else if (match1ParamLength > match2ParamLength) {
+  } else if (paramLength1 > paramLength2) {
     result = match2;
-  } else if (match2ParamLength > match1ParamLength) {
+  } else if (paramLength2 > paramLength1) {
     result = match1;
   }
 
@@ -45,7 +55,11 @@ function matchRoute(loc, matchers) {
     const matchedParams = pathMatcher(inputPath);
 
     if (matchedParams) {
-      return (matcherType === 'exact')? buildMatch(matchedParams, route) : mostSpecificRouteMatch(match, buildMatch(matchedParams, route));
+      if (matcherType === 'exact') {
+         return buildMatch(matchedParams, route)
+       } else {
+         return mostSpecificRouteMatch(match, buildMatch(matchedParams, route));
+       }
     } else {
       return match;
     }
