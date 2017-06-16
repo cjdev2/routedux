@@ -14,11 +14,11 @@
   "license": "MIT",
   "dependencies": {
     "ramda": "^0.24.1",
-    "react": "^15.6.0",
-    "react-dom": "^15.6.0",
     "redux": "^3.6.0"
   },
   "devDependencies": {
+    "react": "^15.6.0",
+    "react-dom": "^15.6.0",
     "babel-cli": "^6.24.1",
     "babel-preset-flow": "^6.23.0",
     "enzyme": "^2.8.2",
