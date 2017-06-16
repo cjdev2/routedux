@@ -188,19 +188,44 @@ it("router should match non-wildcard route in preference to wildcard route", () 
   expect(actionsDispatched()).toEqual([{type: 'ACTION_NAME', id: 1}]);
 });
 
+it("router should throw on duplicate paths", () => {
+  // given
+  const routesConfig = [
+    ['/somewhere/:id', 'ACTION_NAME', {}],
+    ["/somewhere/:id", 'ACTION_NAME', {}],
+  ];
+
+  expect( () => {
+    setupTest(routesConfig);
+  }).toThrow();
+});
+
+it("router should throw on equally specific routes", () => {
+  // given
+  const routesConfig = [
+    ['/somewhere/:id', 'ACTION_NAME', {}],
+    ["/somewhere/:specific", 'ACTION_NAME', {}],
+  ];
+
+  expect( () => {
+    const {actionsDispatched, fireUrlChange} = setupTest(routesConfig);
+    fireUrlChange('/somewhere/specific');
+  }).toThrow();
+});
+
 it("router should match less-wildcarded routes in preference to more wildcarded routes", () => {
   //given
   const routesConfig = [
-    ["/somewhere/specific/:view", "ACTION_NAME", {id: 1}],
-    ["/somewhere/:id/:view", "ACTION_NAME", {}],
+    ["/somewhere/:id/:view/:bar", "ACTION_NAME", {}],
+    ["/somewhere/:foo/:id/:view/:baz", "ACTION_NAME", {}],
   ];
   const {actionsDispatched, fireUrlChange} = setupTest(routesConfig);
 
   // when
-  fireUrlChange('/somewhere/specific/etc');
+  fireUrlChange('/somewhere/specific/etc/bar');
 
   // then
-  expect(actionsDispatched()).toEqual([{type:'ACTION_NAME', id: 1, view: "etc"}]);
+  expect(actionsDispatched()).toEqual([{type:'ACTION_NAME', id: "specific", view: "etc", bar: "bar"}]);
 
 });
 

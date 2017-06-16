@@ -12,28 +12,16 @@ function mostSpecificRouteMatch(match1, match2) {
 
   const paramLength1 = match1.routeParams.length;
   const paramLength2 = match2.routeParams.length;
+  let findWildcard = R.compose(R.findIndex.bind(R, isWildcard), pathSplit)
 
-  let result = null;
+  let result = (paramLength1 > paramLength2) ? match2 : match1;
 
   if (paramLength1 === paramLength2) {
-    let path1Parts = pathSplit(match1.path);
-    let path2Parts = pathSplit(match2.path);
 
-    for (let [segment1, segment2] of R.zip(path1Parts, path2Parts)) {
-      if (isWildcard(segment1)) {
-        result = match2;
-      } else if (isWildcard(segment2)) {
-        result = match1;
-      }
+    let path1WildcardIdx = findWildcard(match1.path);
+    let path2WildcardIdx = findWildcard(match2.path);
 
-      if (result !== null) {
-        break;
-      }
-    }
-  } else if (paramLength1 > paramLength2) {
-    result = match2;
-  } else if (paramLength2 > paramLength1) {
-    result = match1;
+    result = (path1WildcardIdx !== -1 && path1WildcardIdx < path2WildcardIdx) ? match2 : match1;
   }
 
   if (result === null) {
@@ -210,6 +198,35 @@ function getRouteByPath(pattern, matchers) {
   return matchers.compiledRouteMatchers[pattern];
 }
 
+function normalizeWildcards(path) {
+  let curIdx = 0;
+  return path.map((el) => {
+    if (isWildcard(el)) {
+      return `:wildcard${curIdx}`
+    } else {
+      return el;
+    }
+  });
+}
+
+function routeAlreadyExists(compiledRouteMatchers, path) {
+  let result = compiledRouteMatchers.hasOwnProperty(path)
+
+  if (!result) {
+    const normalizingSplit = R.compose(normalizeWildcards, pathSplit);
+    const pathParts = normalizingSplit(path);
+
+    for (const otherPath of Object.keys(compiledRouteMatchers)) {
+      const otherPathParts = normalizingSplit(otherPath);
+      if (R.equals(pathParts, otherPathParts)) {
+        throw new Error(`invalid routing configuration — route ${path} overlaps with route ${otherPath}`)
+      }
+    }
+  }
+
+  return result;
+}
+
 function compileRoutes(routesConfig) {
   let compiledActionMatchers = {};
   let compiledRouteMatchers = {};
@@ -227,7 +244,7 @@ function compileRoutes(routesConfig) {
     const route = makeRoute(path, action, extraParams);
     compiledActionMatchers[action].push(route);
 
-    if (compiledRouteMatchers.hasOwnProperty(path)) {
+    if (routeAlreadyExists(compiledRouteMatchers, path)) {
       throw new Error("overlapping paths");
     }
 
