@@ -204,6 +204,23 @@ it("router should match less-wildcarded routes in preference to more wildcarded 
 
 });
 
+it("router should propagate matches through non-matching cases", () => {
+  //given
+  const routesConfig = [
+    ["/somewhere/specific/:view", "ACTION_NAME", {id: 1}],
+    ["/somewhere/:id/:view", "ACTION_NAME", {}],
+    ["/not/a/match", "ACTION_NAME", {}]
+  ];
+  const {actionsDispatched, fireUrlChange} = setupTest(routesConfig);
+
+  // when
+  fireUrlChange('/somewhere/specific/etc');
+
+  // then
+  expect(actionsDispatched()).toEqual([{type:'ACTION_NAME', id: 1, view: "etc"}]);
+
+});
+
 it("router should give precedence to exact match first in equally-specific routes (/a/:b vs /:a/b)", () => {
   // given
   const routesConfig = [
