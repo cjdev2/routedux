@@ -40,25 +40,17 @@ function matchRoute(loc, matchers) {
 
   const buildMatch = (extractedParams, route) => Object.assign({extractedParams}, route);
 
-  let match = null;
-  for (const path in matchers) {
-    const {type: matcherType, route} = matchers[path];
+  return R.toPairs(matchers).reduce((match, [path,{type: matcherType, route}]) => {
     const pathMatcher = route.routeMatcher;
-
     const matchedParams = pathMatcher(inputPath);
 
-    if (pathMatcher(inputPath)) {
-      if (matcherType === 'exact') {
-        match = buildMatch(matchedParams, route);
-        break;
-      } else {
-        match = mostSpecificRouteMatch(match, buildMatch(matchedParams, route));
-      }
+    if (matchedParams) {
+      return (matcherType === 'exact')? buildMatch(matchedParams, route) : mostSpecificRouteMatch(match, buildMatch(matchedParams, route));
+    } else {
+      return match;
     }
-  }
 
-  return match;
-
+  }, null);
 }
 
 function mostSpecificActionMatch(match1, match2) {
@@ -67,9 +59,8 @@ function mostSpecificActionMatch(match1, match2) {
     return match2;
   }
 
-  const {extraParams: match1params} = match1;
-  const {extraParams: match2params} = match2;
-  return Object.keys(match1params).length >= Object.keys(match2params).length ? match1 : match2;
+  let countExtraParams = ({extraParams: obj}) => Object.keys(obj).length;
+  return countExtraParams(match1) >= countExtraParams(match2) ? match1 : match2;
 }
 
 // matchers is {action : [routeMatcher]} structure
@@ -77,8 +68,8 @@ function matchAction(action, matchers) {
   // match on params in action vs possible actions if more than 1
   let match = null;
 
-  const {type, ...args} = action;
-  const routes = matchers[type];
+  const {type: actionType, ...args} = action;
+  const routes = matchers[actionType];
 
   // Specificity:
   // 1. wildcard(s) / no extra param   /route/:id  || /route/me
@@ -96,8 +87,9 @@ function matchAction(action, matchers) {
       const unallocatedArgKeys = R.difference(Object.keys(args), Object.keys(route.extraParams));
       // if all keys ^ are equal to all keys in route
       const intersectCount = R.intersection(unallocatedArgKeys, route.routeParams).length;
+      const unionCount = R.union(unallocatedArgKeys, route.routeParams).length;
 
-      if (intersectCount === route.routeParams.length && intersectCount === unallocatedArgKeys.length) {
+      if (intersectCount === unionCount) {
         const extractedParams = R.pick(unallocatedArgKeys, args);
         match = mostSpecificActionMatch(match, Object.assign({extractedParams}, route));
       }
@@ -111,20 +103,21 @@ function matchesAction(action, matchers) {
   return !!matchers[action.type];
 }
 
+function isWildcard(segment) {
+  return segment && segment[0] === ":";
+}
 function extractParams(path) {
   const pathParts = path.split("/");
   let params = [];
 
-  for (const part of pathParts) {
-    if (part[0] === ":") {
-      const name = part.slice(1);
+  for (const part of pathParts.filter(isWildcard)) {
+    const name = part.slice(1);
 
-      if (params.indexOf(name) !== -1) {
-        throw new Error("duplicate param");
-      }
-
-      params.push(name);
+    if (params.indexOf(name) !== -1) {
+      throw new Error("duplicate param");
     }
+
+    params.push(name);
   }
 
   return params;
@@ -136,7 +129,6 @@ function normalizePathParts(path) {
   return normalizedPathParts;
 }
 
-
 function makeRoute(path, action, extraParams) {
 
   let type = "exact";
@@ -146,36 +138,43 @@ function makeRoute(path, action, extraParams) {
 
   const normalizedPathParts = normalizePathParts(path);
 
+  const updateWildcard = (wildcards, match, input) => {
+    const wildcardName = match.replace(':', '');
+    return Object.assign(wildcards, {[wildcardName]: input});
+  }
+
   const routeMatcher = function (inputPath) {
+    let result = null;
     const normMatchPath = normalizedPathParts;
     const normInputPath = normalizePathParts(inputPath);
 
+    // exact match
     if (R.equals(normalizedPathParts, normInputPath)) {
       return {};
     }
 
+    //wildcard match
     const inputLength = normInputPath.length;
     const matchLength = normMatchPath.length;
 
-    if (inputLength !== matchLength) {
-      return false;
+    if (inputLength === matchLength) {
+      const f = (acc, [match, input]) => {
+        if (acc === null) {
+          return null;
+        }
+
+        if(match === input) {
+          return acc
+        } else if (match[0] === ":") {
+          return updateWildcard(acc, match, input);
+        } else {
+          return null;
+        }
+      };
+      result = R.zip(normMatchPath, normInputPath).reduce(f, {})
     }
 
-    const f = (acc, [match, input]) => {
-      if (acc === null) {
-        return null;
-      }
-      if (R.head(match) === ":") {
-        acc[match.replace(':', '')] = input;
-        return acc;
-      } else if (match === input) {
-        return acc;
-      } else {
-        return null;
-      }
-    };
-
-    return R.reduce(f, {}, R.zip(normMatchPath, normInputPath))
+    return result;
   };
 
 
