@@ -283,6 +283,8 @@ function createActionDispatcher(routesConfig, window) {
   let {compiledActionMatchers, compiledRouteMatchers} = compileRoutes(routesConfig);
 
   let actionDispatcher = {
+    currentLocation: null,
+
     store: null,
     activateDispatcher(store) {
       window.addEventListener('urlchanged', this);
@@ -292,7 +294,6 @@ function createActionDispatcher(routesConfig, window) {
       return (reducer, finalInitialState, enhancer) => {
         let theStore = nextStoreCreator(reducer, finalInitialState, enhancer);
         this.activateDispatcher(theStore);
-        this.receiveLocation(window.location);
         return theStore;
       };
     },
@@ -306,11 +307,14 @@ function createActionDispatcher(routesConfig, window) {
       this.receiveLocation(location);
     },
     receiveLocation(location) {
-      const match = matchRoute(location, compiledRouteMatchers);
-      if(match) {
-        const action = constructAction(match);
+      if (this.currentLocation !== location.pathname) {
+        this.currentLocation = location.pathname;
+        const match = matchRoute(location, compiledRouteMatchers);
+        if(match) {
+          const action = constructAction(match);
 
-        this.store.dispatch(action);
+          this.store.dispatch(action);
+        }
       }
     },
     receiveAction(action) {
@@ -345,5 +349,5 @@ export default function installBrowserRouter(routesConfig, window) {
 
   const middleware = buildMiddleware(actionDispatcher);
 
-  return {middleware, enhancer: actionDispatcher.enhanceStore};
+  return {middleware, enhancer: actionDispatcher.enhanceStore, init: actionDispatcher.receiveLocation.bind(actionDispatcher, window.location)};
 }

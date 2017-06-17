@@ -48,15 +48,12 @@ it("given event handler should generate a urlchange event only when url changes"
     if(map[evName]) {
       map[evName].handleEvent(ev);
     }
-
   });
 
   // when
   addChangeUrlEvent(window);
   window.dispatchEvent(new Event('popstate'));
   window.dispatchEvent(new Event('popstate'));
-
-
 
   // then
   expect(calls.length).toEqual(3);
@@ -67,12 +64,12 @@ it("given event handler should generate a urlchange event only when url changes"
   window.location.pathname = '/new/path';
   window.dispatchEvent(new Event('popstate'));
 
-
   //then
   expect(calls.length).toEqual(5);
   expect(calls[4].type).toEqual('urlchanged');
   expect(calls[4].detail).toEqual(window.location);
 
+  console.log(map);
 });
 
 it("should only add url events 1x when addChangeUrlEvent is called on window more than 1x", () => {

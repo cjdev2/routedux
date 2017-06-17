@@ -73,7 +73,7 @@ const reduce = (state = defaultState, event) => {
 
 };
 
-const {middleware, enhancer} = installBrowserRouter([
+const {middleware, enhancer, init} = installBrowserRouter([
   ['/pages/:id', 'CHANGE_ID', {}],
   ['/', 'CHANGE_ID', {id: 'home'}]
 ]);
@@ -94,6 +94,7 @@ const store = createStore(reduce,
       sagaMiddleware
       )
     ));
+init();
 
 const fetchArticle = function*({id}) {
   console.log('SAGA???');
