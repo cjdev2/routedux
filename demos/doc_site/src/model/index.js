@@ -86,15 +86,15 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 // const composeEnhancers = compose;
 
 // create store
-const store = createStore(reduce,
+const store = createStore(
+  reduce,
   composeEnhancers(
     enhancer,
     applyMiddleware(
       middleware,
       sagaMiddleware
-      )
-    ));
-
+    )
+  ));
 
 const fetchArticle = function*({id}) {
   console.log('SAGA???');
@@ -120,6 +120,7 @@ const actions = {
   changeId: allActions.changeId
 };
 
+init();
 export default store;
 
 // store dependent helper function - thus defined after default export
