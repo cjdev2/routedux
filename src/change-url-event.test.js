@@ -76,7 +76,7 @@ it("given event handler should generate a urlchange event only when url changes"
 });
 
 it("should only add url events 1x when addChangeUrlEvent is called on window more than 1x", () => {
-// given
+  // given
   const window = {
     location: {
       hash: '#hash',

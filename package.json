@@ -1,58 +1,58 @@
 {
-    "name": "routedux",
-    "contributors": [
-	{
-	    "name": "Maximilian Summe",
-	    "email": "msumme@gmail.com"
-	},
-	{
-	    "name": "Edward Langley",
-	    "email": "el-os@elangley.org"
-	}
-    ],
-    "main": "dist/index.js",
-    "version": "0.1.5",
-    "license": "MIT",
-    "dependencies": {
-	"ramda": "^0.24.1",
-	"redux": "^3.6.0"
+  "name": "routedux",
+  "contributors": [
+    {
+      "name": "Maximilian Summe",
+      "email": "msumme@gmail.com"
     },
-    "devDependencies": {
-	"babel-cli": "^6.24.1",
-	"babel-preset-flow": "^6.23.0",
-	"babel-preset-stage-3": "^6.24.1",
-	"enzyme": "^2.8.2",
-	"enzyme-to-json": "^1.5.1",
-	"flow": "^0.2.3",
-	"flow-bin": "^0.48.0",
-	"flow-typed": "^2.1.2",
-	"react": "^15.6.0",
-	"react-dom": "^15.6.0",
-	"react-scripts": "1.0.7",
-	"react-test-renderer": "^15.5.4"
-    },
-    "scripts": {
-	"start": "react-scripts start",
-	"build": "babel src -d dist",
-	"test": "react-scripts test --env=jsdom",
-	"eject": "react-scripts eject",
-	"flow": "flow"
-    },
-    "npmFileMap": [
-	{
-	    "basePath": "/dist/",
-	    "files": [
-		"*.js"
-	    ]
-	}
-    ],
-    "babel": {
-	"plugins": [
-	    "transform-react-jsx"
-	],
-	"presets": [
-	    "env",
-	    "stage-3"
-	]
+    {
+      "name": "Edward Langley",
+      "email": "el-os@elangley.org"
     }
+  ],
+  "main": "dist/index.js",
+  "version": "0.1.5",
+  "license": "MIT",
+  "dependencies": {
+    "ramda": "^0.24.1",
+    "redux": "^3.6.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-flow": "^6.23.0",
+    "babel-preset-stage-3": "^6.24.1",
+    "enzyme": "^2.8.2",
+    "enzyme-to-json": "^1.5.1",
+    "flow": "^0.2.3",
+    "flow-bin": "^0.48.0",
+    "flow-typed": "^2.1.2",
+    "react": "^15.6.0",
+    "react-dom": "^15.6.0",
+    "react-scripts": "1.0.7",
+    "react-test-renderer": "^15.5.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "babel src -d dist",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "flow": "flow"
+  },
+  "npmFileMap": [
+    {
+      "basePath": "/dist/",
+      "files": [
+        "*.js"
+      ]
+    }
+  ],
+  "babel": {
+    "plugins": [
+      "transform-react-jsx"
+    ],
+    "presets": [
+      "env",
+	    "stage-3"
+	  ]
+  }
 }

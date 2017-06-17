@@ -32,7 +32,7 @@ export default function addChangeUrlEvent(window) {
       }
     };
 
-// / make sure we fire urlchanged for these
+    // / make sure we fire urlchanged for these
     wrapEvent(window, 'popstate', changeUrlEventCreator);
     wrapEvent(window, 'pushstate', changeUrlEventCreator);
     wrapEvent(window, 'replacestate', changeUrlEventCreator);

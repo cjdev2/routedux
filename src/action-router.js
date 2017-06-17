@@ -12,7 +12,7 @@ function mostSpecificRouteMatch(match1, match2) {
 
   const paramLength1 = match1.routeParams.length;
   const paramLength2 = match2.routeParams.length;
-  let findWildcard = R.compose(R.findIndex.bind(R, isWildcard), pathSplit)
+  let findWildcard = R.compose(R.findIndex.bind(R, isWildcard), pathSplit);
 
   let result = (paramLength1 > paramLength2) ? match2 : match1;
 
@@ -44,10 +44,10 @@ function matchRoute(loc, matchers) {
 
     if (matchedParams) {
       if (matcherType === 'exact') {
-         return buildMatch(matchedParams, route)
-       } else {
-         return mostSpecificRouteMatch(match, buildMatch(matchedParams, route));
-       }
+        return buildMatch(matchedParams, route);
+      } else {
+        return mostSpecificRouteMatch(match, buildMatch(matchedParams, route));
+      }
     } else {
       return match;
     }
@@ -143,7 +143,7 @@ function makeRoute(path, action, extraParams) {
   const updateWildcard = (wildcards, match, input) => {
     const wildcardName = match.replace(':', '');
     return Object.assign(wildcards, {[wildcardName]: input});
-  }
+  };
 
   const routeMatcher = function (inputPath) {
     let result = null;
@@ -166,14 +166,14 @@ function makeRoute(path, action, extraParams) {
         }
 
         if(match === input) {
-          return acc
+          return acc;
         } else if (match[0] === ":") {
           return updateWildcard(acc, match, input);
         } else {
           return null;
         }
       };
-      result = R.zip(normMatchPath, normInputPath).reduce(f, {})
+      result = R.zip(normMatchPath, normInputPath).reduce(f, {});
     }
 
     return result;
@@ -191,7 +191,7 @@ function makeRoute(path, action, extraParams) {
       routeParams,
       extraParams
     }
-  }
+  };
 }
 
 function getRouteByPath(pattern, matchers) {
@@ -202,7 +202,7 @@ function normalizeWildcards(path) {
   let curIdx = 0;
   return path.map((el) => {
     if (isWildcard(el)) {
-      return `:wildcard${curIdx}`
+      return `:wildcard${curIdx}`;
     } else {
       return el;
     }
@@ -210,7 +210,7 @@ function normalizeWildcards(path) {
 }
 
 function routeAlreadyExists(compiledRouteMatchers, path) {
-  let result = compiledRouteMatchers.hasOwnProperty(path)
+  let result = compiledRouteMatchers.hasOwnProperty(path);
 
   if (!result) {
     const normalizingSplit = R.compose(normalizeWildcards, pathSplit);
@@ -219,7 +219,7 @@ function routeAlreadyExists(compiledRouteMatchers, path) {
     for (const otherPath of Object.keys(compiledRouteMatchers)) {
       const otherPathParts = normalizingSplit(otherPath);
       if (R.equals(pathParts, otherPathParts)) {
-        throw new Error(`invalid routing configuration — route ${path} overlaps with route ${otherPath}`)
+        throw new Error(`invalid routing configuration — route ${path} overlaps with route ${otherPath}`);
       }
     }
   }
@@ -252,8 +252,8 @@ function compileRoutes(routesConfig) {
   }
   return {
     compiledActionMatchers, // { ACTION: [Route] }
-    compiledRouteMatchers,  // { PATH: Route }
-  }
+    compiledRouteMatchers  // { PATH: Route }
+  };
 }
 
 ///////
@@ -270,7 +270,7 @@ function constructPath(match) {
     if (part[0] === ":") {
       const name = part.slice(1);
       const val = match.extractedParams.hasOwnProperty(name)
-        ? match.extractedParams[name] : match.extraParams[name];
+            ? match.extractedParams[name] : match.extraParams[name];
       resultParts.push(val);
     } else {
       resultParts.push(part);
@@ -294,7 +294,7 @@ function createActionDispatcher(routesConfig, window) {
         this.activateDispatcher(theStore);
         this.receiveLocation(window.location);
         return theStore;
-      }
+      };
     },
     handleEvent(ev) {
 
@@ -333,7 +333,7 @@ function createActionDispatcher(routesConfig, window) {
 function buildMiddleware(actionDispatcher) {
   return store => next => action => {
     if (actionDispatcher.handlesAction(action)) {
-        actionDispatcher.receiveAction(action, store);
+      actionDispatcher.receiveAction(action, store);
     }
     return next(action);
   };
