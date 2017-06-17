@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RouteAwarePage should load content using id from route and fire route transition action 1`] = `
+<Connect(Page)
+  contents="Some content"
+  menu="Menu"
+  title="Title"
+/>
+`;
+
+exports[`RouteAwarePage should load content using passed id instead when it is present 1`] = `
+<Connect(Page)
+  contents="Some content"
+  menu="Menu"
+  title="Title"
+/>
+`;
+
+exports[`RouteAwarePage uses passed contents by default when content cannot be loaded 1`] = `
+<Connect(Page)
+  contents="Hello"
+  menu="Menu"
+  title="Title"
+/>
+`;
+
+exports[`should render menu and contents 1`] = `
+<Layout
+  content={
+    <div
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<div>Raw Html</div>",
+        }
+      }
+    />
+  }
+  headerContent="Title!"
+  nav="Menu contents"
+/>
+`;

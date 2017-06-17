@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`menu does stuff you expect renders a list of article info into a link 1`] = `
+<SideNav>
+  <Link>
+    <Link
+      replace={false}
+      to="woo"
+    >
+      The woo
+    </Link>
+  </Link>
+  <Link>
+    <Link
+      replace={false}
+      to="bar"
+    >
+      The bar
+    </Link>
+  </Link>
+</SideNav>
+`;
