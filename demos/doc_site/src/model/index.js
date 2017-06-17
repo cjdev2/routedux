@@ -94,7 +94,7 @@ const store = createStore(reduce,
       sagaMiddleware
       )
     ));
-init();
+
 
 const fetchArticle = function*({id}) {
   console.log('SAGA???');
@@ -113,6 +113,8 @@ const saga = function *() {
 };
 
 sagaMiddleware.run(saga);
+// this needs to be after sagaMiddleware.run so that sagas can handle our route-dispatched actions.
+init();
 
 const actions = {
   changeId: allActions.changeId
