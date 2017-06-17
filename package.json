@@ -34,6 +34,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "babel src -d dist",
+    "watch": "babel -w src -d dist",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "flow": "flow"
