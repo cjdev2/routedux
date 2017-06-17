@@ -208,8 +208,7 @@ it("router should throw on equally specific routes", () => {
   ];
 
   expect( () => {
-    const {actionsDispatched, fireUrlChange} = setupTest(routesConfig);
-    fireUrlChange('/somewhere/specific');
+    setupTest(routesConfig);
   }).toThrow();
 });
 
