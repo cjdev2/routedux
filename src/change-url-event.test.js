@@ -73,36 +73,15 @@ it("given event handler should generate a urlchange event only when url changes"
 });
 
 it("should only add url events 1x when addChangeUrlEvent is called on window more than 1x", () => {
-  // given
-  const window = {
-    location: {
-      hash: '#hash',
-      host: 'example.com',
-      hostname: 'example',
-      origin: '',
-      href: '',
-      pathname: '/path/to/thing',
-      port: 80,
-      protocol: 'https:'
-    }
-  };
+// given
+  const window = {};
   const map = {};
-  const calls = [];
 
   window.addEventListener = jest.fn((event, cb) => {
     if(!map[event]) {
       map[event] = [];
     }
     map[event].push(cb);
-  });
-
-  window.dispatchEvent = jest.fn(ev => {
-    const evName = ev.type;
-    calls.push(ev);
-    if(map[evName]) {
-      map[evName].handleEvent(ev);
-    }
-
   });
 
   // when
