@@ -1,6 +1,8 @@
 import {applyMiddleware, createStore, compose} from 'redux';
 
 import installBrowserRouter from './action-router';
+import addChangeUrlEvent from './change-url-event.js';
+import addMissingHistoryEvents from './history-events.js';
 
 function createLocation(path) {
   return {
@@ -43,24 +45,32 @@ function createFakeWindow(path='/path/to/thing') {
 function setupTest(routesConfig, path='/path/to/thing') {
   const window = createFakeWindow(path);
   const mockPushState = window.history.pushState;
+  addMissingHistoryEvents(window, window.history);
+  addChangeUrlEvent(window, window.history);
 
   const {middleware, enhancer} = installBrowserRouter(routesConfig, window);
-  const reduce = jest.fn();
-  const store = createStore(reduce, compose(enhancer, applyMiddleware(middleware)));
+    const reduce = jest.fn();
 
-  function urlChanges() {
-    return mockPushState.mock.calls.map(item => item[2]);
-  }
+    const store = createStore(
+      reduce,
+      compose(
+        enhancer,
+        applyMiddleware(
+          middleware)));
 
-  function actionsDispatched() {
-    return reduce.mock.calls.map(item => item[1]).slice(1);
-  }
+    function urlChanges() {
+      return mockPushState.mock.calls.map(item => item[2]);
+    }
 
-  function fireUrlChange(path) {
-    window.dispatchEvent(new CustomEvent('urlchanged', {detail: createLocation(path)}));
-  }
+    function actionsDispatched() {
+      return reduce.mock.calls.map(item => item[1]).slice(1);
+    }
 
-  return {store, reduce, window, urlChanges, actionsDispatched, fireUrlChange};
+    function fireUrlChange(path) {
+      window.dispatchEvent(new CustomEvent('urlchanged', {detail: createLocation(path)}));
+    }
+
+    return {store, reduce, window, urlChanges, actionsDispatched, fireUrlChange};
 }
 
 it("router handles exact match in preference to wildcard match", () => {
