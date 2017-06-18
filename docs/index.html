@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="routedux-routes-the-redux-way-npm-version-build-status">Routedux — Routes the Redux Way <a href="https://badge.fury.io/js/routedux"><img src="https://badge.fury.io/js/routedux.svg" alt="npm version" /></a> <a href="https://travis-ci.org/cjdev/routedux"><img src="https://travis-ci.org/cjdev/routedux.svg?branch=master" alt="Build Status" /></a></h1>
+<p><img alt="Route Dux" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Ducks_crossing_the_road_sign.png/92px-Ducks_crossing_the_road_sign.png" align="right" /></p>
+<p>Routedux (:duck: :duck: :duck:) routes URLs to Redux actions and vice versa.</p>
+<p>Your application doesn't need to know it lives in a browser, but your users want pretty urls and deep links.</p>
+<h2 id="wait-my-application-doesnt-need-to-know-it-lives-in-a-browser">Wait, my application doesn't need to know it lives in a browser?</h2>
+<p>URLs are great for finding things on the internet. But a single page application is not the same as a collection of resources that lives on a remote server.</p>
+<p>A single page application is a web application only in the sense that it lives on the web. URLs are are not essential to it working well.</p>
+<p>URLs give users accessing your application in a browser the ability to bookmark a particular view in your application so that their expectation of browser-based applications will continue to work.</p>
+<p>We think that's a good thing, but we also don't think the idea of url paths should be littered through your application.</p>
+<p>When you are developing a redux application, you want your UI to be a pure function of the current state tree.</p>
+<p>By adding routes to that, it makes it harder to test. And this difficulty can be compounded by other decisions about how to add routes to your application.</p>
+<h2 id="an-alternative-approach">An alternative approach</h2>
+<p>React Router is the currently-accepted way to do URL routing in React applications. For a standard React application without Redux, this solution isn't too bad. But once you add Redux, things get difficult.</p>
+<p>We basically discovered the same lessons as Formidable Labs: <a href="http://formidable.com/blog/2016/07/11/let-the-url-do-the-talking-part-1-the-pain-of-react-router-in-redux/">React Router is the wrong way to route in Redux apps.</a></p>
+<p>However, we don't think their solution (<a href="https://github.com/FormidableLabs/redux-little-router">redux-little-router</a>) goes far enough, as it still embeds the idea of routes throughout your user interface.</p>
+<p>Once you separate URLs from your application state, you can easily port it to other environments that don't know what URLs are, and by simply removing the routing declaration, things will work as before.</p>
+<p>As an added (and we think absolutely essential) benefit, your entire application becomes easier to test, as rendering is a pure function of Redux state, and model logic and route actions are entirely encapsulated in Redux outside of the app.</p>
+<h2 id="simple-routing-in-25-lines">Simple Routing in 25 lines</h2>
+<div class="sourceCode"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="im">import</span> installBrowserRouter <span class="im">from</span> <span class="st">&#39;routedux&#39;</span><span class="op">;</span>
+<span class="im">import</span> <span class="op">{</span>createStore<span class="op">,</span> compose<span class="op">,</span> applyMiddleware<span class="op">}</span> <span class="im">from</span> <span class="st">&#39;redux&#39;</span><span class="op">;</span>
+
+<span class="kw">const</span> LOAD_USER <span class="op">=</span> <span class="st">&#39;LOAD_USER&#39;</span><span class="op">;</span>
+
+<span class="kw">function</span> <span class="at">currentUserId</span>() <span class="op">{</span>
+  <span class="cf">return</span> <span class="dv">42</span><span class="op">;</span>
+<span class="op">};</span>
+
+<span class="kw">function</span> <span class="at">reduce</span>(state <span class="op">=</span> <span class="at">initialState</span>()<span class="op">,</span> action) <span class="op">{</span>
+  ...
+<span class="op">}</span>
+
+<span class="kw">const</span> routesConfig <span class="op">=</span> [
+  [<span class="st">&#39;/user/:id&#39;</span><span class="op">,</span> LOAD_USER<span class="op">,</span> <span class="op">{}</span>]<span class="op">,</span>
+  [<span class="st">&#39;/user/me&#39;</span><span class="op">,</span> LOAD_USER<span class="op">,</span> <span class="op">{</span><span class="dt">id</span><span class="op">:</span> <span class="at">currentUserId</span>()<span class="op">}</span>]<span class="op">,</span>
+  [<span class="st">&#39;/article/:slug&#39;</span><span class="op">,</span> <span class="st">&#39;LOAD_ARTICLE&#39;</span><span class="op">,</span> <span class="op">{}</span>]<span class="op">,</span>
+  [<span class="st">&#39;/&#39;</span><span class="op">,</span> <span class="st">&#39;LOAD_ARTICLE&#39;</span><span class="op">,</span> <span class="op">{</span><span class="dt">slug</span><span class="op">:</span> <span class="st">&quot;home-content&quot;</span><span class="op">}</span>]
+]<span class="op">;</span>
+
+<span class="kw">const</span> <span class="op">{</span>enhancer<span class="op">,</span> middleware<span class="op">}</span> <span class="op">=</span> <span class="at">installBrowserRouter</span>(routesConfig)<span class="op">;</span>
+
+<span class="kw">const</span> store <span class="op">=</span> <span class="at">createStore</span>(reduce<span class="op">,</span> <span class="at">compose</span>(
+  enhance<span class="op">,</span>
+  <span class="at">applyMiddleware</span>(middleware)
+))<span class="op">;</span></code></pre></div>
+<p>Any time a handled action fires the url in the address bar will change, and if the url in the address bar changes the corresponding action will fire (unless the action was initiated by a url change).</p>
+<h2 id="route-matching-precedence---which-route-matches-best">Route matching precedence - which route matches best?</h2>
+<p>Route precedence is a function of the type of matching done in each segment and the order in which the wildcard segments match. Exact matches are always preferred to wildcards moving from left to right.</p>
+<div class="sourceCode"><pre class="sourceCode javascript"><code class="sourceCode javascript">
+    <span class="kw">const</span> routesInOrderOfPrecedence <span class="op">=</span> [
+      
+      [<span class="st">&#39;/user/me/update&#39;</span><span class="op">,</span> <span class="st">&#39;/user/me&#39;</span>]<span class="op">,</span> <span class="co">// both perfectly specific - will match above any wildcard route</span>
+      <span class="st">&#39;/user/me/:view&#39;</span><span class="op">,</span>
+      <span class="st">&#39;/user/:id/update&#39;</span><span class="op">,</span> <span class="co">// less specific because &#39;me&#39; is exact match, while :id is a wildcard</span>
+      <span class="st">&#39;/user/:id/:view&#39;</span>
+    ]<span class="op">;</span></code></pre></div>
+<h2 id="fragment-component">Fragment component</h2>
+<div class="sourceCode"><pre class="sourceCode javascript"><code class="sourceCode javascript">
+<span class="kw">const</span> state <span class="op">=</span> <span class="op">{</span>
+  <span class="dt">menu</span><span class="op">:</span> ...
+<span class="op">}</span>
+
+<span class="kw">const</span> view <span class="op">=</span> (
+  <span class="op">&lt;</span>PageFrame<span class="op">&gt;</span>
+      <span class="op">&lt;</span>Fragment state<span class="op">={</span>state<span class="op">}</span> filterOn<span class="op">=</span><span class="st">&quot;menu&quot;</span><span class="op">&gt;</span>
+        <span class="op">&lt;</span>Menu /<span class="op">&gt;</span>
+      <span class="op">&lt;</span><span class="ss">/Fragment&gt;</span>
+<span class="ss">  &lt;/PageFrame</span><span class="op">&gt;</span>
+)
+
+<span class="co">// If menu is truthy, this renders as:</span>
+
+(
+  <span class="op">&lt;</span>PageFrame<span class="op">&gt;</span>
+    <span class="op">&lt;</span>Menu /<span class="op">&gt;</span>
+  <span class="op">&lt;</span><span class="ss">/PageFrame&gt;</span>
+<span class="sc">)</span>
+
+<span class="ss">// If menu is falsy, this renders as:</span>
+<span class="sc">(</span>
+<span class="ss">  &lt;PageFrame&gt;</span>
+<span class="ss">  &lt;/PageFrame</span><span class="op">&gt;</span>
+)
+
+<span class="co">// If property is missing in path, it&#39;s falsy.</span>
+
+<span class="kw">const</span> view <span class="op">=</span> (
+  <span class="op">&lt;</span>PageFrame<span class="op">&gt;</span>
+      <span class="op">&lt;</span>Fragment state<span class="op">={</span>state<span class="op">}</span> filterOn<span class="op">=</span><span class="st">&quot;menu.missingProp.something&quot;</span><span class="op">&gt;</span>
+        <span class="op">&lt;</span>Menu /<span class="op">&gt;</span>
+      <span class="op">&lt;</span><span class="ss">/Fragment&gt;</span>
+<span class="ss">  &lt;/PageFrame</span><span class="op">&gt;</span>
+)
+
+<span class="co">// Renders as: </span>
+(
+  <span class="op">&lt;</span>PageFrame<span class="op">&gt;</span>
+  <span class="op">&lt;</span><span class="ss">/PageFrame&gt;</span>
+<span class="sc">)</span></code></pre></div>
+<p>Given that every UI state will be in your state tree as a function of your reducer logic, you can express any restriction on which parts of the UI display, even those that have nothing to do with the specific transformations caused by your URL actions.</p>
+<p>See also the demo site in the <code>demos/</code> directory, to see routedux used in an application.</p>
+</body>
+</html>
