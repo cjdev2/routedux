@@ -4,7 +4,7 @@
 
 <img alt="Route Dux" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Ducks_crossing_the_road_sign.png/92px-Ducks_crossing_the_road_sign.png" align="right" />
 
-[![npm version](https://badge.fury.io/js/routedux.svg)](https://badge.fury.io/js/routedux) [![Build Status](https://travis-ci.org/cjdev/routedux.svg?branch=master)](https://travis-ci.org/cjdev/routedux)[![GitHub stars](https://img.shields.io/github/stars/badges/shields.svg?style=social&label=Star)](https://github.com/cjdev/routedux)
+[![npm version](https://badge.fury.io/js/routedux.svg)](https://badge.fury.io/js/routedux) [![Build Status](https://travis-ci.org/cjdev/routedux.svg?branch=master)](https://travis-ci.org/cjdev/routedux)[![GitHub stars](https://img.shields.io/github/stars/cjdev/routedux.svg?style=flat-square)](https://github.com/cjdev/routedux/)
 
 Routedux routes URLs to Redux actions and vice versa.
 
