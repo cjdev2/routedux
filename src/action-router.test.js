@@ -48,29 +48,29 @@ function setupTest(routesConfig, path='/path/to/thing') {
   addMissingHistoryEvents(window, window.history);
   addChangeUrlEvent(window, window.history);
 
-  const {middleware, enhancer} = installBrowserRouter(routesConfig, window);
-    const reduce = jest.fn();
+  const {middleware, enhancer, init} = installBrowserRouter(routesConfig, window);
+  const reduce = jest.fn();
 
-    const store = createStore(
-      reduce,
-      compose(
-        enhancer,
-        applyMiddleware(
-          middleware)));
+  const store = createStore(
+    reduce,
+    compose(
+      enhancer,
+      applyMiddleware(
+        middleware)));
 
-    function urlChanges() {
-      return mockPushState.mock.calls.map(item => item[2]);
-    }
+  function urlChanges() {
+    return mockPushState.mock.calls.map(item => item[2]);
+  }
 
-    function actionsDispatched() {
-      return reduce.mock.calls.map(item => item[1]).slice(1);
-    }
+  function actionsDispatched() {
+    return reduce.mock.calls.map(item => item[1]).slice(1);
+  }
 
-    function fireUrlChange(path) {
-      window.dispatchEvent(new CustomEvent('urlchanged', {detail: createLocation(path)}));
-    }
+  function fireUrlChange(path) {
+    window.dispatchEvent(new CustomEvent('urlchanged', {detail: createLocation(path)}));
+  }
 
-    return {store, reduce, window, urlChanges, actionsDispatched, fireUrlChange};
+  return {store, reduce, window, urlChanges, actionsDispatched, fireUrlChange, init};
 }
 
 it("router handles exact match in preference to wildcard match", () => {
@@ -280,7 +280,8 @@ it("router handles the current location when initialized", () => {
 
   // when
   /// We break the pattern because we're testing store construction.
-  const {actionsDispatched} = setupTest(routesConfig, '/something/something');
+  const {actionsDispatched, init} = setupTest(routesConfig, '/something/something');
+  init();
 
   // then
   expect(actionsDispatched()).toEqual([{type: 'ACTION_NAME', dynamic: 'something'}]);

@@ -68,12 +68,10 @@ it("given event handler should generate a urlchange event only when url changes"
   expect(calls.length).toEqual(5);
   expect(calls[4].type).toEqual('urlchanged');
   expect(calls[4].detail).toEqual(window.location);
-
-  console.log(map);
 });
 
 it("should only add url events 1x when addChangeUrlEvent is called on window more than 1x", () => {
-// given
+  // given
   const window = {};
   const map = {};
 
