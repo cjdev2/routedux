@@ -36,12 +36,12 @@ const store = createStore(reduce, compose(
   enhance,
   applyMiddleware(middleware)
 ));
-</code></pre><p>Any time a handled action fires the url in the address bar will change, and if the url in the address bar changes the corresponding action will fire (unless the action was initiated by a url change).</p><h2 id="route-matching-precedence---which-route-matches-best">Route matching precedence - which route matches best?</h2><p>Route precedence is a function of the type of matching done in each segment and the order in which the wildcard segments match. Exact matches are always preferred to wildcards moving from left to right.</p><pre class="brush: javascript"><code>    const routesInOrderOfPrecedence = [
-      ['/user/me/update', '/user/me'], // both perfectly specific - will match above any wildcard route
-      '/user/me/:view',
-      '/user/:id/update', // less specific because 'me' is exact match, while :id is a wildcard
-      '/user/:id/:view'
-    ];
+</code></pre><p>Any time a handled action fires the url in the address bar will change, and if the url in the address bar changes the corresponding action will fire (unless the action was initiated by a url change).</p><h2 id="route-matching-precedence---which-route-matches-best">Route matching precedence - which route matches best?</h2><p>Route precedence is a function of the type of matching done in each segment and the order in which the wildcard segments match. Exact matches are always preferred to wildcards moving from left to right.</p><pre class="brush: javascript"><code>const routesInOrderOfPrecedence = [
+  ['/user/me/update', '/user/me'], // both perfectly specific - will match above any wildcard route
+  '/user/me/:view',
+  '/user/:id/update', // less specific because 'me' is exact match, while :id is a wildcard
+  '/user/:id/:view'
+];
 </code></pre><h2 id="fragment-component">Fragment component</h2><pre class="brush: javascript"><code>
 const state = {
   menu: ...

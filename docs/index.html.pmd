@@ -86,12 +86,12 @@ Route precedence is a function of the type of matching done in each segment and 
 match.  Exact matches are always preferred to wildcards moving from left to right.
 
 ```javascript
-    const routesInOrderOfPrecedence = [
-      ['/user/me/update', '/user/me'], // both perfectly specific - will match above any wildcard route
-      '/user/me/:view',
-      '/user/:id/update', // less specific because 'me' is exact match, while :id is a wildcard
-      '/user/:id/:view'
-    ];
+const routesInOrderOfPrecedence = [
+  ['/user/me/update', '/user/me'], // both perfectly specific - will match above any wildcard route
+  '/user/me/:view',
+  '/user/:id/update', // less specific because 'me' is exact match, while :id is a wildcard
+  '/user/:id/:view'
+];
 
 ```
 
