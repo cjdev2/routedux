@@ -1,0 +1,32 @@
+* {
+    box-sizing: border-box;
+}
+
+nav#pagewise {
+    position: relative;
+    width: 100%;
+}
+
+#prev-page, #next-page {
+    position: absolute;
+    width: 48%;
+    z-index: 10000;
+}
+
+#prev-page::after {
+    content: "|";
+}
+
+#prev-page {
+    left: 0;
+    text-align: left;
+}
+
+#next-page {
+    right: 0;
+    text-align: right;
+}
+
+article {
+    position: relative;
+}
