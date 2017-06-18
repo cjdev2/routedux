@@ -281,6 +281,7 @@ function constructPath(match) {
 
 function createActionDispatcher(routesConfig, window) {
   let {compiledActionMatchers, compiledRouteMatchers} = compileRoutes(routesConfig);
+  let current_location = null;
 
   let actionDispatcher = {
     store: null,
@@ -297,7 +298,6 @@ function createActionDispatcher(routesConfig, window) {
       }
     },
     handleEvent(ev) {
-
       if (!this.store) {
         throw new Error("You must call activateDispatcher with redux store as argument");
       }
@@ -307,7 +307,8 @@ function createActionDispatcher(routesConfig, window) {
     },
     receiveLocation(location) {
       const match = matchRoute(location, compiledRouteMatchers);
-      if(match) {
+      if(current_location !== location.pathname && match) {
+        current_location = location.pathname;
         const action = constructAction(match);
 
         this.store.dispatch(action);
@@ -333,7 +334,7 @@ function createActionDispatcher(routesConfig, window) {
 function buildMiddleware(actionDispatcher) {
   return store => next => action => {
     if (actionDispatcher.handlesAction(action)) {
-        actionDispatcher.receiveAction(action, store);
+      actionDispatcher.receiveAction(action, store);
     }
     return next(action);
   };
@@ -345,5 +346,9 @@ export default function installBrowserRouter(routesConfig, window) {
 
   const middleware = buildMiddleware(actionDispatcher);
 
-  return {middleware, enhancer: actionDispatcher.enhanceStore};
+  return {
+    middleware,
+    enhancer: actionDispatcher.enhanceStore,
+    init: actionDispatcher.receiveLocation.bind(actionDispatcher, window.location)
+  };
 }
