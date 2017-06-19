@@ -1,3 +1,11 @@
 language: node_js
 node_js:
-  - "node"
+- node
+deploy:
+  provider: npm
+  email: msumme@cj.com
+  on:
+    branch: master
+    tags: true
+  api_key:
+    secure: TdwQr0utB2fZQrvA7UQRE0n6NMjUuAYHEPR9GGJf7buenxGrwOF0bnX7Ek7vYg2Qk5VNnPNaa3cPiIxTYCA81BwSWOSTXwEkzHQQ4yDu0faQ2YkNSNHTreGY62T7ayl2Umwb/caAxBJDDyR3o6+t66WMnuBI3ShME2aQxPH24S1vrCTNr5ZiyY84c5AlSmSAcPjKY8/kVj6ZTYpRNNibi5gqaxEDvV/BxshYKIw2IRB7pJYNByqvtcFz+gd/pZw25eoxcmdM7bwtOp60lrih5+UWXR+a3DZ5gURDumkluCcfgWhRHxERZHr19k8xW0NuDAIwUUnmJoO/LWw9kDtvxQpRwwY77hazBAcrBLICdedwfuUSqpWPZm6SJCLshCo3/zUZzJQE/eKtN3YhLnHfrKNpFJewTPxrhjumK+HcZZ4FM+roqvYAz7yZXObaXP1kCMAVxTC8tHjGduu1Py/OnT5aH3idtvaf0vWAG2/7HYxb5XNnnv2Ouio/DuMQd0dpVC9t8yuXQ/WagYJIYFfMKmFW3UJOAHWS9VLIXlVGfwRZL7H876L+yYdLXzcuSnqb6sGgeOhNFiVyX9PzTy4H5taA8kN99S0okIuBtz78/x4iV5XuM9i7/vqUELYF5V4krfNOO37kEfyaQm4+j5tRNhDaAwNGUpB5KToZAFbfx1o=
