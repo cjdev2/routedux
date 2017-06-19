@@ -1,7 +1,7 @@
 language: node_js
 node_js:
   - node
-after_script: yarn build
+script: yarn install && yarn test && yarn build
 deploy:
   - provider: releases
     skip_cleanup: true
