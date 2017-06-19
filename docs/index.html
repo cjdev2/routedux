@@ -63,7 +63,10 @@ match.  Exact matches are always preferred to wildcards moving from left to righ
   '/user/me/:view',
   '/user/:id/update', // less specific because 'me' is exact match, while :id is a wildcard
   '/user/:id/:view'
-];</code></pre></section><section><h2>Fragment component</h2><pre><code class="javascript"><p>const state = {
+];</code></pre></section><section><h2>Fragment component</h2><p>Given that every UI state will be in your state tree as a function of
+your reducer logic, you can express any restriction on which parts of
+the UI display, even those that have nothing to do with the specific
+transformations caused by your URL actions.</p><pre><code class="javascript"><p>const state = {
   menu: ...
 }</p><p>const view = (
   &lt;PageFrame&gt;
@@ -91,9 +94,15 @@ const view = (
 (
   &lt;PageFrame&gt;
   &lt;/PageFrame&gt;
-)</p></code></pre><p>Given that every UI state will be in your state tree as a function of your reducer logic, you can express any restriction
-on which parts of the UI display, even those that have nothing to do with the specific transformations caused by
-your URL actions.</p><p>We have a demo codebase at <a href="https://github.com/cjdev/routedux-docs-demo">demo repository</a>.</p></section></section>
+)</p></code></pre></section><section><h2>ActionLink and pathForAction(action)</h2><p>Occasionally it is nice to render URLs inside of your application.</p><p>As a convenience, we have attached <code class="javascript">pathForAction</code> to the  <code class="javascript">store</code>
+object, which uses the same matcher that the action matcher uses.  This allows you to create links in your application
+by using the actions.</p><pre><code class="javascript"><p>const routesConfig = [
+  ['/user/:id', LOAD_USER, {}],
+  ['/user/me', LOAD_USER, {id: currentUserId()}]
+];
+// ... do store initialization</p><p>store.pathForAction({type:LOAD_USER, id: currentUserId()});</p><p>// returns /user/me</p><p>//  ActionLink</p><p>&lt;ActionLink action={{type:LOAD_USER, id: 123}}&gt;Link Text&lt;/ActionLink&gt;
+// renders as &lt;a href="/user/123"&gt;Link Text&lt;/a&gt;</p></code></pre></section><p>Now you have links, but your links always stay up to date with your
+routing configuration.</p><section><h2>Demo Site</h2><p>We have a demo codebase at <a href="https://github.com/cjdev/routedux-docs-demo">demo repository</a>.</p></section></section>
 </root>
     </article>
     <script>hljs.initHighlightingOnLoad();</script>

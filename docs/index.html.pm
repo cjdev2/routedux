@@ -103,6 +103,11 @@ const routesInOrderOfPrecedence = [
 }
 
 ◊section[#:headline "Fragment component"]{
+Given that every UI state will be in your state tree as a function of
+your reducer logic, you can express any restriction on which parts of
+the UI display, even those that have nothing to do with the specific
+transformations caused by your URL actions.
+
 ◊pre{
 ◊code[#:class "javascript"]{
 const state = {
@@ -145,10 +150,6 @@ const view = (
   </PageFrame>
 )
 }}
-
-Given that every UI state will be in your state tree as a function of your reducer logic, you can express any restriction
-on which parts of the UI display, even those that have nothing to do with the specific transformations caused by
-your URL actions.
 }
 
 ◊section[#:headline "ActionLink and pathForAction(action)"]{
@@ -166,7 +167,9 @@ const routesConfig = [
 ];
 // ... do store initialization
 
-store.pathForAction({type:LOAD_USER, id: currentUserId()}); // returns /user/me
+store.pathForAction({type:LOAD_USER, id: currentUserId()});
+
+// returns /user/me
 
 //  ActionLink
 
@@ -174,6 +177,9 @@ store.pathForAction({type:LOAD_USER, id: currentUserId()}); // returns /user/me
 // renders as <a href="/user/123">Link Text</a>
 }}
 }
+
+Now you have links, but your links always stay up to date with your
+routing configuration.
 
 ◊section[#:headline "Demo Site"]{
 We have a demo codebase at ◊a[#:href "https://github.com/cjdev/routedux-docs-demo"]{demo repository}.
