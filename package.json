@@ -10,7 +10,8 @@
       "email": "el-os@elangley.org"
     }
   ],
-  "version": "0.2.5",
+  "main": "dist/index.js",
+  "version": "0.2.6",
   "license": "MIT",
   "dependencies": {
     "ramda": "^0.24.1",
