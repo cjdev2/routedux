@@ -1,5 +1,8 @@
-import React from 'react';
-
+try { // making this optional dependency b/c it's automatically exported but only
+     // useful when react is installed
+  const React = require('react');
+} catch(e) {
+}
 
 export default function ActionLink({action, children}, {store}) {
 
