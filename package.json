@@ -11,7 +11,7 @@
     }
   ],
   "main": "dist/index.js",
-  "version": "0.2.1",
+  "version": "0.2.3",
   "license": "MIT",
   "dependencies": {
     "ramda": "^0.24.1",
@@ -37,7 +37,8 @@
     "watch": "babel -w src -d dist",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "flow": "flow"
+    "flow": "flow",
+    "buildPub": "yarn build && npm publish"
   },
   "npmFileMap": [
     {
