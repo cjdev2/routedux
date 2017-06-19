@@ -144,6 +144,32 @@ const view = (
 )
 
 ```
+## ActionLink and pathForAction(action)
+
+Occasionally it is nice to render URLs inside of your application.
+
+As a convenience, we have attached `pathForAction` to the  `store` object, which uses the same matcher that the
+action matcher uses.  This allows you to create links in your application by using the actions.
+
+```javascript
+
+const routesConfig = [
+  ['/user/:id', LOAD_USER, {}],
+  ['/user/me', LOAD_USER, {id: currentUserId()}]
+];
+// ... do store initialization
+
+store.pathForAction({type:LOAD_USER, id: currentUserId()}); // returns /user/me
+
+//  ActionLink
+
+<ActionLink action={{type:LOAD_USER, id: 123}}>Link Text</ActionLink>
+// renders as <a href="/user/123">Link Text</a>
+
+```
+
+Now you have links, but your links always stay up to date with your routing configuration.  
+
 
 ## Demo Site
 
