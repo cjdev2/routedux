@@ -95,6 +95,10 @@ match.  Exact matches are always preferred to wildcards moving from left to righ
 
 ## Fragment component
 
+Given that every UI state will be in your state tree as a function of your reducer logic, you can express any restriction
+on which parts of the UI display, even those that have nothing to do with the specific transformations caused by 
+your URL actions.
+
 ```javascript
 
 const state = {
@@ -141,8 +145,6 @@ const view = (
 
 ```
 
-Given that every UI state will be in your state tree as a function of your reducer logic, you can express any restriction
-on which parts of the UI display, even those that have nothing to do with the specific transformations caused by 
-your URL actions.
+## Demo Site
 
-See also the demo site in the `demos/` directory, to see routedux used in an application.
+See a simple [demo documentation site.](https://github.com/cjdev/routedux-docs-demo)
