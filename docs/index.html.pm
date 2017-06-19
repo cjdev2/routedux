@@ -6,7 +6,6 @@
 
 ◊a[#:href "https://badge.fury.io/js/routedux"]{◊img[#:src "https://badge.fury.io/js/routedux.svg"]}
 ◊a[#:href "https://travis-ci.org/cjdev/routedux"]{◊img[#:alt "Build Status" #:src "https://travis-ci.org/cjdev/routedux.svg?branch=master"]}
-◊a[#:href "https://github.com/cjdev/routedux/"]{◊img[#:alt "GitHub stars" #:src "https://img.shields.io/github/stars/cjdev/routedux.svg?style=flat-square"]}
 
 Routedux routes URLs to Redux actions and vice versa.
 
