@@ -1,17 +1,18 @@
 #lang pollen
 
-# Routedux — Routes the Redux Way
+◊section[#:headline "Routedux — Routes the Redux Way"]{
 
-<img alt="Route Dux" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Ducks_crossing_the_road_sign.png/92px-Ducks_crossing_the_road_sign.png" align="right" />
+◊img[#:alt "Route Dux" #:src "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Ducks_crossing_the_road_sign.png/92px-Ducks_crossing_the_road_sign.png" #:align "right"]
 
-[![npm version](https://badge.fury.io/js/routedux.svg)](https://badge.fury.io/js/routedux) [![Build Status](https://travis-ci.org/cjdev/routedux.svg?branch=master)](https://travis-ci.org/cjdev/routedux)[![GitHub stars](https://img.shields.io/github/stars/cjdev/routedux.svg?style=flat-square)](https://github.com/cjdev/routedux/)
+◊a[#:href "https://badge.fury.io/js/routedux"]{◊img[#:src "https://badge.fury.io/js/routedux.svg"]}
+◊a[#:href "https://travis-ci.org/cjdev/routedux"]{◊img[#:alt "Build Status" #:src "https://travis-ci.org/cjdev/routedux.svg?branch=master"]}
+◊a[#:href "https://github.com/cjdev/routedux/"]{◊img[#:alt "GitHub stars" #:src "https://img.shields.io/github/stars/cjdev/routedux.svg?style=flat-square"]}
 
 Routedux routes URLs to Redux actions and vice versa.
 
 Your application doesn't need to know it lives in a browser, but your users want pretty urls and deep links.
 
-## Wait, my application doesn't need to know it lives in a browser?
-
+◊section[#:headline "Wait, my application doesn't need to know it lives in a browser?"]{
 URLs are great for finding things on the internet.  But a single page application is not the same as a collection of
 resources that lives on a remote server.
 
@@ -27,26 +28,34 @@ When you are developing a redux application, you want your UI to be a pure funct
 
 By adding routes to that, it makes it harder to test.  And this difficulty can be compounded by other decisions about how
 to add routes to your application.
+}
 
-## An alternative approach
+◊section[#:headline "An alternative approach"]{
+React Router is the currently-accepted way to do URL routing in React
+applications.  For a standard React application without Redux, this
+solution isn't too bad.  But once you add Redux, things get difficult.
 
-React Router is the currently-accepted way to do URL routing in React applications.  For a standard React application without
-Redux, this solution isn't too bad.  But once you add Redux, things get difficult.
+We basically discovered the same lessons as Formidable Labs:◊sidenote["REACTROUTERWRONG"]{
+◊a[#:href
+"http://formidable.com/blog/2016/07/11/let-the-url-do-the-talking-part-1-the-pain-of-react-router-in-redux/"]{React
+Router is the wrong way to route in Redux apps.}}  However, we don't
+think their solution (◊a[#:href
+"https://github.com/FormidableLabs/redux-little-router"]{redux-little-router})
+goes far enough, as it still embeds the idea of routes throughout your
+user interface.
 
-We basically discovered the same lessons as Formidable Labs: [React Router is the wrong way to route in Redux apps.](http://formidable.com/blog/2016/07/11/let-the-url-do-the-talking-part-1-the-pain-of-react-router-in-redux/)
+Once you separate URLs from your application state, you can easily
+port it to other environments that don't know what URLs are, and by
+simply removing the routing declaration, things will work as before.
 
-However, we don't think their solution ([redux-little-router](https://github.com/FormidableLabs/redux-little-router))
-goes far enough, as it still embeds the idea of routes throughout your user interface.
+As an added (and we think absolutely essential) benefit, your entire
+application becomes easier to test, as rendering is a pure function of
+Redux state, and model logic and route actions are entirely
+encapsulated in Redux outside of the app.}
 
-Once you separate URLs from your application state, you can easily port it to other environments that don't know what
-URLs are, and by simply removing the routing declaration, things will work as before.
-
-As an added (and we think absolutely essential) benefit, your entire application becomes easier to test, as rendering
-is a pure function of Redux state, and model logic and route actions are entirely encapsulated in Redux outside of the app.
-
-## Simple Routing in 25 lines
-
-```javascript
+◊section[#:headline "Simple Routing in 25 lines"]{
+◊pre{
+◊code[#:class "javascript"]{
 import installBrowserRouter from 'routedux';
 import {createStore, compose, applyMiddleware} from 'redux';
 
@@ -73,32 +82,30 @@ const store = createStore(reduce, compose(
   enhance,
   applyMiddleware(middleware)
 ));
-
-```
+}}
 
 Any time a handled action fires the url in the address bar will change, and if the url in the address bar changes
 the corresponding action will fire (unless the action was initiated by a url change).
+}
 
-
-## Route matching precedence - which route matches best?
-
+◊section[#:headline "Route matching precedence - which route matches best?"]{
 Route precedence is a function of the type of matching done in each segment and the order in which the wildcard segments
 match.  Exact matches are always preferred to wildcards moving from left to right.
 
-```javascript
+◊pre{
+◊code[#:class "javascript"]{
 const routesInOrderOfPrecedence = [
   ['/user/me/update', '/user/me'], // both perfectly specific - will match above any wildcard route
   '/user/me/:view',
   '/user/:id/update', // less specific because 'me' is exact match, while :id is a wildcard
   '/user/:id/:view'
 ];
+}}
+}
 
-```
-
-## Fragment component
-
-```javascript
-
+◊section[#:headline "Fragment component"]{
+◊pre{
+◊code[#:class "javascript"]{
 const state = {
   menu: ...
 }
@@ -138,11 +145,12 @@ const view = (
   <PageFrame>
   </PageFrame>
 )
-
-```
+}}
 
 Given that every UI state will be in your state tree as a function of your reducer logic, you can express any restriction
 on which parts of the UI display, even those that have nothing to do with the specific transformations caused by
 your URL actions.
 
-See also the demo site in the `demos/` directory, to see routedux used in an application.
+See also the demo site in the ◊a[#:href "https://github.com/cjdev/routedux/tree/master/demos/doc_site"]{demos/} directory, to see routedux used in an application.
+}
+}
