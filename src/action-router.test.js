@@ -287,3 +287,18 @@ it("router handles the current location when initialized", () => {
   expect(actionsDispatched()).toEqual([{type: 'ACTION_NAME', dynamic: 'something'}]);
 
 });
+
+it("pathForAction should render a route", () => {
+  // given
+  const routesConfig = [
+    ["/something/:dynamic", "ACTION_NAME", {}],
+    ["/:dyn/something", "ACTION_NAME", {}],
+  ];
+  const action = {type:'ACTION_NAME', dynamic: 'hooray'};
+  const {store} = setupTest(routesConfig);
+  // when
+  const actual = store.pathForAction(action);
+
+  // then
+  expect(actual).toEqual('/something/hooray');
+});

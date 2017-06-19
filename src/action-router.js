@@ -108,6 +108,7 @@ function matchesAction(action, matchers) {
 function isWildcard(segment) {
   return segment && segment[0] === ":";
 }
+
 function extractParams(path) {
   const pathParts = path.split("/");
   let params = [];
@@ -121,7 +122,6 @@ function extractParams(path) {
 
     params.push(name);
   }
-
   return params;
 }
 
@@ -179,7 +179,6 @@ function makeRoute(path, action, extraParams) {
     return result;
   };
 
-
   let routeParams = extractParams(path);
 
   return {
@@ -192,10 +191,6 @@ function makeRoute(path, action, extraParams) {
       extraParams
     }
   };
-}
-
-function getRouteByPath(pattern, matchers) {
-  return matchers.compiledRouteMatchers[pattern];
 }
 
 function normalizeWildcards(path) {
@@ -256,8 +251,6 @@ function compileRoutes(routesConfig) {
   };
 }
 
-///////
-
 function constructAction(match) {
   return {type: match.action, ...match.extractedParams, ...match.extraParams};
 }
@@ -282,6 +275,11 @@ function constructPath(match) {
 function createActionDispatcher(routesConfig, window) {
   let {compiledActionMatchers, compiledRouteMatchers} = compileRoutes(routesConfig);
 
+  function pathForAction(action) {
+    const match = matchAction(action, compiledActionMatchers);
+    return match ? constructPath(match) : null;
+  }
+
   let actionDispatcher = {
     currentLocation: null,
 
@@ -294,6 +292,7 @@ function createActionDispatcher(routesConfig, window) {
       return (reducer, finalInitialState, enhancer) => {
         let theStore = nextStoreCreator(reducer, finalInitialState, enhancer);
         this.activateDispatcher(theStore);
+        theStore.pathForAction = pathForAction;
         return theStore;
       };
     },
