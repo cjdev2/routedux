@@ -149,7 +149,33 @@ const view = (
 Given that every UI state will be in your state tree as a function of your reducer logic, you can express any restriction
 on which parts of the UI display, even those that have nothing to do with the specific transformations caused by
 your URL actions.
+}
 
+◊section[#:headline "ActionLink and pathForAction(action)"]{
+Occasionally it is nice to render URLs inside of your application.
+
+As a convenience, we have attached ◊code[#:class "javascript"]{pathForAction} to the  ◊code[#:class "javascript"]{store}
+object, which uses the same matcher that the action matcher uses.  This allows you to create links in your application
+by using the actions.
+
+◊pre{
+◊code[#:class "javascript"]{
+const routesConfig = [
+  ['/user/:id', LOAD_USER, {}],
+  ['/user/me', LOAD_USER, {id: currentUserId()}]
+];
+// ... do store initialization
+
+store.pathForAction({type:LOAD_USER, id: currentUserId()}); // returns /user/me
+
+//  ActionLink
+
+<ActionLink action={{type:LOAD_USER, id: 123}}>Link Text</ActionLink>
+// renders as <a href="/user/123">Link Text</a>
+}}
+}
+
+◊section[#:headline "Demo Site"]{
 We have a demo codebase at ◊a[#:href "https://github.com/cjdev/routedux-docs-demo"]{demo repository}.
 }
 }
