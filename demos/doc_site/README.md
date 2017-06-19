@@ -14,5 +14,5 @@ when experimenting.  To make sure you always have the most recent
 changes of Routedux, follow these steps:
 
 - `rm -rf node_modules/routedux`
-- `ln -s $PWD/../.. node_modules`
+- `ln -s $PWD/../.. node_modules/routedux`
 - `cd ../.. && yarn watch`
