@@ -1,12 +1,14 @@
-try { // making this optional dependency b/c it's automatically exported but only
-     // useful when react is installed
-  const React = require('react');
-} catch(e) {
-}
+// Ugly way to deal with optional dependency so we don't break projects not using react.
+let React = null;
 
-export default function ActionLink({action, children}, {store}) {
+const ActionLink = ({action, children}, {store}) => {
 
-  if(!store) {
+
+  if (!React) {
+    throw new Error("You cannot use ActionLink unless react is available");
+  }
+
+  if (!store) {
     throw new Error("You cannot use ActionLink without providing store via context (possibly using react-redux Provider?)");
   }
 
@@ -15,10 +17,20 @@ export default function ActionLink({action, children}, {store}) {
   return (
     <a href={renderedRoute}
        onClick={ev => {
-        ev.preventDefault();
-        store.dispatch(action);}}>{children}</a>
+         ev.preventDefault();
+         store.dispatch(action);
+       }}>{children}</a>
   );
 };
-ActionLink.contextTypes = {
-  store: React.PropTypes.object
-};
+
+try {
+  React = require('react');
+  ActionLink.contextTypes = {
+    store: React.PropTypes.object
+  };
+
+} catch (e) {
+
+}
+
+export default ActionLink;
