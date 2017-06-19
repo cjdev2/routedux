@@ -1,11 +1,21 @@
 language: node_js
 node_js:
-- node
+  - node
+after_script: yarn build
 deploy:
-  provider: npm
-  email: msumme@cj.com
-  on:
-    branch: master
-    tags: true
-  api_key:
-    secure: TdwQr0utB2fZQrvA7UQRE0n6NMjUuAYHEPR9GGJf7buenxGrwOF0bnX7Ek7vYg2Qk5VNnPNaa3cPiIxTYCA81BwSWOSTXwEkzHQQ4yDu0faQ2YkNSNHTreGY62T7ayl2Umwb/caAxBJDDyR3o6+t66WMnuBI3ShME2aQxPH24S1vrCTNr5ZiyY84c5AlSmSAcPjKY8/kVj6ZTYpRNNibi5gqaxEDvV/BxshYKIw2IRB7pJYNByqvtcFz+gd/pZw25eoxcmdM7bwtOp60lrih5+UWXR+a3DZ5gURDumkluCcfgWhRHxERZHr19k8xW0NuDAIwUUnmJoO/LWw9kDtvxQpRwwY77hazBAcrBLICdedwfuUSqpWPZm6SJCLshCo3/zUZzJQE/eKtN3YhLnHfrKNpFJewTPxrhjumK+HcZZ4FM+roqvYAz7yZXObaXP1kCMAVxTC8tHjGduu1Py/OnT5aH3idtvaf0vWAG2/7HYxb5XNnnv2Ouio/DuMQd0dpVC9t8yuXQ/WagYJIYFfMKmFW3UJOAHWS9VLIXlVGfwRZL7H876L+yYdLXzcuSnqb6sGgeOhNFiVyX9PzTy4H5taA8kN99S0okIuBtz78/x4iV5XuM9i7/vqUELYF5V4krfNOO37kEfyaQm4+j5tRNhDaAwNGUpB5KToZAFbfx1o=
+  - provider: releases
+    skip_cleanup: true
+    api_key:
+      secure: T0KgdVVXhy3nugP2cLMQjTXC9FCk6ZEhAguNxsPhbnf1yj/hENpYBDeiTG3PhqIZlTrDXKq0Q6qTT6ukoERPXF+qoOtaj2xPwqQ0nbODcE/qiQWoDynWlmzzrogtEs+hZAQPWllv15CHzbpK0KSq3tJdoZ8+xSZYmuiltqOZMbi3eZHt2J4e+vohrpJZFlZltsKiZr3XGhFLwmHtvdRwul/Df7SDpqQu8Ojwwg8BmBu+e6Ph+Ip0O0IU1zi8NhK7G5DV9/7NH8Uo4gsjvwA5iqLQKp124CFEnO8PgYjovQyhP9YNTQgaml02qswGZYdIwHsRP5P2YURdYgfZnCImoY7nalNgycagxSzGn6AZBhGExrFc8flFc/zByncys97ZridEH0tNSQqUosNpAMJSdK/uGDOuu1p5UUkAYkpCJNPdbwIq6O49S5aO/c87sBzCGjDoi+gADCUYTGJAC59+0BZqTKoaAXS7KVIiGMKO6XVroyfBazIIxCl15xGwA0SLPeR6nUqRK4paq2oQhn8DZQPI43vHUi9vrJoZMTL24K9kHAH+8JCDU2pCjT/KkDWXlHe23a1StFPfjWVvbtyXRT1mH6sD8+v9+ikkaQ2gye2sbOLFzMCiXEGRAsqKXafC37CctQK/DVEeKkYh9Vb7ZCi7tuuM4Cq3pavrjbu27S8=
+    on:
+      repo: cjdev/routedux
+      branch: master
+      tags: true
+  - provider: npm
+    skip_cleanup: true
+    email: msumme@cj.com
+    on:
+      branch: master
+      tags: true
+    api_key:
+      secure: TdwQr0utB2fZQrvA7UQRE0n6NMjUuAYHEPR9GGJf7buenxGrwOF0bnX7Ek7vYg2Qk5VNnPNaa3cPiIxTYCA81BwSWOSTXwEkzHQQ4yDu0faQ2YkNSNHTreGY62T7ayl2Umwb/caAxBJDDyR3o6+t66WMnuBI3ShME2aQxPH24S1vrCTNr5ZiyY84c5AlSmSAcPjKY8/kVj6ZTYpRNNibi5gqaxEDvV/BxshYKIw2IRB7pJYNByqvtcFz+gd/pZw25eoxcmdM7bwtOp60lrih5+UWXR+a3DZ5gURDumkluCcfgWhRHxERZHr19k8xW0NuDAIwUUnmJoO/LWw9kDtvxQpRwwY77hazBAcrBLICdedwfuUSqpWPZm6SJCLshCo3/zUZzJQE/eKtN3YhLnHfrKNpFJewTPxrhjumK+HcZZ4FM+roqvYAz7yZXObaXP1kCMAVxTC8tHjGduu1Py/OnT5aH3idtvaf0vWAG2/7HYxb5XNnnv2Ouio/DuMQd0dpVC9t8yuXQ/WagYJIYFfMKmFW3UJOAHWS9VLIXlVGfwRZL7H876L+yYdLXzcuSnqb6sGgeOhNFiVyX9PzTy4H5taA8kN99S0okIuBtz78/x4iV5XuM9i7/vqUELYF5V4krfNOO37kEfyaQm4+j5tRNhDaAwNGUpB5KToZAFbfx1o=
