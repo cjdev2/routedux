@@ -150,6 +150,6 @@ Given that every UI state will be in your state tree as a function of your reduc
 on which parts of the UI display, even those that have nothing to do with the specific transformations caused by
 your URL actions.
 
-We have a demo codebase at ◊a[#:href "https://github.com/cjdev/routedux/tree/master/demos/doc_site"]{demo repository}.
+We have a demo codebase at ◊a[#:href "https://github.com/cjdev/routedux-docs-demo"]{demo repository}.
 }
 }
