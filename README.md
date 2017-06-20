@@ -40,6 +40,10 @@ URLs are, and by simply removing the routing declaration, things will work as be
 As an added (and we think absolutely essential) benefit, your entire application becomes easier to test, as rendering
 is a pure function of Redux state, and model logic and route actions are entirely encapsulated in Redux outside of the app.
 
+## Demo Site
+
+See a simple [demo documentation site.](https://github.com/cjdev/routedux-docs-demo)
+
 ## Simple Routing in 25 lines
 
 ```javascript
@@ -169,8 +173,3 @@ store.pathForAction({type:LOAD_USER, id: currentUserId()}); // returns /user/me
 ```
 
 Now you have links, but your links always stay up to date with your routing configuration.  
-
-
-## Demo Site
-
-See a simple [demo documentation site.](https://github.com/cjdev/routedux-docs-demo)
