@@ -320,7 +320,7 @@ function createActionDispatcher(routesConfig, window) {
       let matcher = matchAction(action, compiledActionMatchers);
       if(matcher) {
         let path = constructPath(matcher);
-        // TODO: Solves double action, need to figure out test
+
         this.currentLocation = path;
         window.history.pushState({}, '', path);
       }
