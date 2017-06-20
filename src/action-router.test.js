@@ -21,7 +21,7 @@ function createFakeWindow(path='/path/to/thing') {
   const window = {
     location: createLocation(path),
     history: {
-      pushState: jest.fn(),
+      pushState: jest.fn((_, __, path) => {window.location = createLocation(path)}),
       replaceState: jest.fn()
     }
   };
@@ -74,7 +74,6 @@ function setupTest(routesConfig, path='/path/to/thing') {
 }
 
 it("router handles exact match in preference to wildcard match", () => {
-
   //given
   const actionType = 'THE_ACTION';
   const action = {type: actionType, id: 1};
@@ -90,6 +89,25 @@ it("router handles exact match in preference to wildcard match", () => {
   // then
   expect(urlChanges()).toEqual(['/somewhere']);
 
+});
+
+it("router doees not dispatch an action from url change that is caused by action dispatch", () => {
+  //given
+  const actionType = 'THE_ACTION';
+  const id = "1";
+  const view = "home";
+  const action = {type: actionType, id, view};
+  const routesConfig = [
+    ["/somewhere/:id/:view", actionType, {}],
+    ["/somewhere/:id/default", actionType, {view: "home"}],
+  ];
+  const {urlChanges, store, actionsDispatched, init} = setupTest(routesConfig);
+
+  // when
+  store.dispatch(action);
+
+  // then
+  expect(actionsDispatched()).toEqual([action]);
 });
 
 it("router handles wildcard with extra args correctly", () => {

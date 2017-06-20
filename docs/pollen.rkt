@@ -13,7 +13,6 @@
 
 (define head-tag-num (make-parameter 0))
 (defun current-head-tag ()
-  (println (format "at head tag: ~a" (head-tag-num)))
   (string->symbol (format "h~d" (head-tag-num))))
 
 (defun headline (element)
@@ -41,7 +40,6 @@
   (syntax-rules ()
     [(section #:headline %headline . body)
      (parameterize ([head-tag-num (1+ (head-tag-num))])
-       (println (format "At head-tag-num ~d" (head-tag-num)))
        (section `,(headline %headline) . body))]
     [(section . body)
      (txexpr 'section empty
