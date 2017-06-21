@@ -43,7 +43,7 @@ port it to other environments that don't know what URLs are, and by
 simply removing the routing declaration, things will work as before.</p><p>As an added (and we think absolutely essential) benefit, your entire
 application becomes easier to test, as rendering is a pure function of
 Redux state, and model logic and route actions are entirely
-encapsulated in Redux outside of the app.</p></section><section><h2>Simple Routing in 25 lines</h2><pre><code class="javascript"><p>import installBrowserRouter from 'routedux';
+encapsulated in Redux outside of the app.</p></section><section><h2>Demo Site</h2><p>We have a demo codebase at <a href="https://github.com/cjdev/routedux-docs-demo">demo repository</a>.</p></section><section><h2>Simple Routing in 25 lines</h2><pre><code class="javascript"><p>import installBrowserRouter from 'routedux';
 import {createStore, compose, applyMiddleware} from 'redux';</p><p>const LOAD_USER = 'LOAD_USER';</p><p>function currentUserId() {
   return 42;
 };</p><p>function reduce(state = initialState(), action) {
@@ -102,7 +102,7 @@ by using the actions.</p><pre><code class="javascript"><p>const routesConfig = [
 ];
 // ... do store initialization</p><p>store.pathForAction({type:LOAD_USER, id: currentUserId()});</p><p>// returns /user/me</p><p>//  ActionLink</p><p>&lt;ActionLink action={{type:LOAD_USER, id: 123}}&gt;Link Text&lt;/ActionLink&gt;
 // renders as &lt;a href="/user/123"&gt;Link Text&lt;/a&gt;</p></code></pre></section><p>Now you have links, but your links always stay up to date with your
-routing configuration.</p><section><h2>Demo Site</h2><p>We have a demo codebase at <a href="https://github.com/cjdev/routedux-docs-demo">demo repository</a>.</p></section></section>
+routing configuration.</p></section>
 </root>
     </article>
     <script>hljs.initHighlightingOnLoad();</script>

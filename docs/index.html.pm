@@ -52,7 +52,10 @@ application becomes easier to test, as rendering is a pure function of
 Redux state, and model logic and route actions are entirely
 encapsulated in Redux outside of the app.}
 
-◊section[#:headline "Simple Routing in 25 lines"]{
+◊section[#:headline "Demo Site"]{
+We have a demo codebase at ◊a[#:href "https://github.com/cjdev/routedux-docs-demo"]{demo repository}.
+
+}◊section[#:headline "Simple Routing in 25 lines"]{
 ◊pre{
 ◊code[#:class "javascript"]{
 import installBrowserRouter from 'routedux';
@@ -181,7 +184,5 @@ store.pathForAction({type:LOAD_USER, id: currentUserId()});
 Now you have links, but your links always stay up to date with your
 routing configuration.
 
-◊section[#:headline "Demo Site"]{
-We have a demo codebase at ◊a[#:href "https://github.com/cjdev/routedux-docs-demo"]{demo repository}.
-}
+
 }
