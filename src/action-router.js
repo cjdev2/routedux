@@ -305,26 +305,35 @@ function createActionDispatcher(routesConfig, window) {
       const location = ev.detail;
       this.receiveLocation(location);
     },
+
+    onLocationChanged(newLoc, cb) {
+      if (this.currentLocation !== newLoc) {
+        this.currentLocation = newLoc;
+        return cb();
+      }
+    },
+
     receiveLocation(location) {
-      if (this.currentLocation !== location.pathname) {
-        this.currentLocation = location.pathname;
+      this.onLocationChanged(location.pathname, () => {
         const match = matchRoute(location, compiledRouteMatchers);
         if(match) {
           const action = constructAction(match);
 
           this.store.dispatch(action);
         }
-      }
+      });
     },
+
     receiveAction(action) {
       let matcher = matchAction(action, compiledActionMatchers);
       if(matcher) {
         let path = constructPath(matcher);
-
-        this.currentLocation = path;
-        window.history.pushState({}, '', path);
+        this.onLocationChanged(path, () => {
+          window.history.pushState({}, '', path);
+        });
       }
     },
+
     handlesAction(action) {
       return matchesAction(action, compiledActionMatchers);
     }

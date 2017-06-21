@@ -4,6 +4,19 @@ import installBrowserRouter from './action-router';
 import addChangeUrlEvent from './change-url-event.js';
 import addMissingHistoryEvents from './history-events.js';
 
+const console_log = console.log;
+console.log = () => {};
+function with_console(cb) {
+  console.log = console_log;
+  try {
+    cb();
+  } catch (e) {
+    console.log = () => {};
+    throw e;
+  }
+  console.log = () => {};
+}
+
 function createLocation(path) {
   return {
     hash: '#hash',
@@ -18,23 +31,45 @@ function createLocation(path) {
 }
 
 function createFakeWindow(path='/path/to/thing') {
+  let locations = [createLocation('(root)')];
+  function pushLocation(window, path) {
+    let newLoc = createLocation(path);
+    locations.push(newLoc);
+    window.location = newLoc;
+    return newLoc;
+  }
+  function popLocation(window) {
+    locations.pop();
+    let newLoc = locations[locations.length-1];
+    window.location = newLoc;
+    return newLoc;
+  }
+
   const window = {
-    location: createLocation(path),
     history: {
-      pushState: jest.fn((_, __, path) => {window.location = createLocation(path)}),
-      replaceState: jest.fn()
+      pushState: jest.fn((_, __, path) =>
+                         {window.location = pushLocation(window, path)}),
+      replaceState: jest.fn(),
     }
   };
 
+  pushLocation(window, path);
   const map = {};
 
   window.addEventListener = jest.fn((event, cb) => {
     map[event] = cb;
   });
 
+  function prepareEvent(window, evName) {
+    if (evName == 'popstate') {
+      window.location = popLocation(window);
+    }
+  }
+
   window.dispatchEvent = jest.fn(ev => {
     const evName = ev.type;
     if(map[evName]) {
+      prepareEvent(window, evName);
       map[evName].handleEvent(ev);
     }
   });
@@ -73,6 +108,7 @@ function setupTest(routesConfig, path='/path/to/thing') {
   return {store, reduce, window, urlChanges, actionsDispatched, fireUrlChange, init};
 }
 
+
 it("router handles exact match in preference to wildcard match", () => {
   //given
   const actionType = 'THE_ACTION';
@@ -108,6 +144,37 @@ it("router doees not dispatch an action from url change that is caused by action
 
   // then
   expect(actionsDispatched()).toEqual([action]);
+});
+
+it("popstate doesn't cause a pushstate", () => {
+  //given
+  const actionType = 'THE_ACTION';
+  const id = "1";
+  const view = "home";
+  const action = {type: actionType, id, view};
+  const routesConfig = [
+    ["/somewhere/:id/:view", actionType, {}],
+    ["/somewhere/:id/default", actionType, {view: "home"}],
+  ];
+
+  const {
+    urlChanges,
+    store,
+    actionsDispatched,
+    fireUrlChange,
+    init,
+    window
+  } = setupTest(routesConfig, '/somewhere/foo/default');
+
+  init();
+  window.history.pushState({}, '', '/somwhere/bar/default');
+
+
+  // when
+  window.dispatchEvent(new CustomEvent('popstate', {}));
+
+  // then
+  expect(urlChanges().length).toEqual(1);
 });
 
 it("router handles wildcard with extra args correctly", () => {
@@ -320,3 +387,5 @@ it("pathForAction should render a route", () => {
   // then
   expect(actual).toEqual('/something/hooray');
 });
+
+console.log = console_log;

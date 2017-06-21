@@ -16,10 +16,12 @@ let MISSING_CHANGE_URL = Symbol("missing_change_url");
 export default function addChangeUrlEvent(window) {
 
   debounce(window, MISSING_CHANGE_URL, () => {
-    const changeUrlEventCreator = {
+    const changeUrlEventCreator = ({
       lastLocation: null,
-      handleEvent() { // interface for EventListener
-        let {hash, host, hostname, origin, href, pathname, port, protocol} = window.location;
+      handleEvent(ev) { // interface for EventListener
+
+        let {hash, host, hostname, origin, href, pathname, port, protocol} =
+            window.location || {};
         // store in object for comparison
         const pushedLocation = {hash, host, hostname, origin, href, pathname, port, protocol};
 
@@ -30,7 +32,7 @@ export default function addChangeUrlEvent(window) {
           this.lastLocation = pushedLocation;
         }
       }
-    };
+    });
 
     // / make sure we fire urlchanged for these
     wrapEvent(window, 'popstate', changeUrlEventCreator);
