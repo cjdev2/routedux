@@ -67,12 +67,15 @@ const routesConfig = [
   ['/', 'LOAD_ARTICLE', {slug: "home-content"}]
 ];
 
-const {enhancer, middleware} = installBrowserRouter(routesConfig);
+const {enhancer, middleware, init} = installBrowserRouter(routesConfig);
 
 const store = createStore(reduce, compose(
   enhance,
   applyMiddleware(middleware)
 ));
+
+//when you are ready to handle the initial page load (redux-saga and similar libraries necessitate this being separte)
+init();
 
 ```
 
