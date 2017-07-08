@@ -1,5 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`additional props are passed through 1`] = `
+<a
+  className="foo"
+  href="/my/path"
+  onClick={[Function]}
+>
+  Hello World!
+</a>
+`;
+
 exports[`renders the url calculated by our internal function 1`] = `
 <a
   href="/my/path"
