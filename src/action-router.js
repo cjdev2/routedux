@@ -289,10 +289,12 @@ function createActionDispatcher(routesConfig, window) {
       this.store = store;
     },
     enhanceStore(nextStoreCreator) {
+      let middleware = buildMiddleware(this);
       return (reducer, finalInitialState, enhancer) => {
         let theStore = nextStoreCreator(reducer, finalInitialState, enhancer);
         this.activateDispatcher(theStore);
         theStore.pathForAction = pathForAction;
+        theStore.dispatch = middleware(theStore)(theStore.dispatch.bind(theStore));
         return theStore;
       };
     },
@@ -307,10 +309,14 @@ function createActionDispatcher(routesConfig, window) {
     },
 
     onLocationChanged(newLoc, cb) {
+      let result = undefined;
+
       if (this.currentLocation !== newLoc) {
         this.currentLocation = newLoc;
-        return cb();
+        result = cb();
       }
+
+      return result;
     },
 
     receiveLocation(location) {
@@ -357,7 +363,13 @@ export default function installBrowserRouter(routesConfig, window) {
 
   const actionDispatcher = createActionDispatcher(routesConfig, window);
 
-  const middleware = buildMiddleware(actionDispatcher);
+  const middleware = x => {
+    console.warn(
+      'Using the routedux middleware directly is deprecated, the enhancer now applies it automatically'
+      + ' and the middleware is now a no-op that will be removed in later versions.'
+    );
+    return y => y;
+  };
 
   return {middleware, enhancer: actionDispatcher.enhanceStore, init: actionDispatcher.receiveLocation.bind(actionDispatcher, window.location)};
 }

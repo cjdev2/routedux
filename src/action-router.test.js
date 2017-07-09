@@ -83,15 +83,12 @@ function setupTest(routesConfig, path='/path/to/thing') {
   addMissingHistoryEvents(window, window.history);
   addChangeUrlEvent(window, window.history);
 
-  const {middleware, enhancer, init} = installBrowserRouter(routesConfig, window);
+  const {enhancer, init} = installBrowserRouter(routesConfig, window);
   const reduce = jest.fn();
 
   const store = createStore(
     reduce,
-    compose(
-      enhancer,
-      applyMiddleware(
-        middleware)));
+    enhancer);
 
   function urlChanges() {
     return mockPushState.mock.calls.map(item => item[2]);
