@@ -1,11 +1,15 @@
 // Ugly way to deal with optional dependency so we don't break projects not using react.
 let React = null;
+let PropTypes = null;
 
 const ActionLink = ({action, children, ...props}, {store}) => {
 
-
   if (!React) {
     throw new Error("You cannot use ActionLink unless react is available");
+  }
+
+  if (!PropTypes) {
+    throw new Error("You cannot use ActionLink unless prop-types is available");
   }
 
   if (!store) {
@@ -26,8 +30,9 @@ const ActionLink = ({action, children, ...props}, {store}) => {
 
 try {
   React = require('react');
+  PropTypes = require('prop-types');
   ActionLink.contextTypes = {
-    store: React.PropTypes.object
+    store: PropTypes.object
   };
 
 } catch (e) {
