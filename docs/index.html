@@ -54,7 +54,7 @@ import {createStore, compose} from 'redux';</p><p>const LOAD_USER = 'LOAD_USER';
   ['/article/:slug', 'LOAD_ARTICLE', {}],
   ['/', 'LOAD_ARTICLE', {slug: "home-content"}]
 ];</p><p>const {enhancer} = installBrowserRouter(routesConfig);</p><p>const store = createStore(reduce, compose(
-  enhance
+  enhancer
 ));</p></code></pre><p>Any time a handled action fires the url in the address bar will change, and if the url in the address bar changes
 the corresponding action will fire (unless the action was initiated by a url change).</p></section><section><h2>Route matching precedence - which route matches best?</h2><p>Route precedence is a function of the type of matching done in each segment and the order in which the wildcard segments
 match.  Exact matches are always preferred to wildcards moving from left to right.</p><pre><code class="javascript">const routesInOrderOfPrecedence = [

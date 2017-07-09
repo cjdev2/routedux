@@ -81,7 +81,7 @@ const routesConfig = [
 const {enhancer} = installBrowserRouter(routesConfig);
 
 const store = createStore(reduce, compose(
-  enhance
+  enhancer
 ));
 }}
 
