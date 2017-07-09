@@ -1,7 +1,7 @@
 // Ugly way to deal with optional dependency so we don't break projects not using react.
 let React = null;
 
-const ActionLink = ({action, children}, {store}) => {
+const ActionLink = ({action, children, ...props}, {store}) => {
 
 
   if (!React) {
@@ -19,7 +19,8 @@ const ActionLink = ({action, children}, {store}) => {
        onClick={ev => {
          ev.preventDefault();
          store.dispatch(action);
-       }}>{children}</a>
+       }}
+       {...props}>{children}</a>
   );
 };
 

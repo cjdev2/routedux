@@ -43,3 +43,22 @@ it("renders the url calculated by our internal function", () => {
   expect(ezJson(wrapper)).toMatchSnapshot();
 
 });
+
+it("additional props are passed through", () => {
+  // given
+  const store = {
+    pathForAction: jest.fn(() => '/my/path'),
+    dispatch: jest.fn()
+  };
+  const props = {
+    action: {},
+    children: "Hello World!",
+    className: "foo"
+  };
+  const context = {store};
+
+  const wrapper = mount(ActionLink(props, context));
+
+  expect(ezJson(wrapper)).toMatchSnapshot();
+
+});
