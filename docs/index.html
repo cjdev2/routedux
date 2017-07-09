@@ -44,7 +44,7 @@ simply removing the routing declaration, things will work as before.</p><p>As an
 application becomes easier to test, as rendering is a pure function of
 Redux state, and model logic and route actions are entirely
 encapsulated in Redux outside of the app.</p></section><section><h2>Demo Site</h2><p>We have a demo codebase at <a href="https://github.com/cjdev/routedux-docs-demo">demo repository</a>.</p></section><section><h2>Simple Routing in 25 lines</h2><pre><code class="javascript"><p>import installBrowserRouter from 'routedux';
-import {createStore, compose, applyMiddleware} from 'redux';</p><p>const LOAD_USER = 'LOAD_USER';</p><p>function currentUserId() {
+import {createStore, compose} from 'redux';</p><p>const LOAD_USER = 'LOAD_USER';</p><p>function currentUserId() {
   return 42;
 };</p><p>function reduce(state = initialState(), action) {
   ...
@@ -53,9 +53,8 @@ import {createStore, compose, applyMiddleware} from 'redux';</p><p>const LOAD_US
   ['/user/me', LOAD_USER, {id: currentUserId()}],
   ['/article/:slug', 'LOAD_ARTICLE', {}],
   ['/', 'LOAD_ARTICLE', {slug: "home-content"}]
-];</p><p>const {enhancer, middleware} = installBrowserRouter(routesConfig);</p><p>const store = createStore(reduce, compose(
-  enhance,
-  applyMiddleware(middleware)
+];</p><p>const {enhancer} = installBrowserRouter(routesConfig);</p><p>const store = createStore(reduce, compose(
+  enhance
 ));</p></code></pre><p>Any time a handled action fires the url in the address bar will change, and if the url in the address bar changes
 the corresponding action will fire (unless the action was initiated by a url change).</p></section><section><h2>Route matching precedence - which route matches best?</h2><p>Route precedence is a function of the type of matching done in each segment and the order in which the wildcard segments
 match.  Exact matches are always preferred to wildcards moving from left to right.</p><pre><code class="javascript">const routesInOrderOfPrecedence = [

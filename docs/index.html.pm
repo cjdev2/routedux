@@ -59,7 +59,7 @@ We have a demo codebase at ◊a[#:href "https://github.com/cjdev/routedux-docs-d
 ◊pre{
 ◊code[#:class "javascript"]{
 import installBrowserRouter from 'routedux';
-import {createStore, compose, applyMiddleware} from 'redux';
+import {createStore, compose} from 'redux';
 
 const LOAD_USER = 'LOAD_USER';
 
@@ -78,11 +78,10 @@ const routesConfig = [
   ['/', 'LOAD_ARTICLE', {slug: "home-content"}]
 ];
 
-const {enhancer, middleware} = installBrowserRouter(routesConfig);
+const {enhancer} = installBrowserRouter(routesConfig);
 
 const store = createStore(reduce, compose(
-  enhance,
-  applyMiddleware(middleware)
+  enhance
 ));
 }}
 

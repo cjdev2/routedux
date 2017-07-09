@@ -48,7 +48,7 @@ See a simple [demo documentation site.](https://github.com/cjdev/routedux-docs-d
 
 ```javascript
 import installBrowserRouter from 'routedux';
-import {createStore, compose, applyMiddleware} from 'redux';
+import {createStore, compose} from 'redux';
 
 const LOAD_USER = 'LOAD_USER';
 
@@ -67,11 +67,10 @@ const routesConfig = [
   ['/', 'LOAD_ARTICLE', {slug: "home-content"}]
 ];
 
-const {enhancer, middleware, init} = installBrowserRouter(routesConfig);
+const {enhancer, init} = installBrowserRouter(routesConfig);
 
 const store = createStore(reduce, compose(
-  enhance,
-  applyMiddleware(middleware)
+  enhance
 ));
 
 //when you are ready to handle the initial page load (redux-saga and similar libraries necessitate this being separte)
