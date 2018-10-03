@@ -4,6 +4,8 @@
 
 Routedux (:duck: :duck: :duck:) routes URLs to Redux actions and vice versa. 
 
+(v1.x only works with React >=16)
+
 Your application doesn't need to know it lives in a browser, but your users want pretty urls and deep links. 
 
 ## Wait, my application doesn't need to know it lives in a browser?
