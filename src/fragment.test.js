@@ -2,6 +2,9 @@ import React from 'react';
 import Fragment from './fragment';
 import ezJson from 'enzyme-to-json';
 import {shallow} from 'enzyme';
+import Enzyme from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+Enzyme.configure({ adapter: new Adapter() });
 
 
 it("should display when state is truthy", () => {
@@ -31,7 +34,7 @@ it("should not display when state is falsy", () => {
   );
 
   // then
-  expect(ezJson(wrapper)).toEqual(null);
+  expect(ezJson(wrapper)).toBeFalsy();
 });
 
 it("should handle paths in the state tree", () => {
@@ -74,6 +77,6 @@ it("should be falsy if missing state tree", () => {
     </Fragment>
   );
 
-  expect(ezJson(wrapper)).toEqual(null);
+  expect(ezJson(wrapper)).toBeFalsy();
 
 });

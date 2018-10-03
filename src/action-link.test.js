@@ -1,7 +1,9 @@
 import ActionLink from './action-link';
 import {mount} from 'enzyme';
 import ezJson from 'enzyme-to-json';
-
+import Enzyme from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+Enzyme.configure({ adapter: new Adapter() });
 
 it("dispatches an action on click", () => {
 

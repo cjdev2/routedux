@@ -1,7 +1,7 @@
 language: node_js
 node_js:
   - node
-script: yarn install && yarn test && yarn build
+script: yarn install --frozen-lockfile && yarn test && yarn build
 deploy:
   - provider: releases
     skip_cleanup: true
