@@ -1,8 +1,9 @@
 language: node_js
 node_js:
-  - node
+- node
 script: yarn install --frozen-lockfile && yarn test && yarn build
 deploy:
+  matrix:
   - provider: releases
     skip_cleanup: true
     api_key:
@@ -18,4 +19,4 @@ deploy:
       branch: master
       tags: true
     api_key:
-      secure: TdwQr0utB2fZQrvA7UQRE0n6NMjUuAYHEPR9GGJf7buenxGrwOF0bnX7Ek7vYg2Qk5VNnPNaa3cPiIxTYCA81BwSWOSTXwEkzHQQ4yDu0faQ2YkNSNHTreGY62T7ayl2Umwb/caAxBJDDyR3o6+t66WMnuBI3ShME2aQxPH24S1vrCTNr5ZiyY84c5AlSmSAcPjKY8/kVj6ZTYpRNNibi5gqaxEDvV/BxshYKIw2IRB7pJYNByqvtcFz+gd/pZw25eoxcmdM7bwtOp60lrih5+UWXR+a3DZ5gURDumkluCcfgWhRHxERZHr19k8xW0NuDAIwUUnmJoO/LWw9kDtvxQpRwwY77hazBAcrBLICdedwfuUSqpWPZm6SJCLshCo3/zUZzJQE/eKtN3YhLnHfrKNpFJewTPxrhjumK+HcZZ4FM+roqvYAz7yZXObaXP1kCMAVxTC8tHjGduu1Py/OnT5aH3idtvaf0vWAG2/7HYxb5XNnnv2Ouio/DuMQd0dpVC9t8yuXQ/WagYJIYFfMKmFW3UJOAHWS9VLIXlVGfwRZL7H876L+yYdLXzcuSnqb6sGgeOhNFiVyX9PzTy4H5taA8kN99S0okIuBtz78/x4iV5XuM9i7/vqUELYF5V4krfNOO37kEfyaQm4+j5tRNhDaAwNGUpB5KToZAFbfx1o=
+      secure: rUZwCaiZY1xm0Yuc6YUFEOhL3dfHqPnpCl66E3uRahUmocNQLPWYPS4g63do3BZ79DO1WXW68kRWZprdGRv0JSEACXQTbH/BjYtqacCN3akApysGG4RV3Iw71FX7SkyztXBxF0eg39+mcmwR4wfz8USVmQhs/cCfZwZq41K2bxzzXiBUZ5KLDQnk3dMAp8hW9z8YDzOSpl8k1/ccGXDEAcFHFjB+DboBdLis1k/lzKpsTI8pvnoe0uBZAZVSoFcxPVa6R1pGTCDNNh/Fhh9Yt+Aaup9y7EQLK/JiA+rwWRF5Vr77dfgrLplYEVlyoYBmwGNrZwdVi8eCFozM3JwvHjtHoNEdCdqmiTVztYOMW+poZMzA/elKZDvt2Td8XH/uJn59qaox6BBx1bVc38UNJvxOwDW0uUORj9Rv9vHBc9t7+VlrET8N7+9GGYgcC2BO99zye/+rJk3tJODxL3d4MsdbBAh6Q3SHUBXit35xRmpb0ZtsM8nUCu8gJamDUt5363QMSoGZ2P8RDsiPfD3QHvktU+cCBbS2ZcwTWG0MZlKQsSlZaaqv47mXyVLOIHGuOTmvRv6rAalV8TI4gcq0ilRwHsHdEgBNVDjTcLooN0AL92QBnskGr7y1uF8t1iP2zwAv7WGA/c4FaQM+oVPuUg2tKu4ub8qYl/SVIEKHw20=
