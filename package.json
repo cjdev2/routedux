@@ -14,6 +14,7 @@
   "version": "1.0.2",
   "license": "MIT",
   "dependencies": {
+    "node": "^10.15.3",
     "ramda": "^0.25.0",
     "redux": "^4.0.0"
   },
@@ -21,11 +22,15 @@
     "prop-types": "^15.5.10"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-flow": "^6.23.0",
-    "babel-preset-stage-3": "^6.24.1",
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/plugin-proposal-json-strings": "^7.0.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+    "@babel/plugin-syntax-import-meta": "^7.0.0",
+    "@babel/plugin-transform-react-jsx": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-flow": "^7.0.0",
     "enzyme": "^3.6.0",
     "enzyme-adapter-react-16": "^1.5.0",
     "enzyme-to-json": "^3.3.4",
@@ -39,8 +44,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "babel src -d dist",
-    "watch": "babel -w src -d dist",
+    "build": "npx babel src -d dist",
+    "watch": "npx babel -w src -d dist",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "flow": "flow",
@@ -56,11 +61,15 @@
   ],
   "babel": {
     "plugins": [
-      "transform-react-jsx"
+      "@babel/plugin-transform-react-jsx",
+      "@babel/plugin-syntax-dynamic-import",
+      "@babel/plugin-syntax-import-meta",
+      "@babel/plugin-proposal-class-properties",
+      "@babel/plugin-proposal-json-strings"
     ],
     "presets": [
-      "env",
-      "stage-3"
+      "@babel/preset-env",
+      "@babel/preset-flow"
     ]
   }
 }
