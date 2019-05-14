@@ -1,7 +1,6 @@
 {
   "name": "routedux",
-  "contributors": [
-    {
+  "contributors": [{
       "name": "Maximilian Summe",
       "email": "msumme@gmail.com"
     },
@@ -77,14 +76,12 @@
     "flow": "flow",
     "buildPub": "yarn build && npm publish"
   },
-  "npmFileMap": [
-    {
-      "basePath": "/dist/",
-      "files": [
-        "*.js"
-      ]
-    }
-  ],
+  "npmFileMap": [{
+    "basePath": "/dist/",
+    "files": [
+      "*.js"
+    ]
+  }],
   "babel": {
     "presets": [
       "react-app"
