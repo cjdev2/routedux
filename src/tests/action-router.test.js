@@ -141,9 +141,7 @@ it("router doees not dispatch an action from url change that is caused by action
     ["/somewhere/:id/:view", actionType, {}],
     ["/somewhere/:id/default", actionType, { view: "home" }]
   ];
-  const { store, actionsDispatched } = setupTest(
-    routesConfig
-  );
+  const { store, actionsDispatched } = setupTest(routesConfig);
 
   // when
   store.dispatch(action);
@@ -160,11 +158,10 @@ it("popstate doesn't cause a pushstate", () => {
     ["/somewhere/:id/default", actionType, { view: "home" }]
   ];
 
-  const {
-    urlChanges,
-    init,
-    window
-  } = setupTest(routesConfig, "/somewhere/foo/default");
+  const { urlChanges, init, window } = setupTest(
+    routesConfig,
+    "/somewhere/foo/default"
+  );
 
   init();
   window.history.pushState({}, "", "/somwhere/bar/default");
