@@ -1,4 +1,4 @@
-import addMissingHistoryEvents from "./history-events";
+import addMissingHistoryEvents from "../history-events";
 
 it("should overwrite pushstate and replacestate with event-emitting functions", () => {
   // given

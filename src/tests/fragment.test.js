@@ -1,5 +1,5 @@
 import React from "react";
-import Fragment from "./fragment";
+import Fragment from "../fragment";
 import ezJson from "enzyme-to-json";
 import { shallow } from "enzyme";
 import Enzyme from "enzyme";

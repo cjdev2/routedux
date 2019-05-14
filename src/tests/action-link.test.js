@@ -1,4 +1,4 @@
-import ActionLink from "./action-link";
+import ActionLink from "../action-link";
 import { mount } from "enzyme";
 import ezJson from "enzyme-to-json";
 import Enzyme from "enzyme";

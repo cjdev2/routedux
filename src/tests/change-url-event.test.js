@@ -1,4 +1,4 @@
-import addChangeUrlEvent from "./change-url-event";
+import addChangeUrlEvent from "../change-url-event";
 
 it("it should add changeUrlEventCreator to popstate,pushstate,replacestate", () => {
   // given

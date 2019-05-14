@@ -1,8 +1,8 @@
 import { createStore } from "redux";
 
-import installBrowserRouter from "./action-router";
-import addChangeUrlEvent from "./change-url-event.js";
-import addMissingHistoryEvents from "./history-events.js";
+import installBrowserRouter from "../action-router";
+import addChangeUrlEvent from "../change-url-event.js";
+import addMissingHistoryEvents from "../history-events.js";
 
 const console_log = console.log;
 console.log = () => {};
