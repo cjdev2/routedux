@@ -38,7 +38,6 @@
     "babel-jest": "23.6.0",
     "babel-plugin-named-asset-import": "^0.3.1",
     "bfj": "6.1.1",
-    "case-sensitive-paths-webpack-plugin": "2.2.0",
     "dotenv": "6.0.0",
     "dotenv-expand": "4.2.0",
     "enzyme": "^3.6.0",
@@ -47,7 +46,6 @@
     "eslint": "5.12.0",
     "eslint-plugin-flowtype": "2.50.1",
     "eslint-plugin-import": "2.14.0",
-    "eslint-plugin-jsx-a11y": "6.1.2",
     "eslint-plugin-react": "7.12.4",
     "flow": "^0.2.3",
     "flow-bin": "^0.82.0",
@@ -57,7 +55,6 @@
     "jest-pnp-resolver": "1.0.2",
     "jest-resolve": "23.6.0",
     "jest-watch-typeahead": "^0.2.1",
-    "mini-css-extract-plugin": "0.5.0",
     "node": "^10.15.3",
     "prettier": "^1.17.1",
     "react": "^16.5.2",
@@ -121,7 +118,9 @@
   "eslintConfig": {
     "extends": [
       "eslint:recommended",
-      "plugin:react/recommended"
+      "plugin:react/recommended",
+      "plugin:import/errors",
+      "plugin:import/warnings"
     ],
     "env": {
       "browser": true,
