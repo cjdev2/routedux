@@ -1,4 +1,4 @@
-import { applyMiddleware, createStore, compose } from "redux";
+import { createStore } from "redux";
 
 import installBrowserRouter from "./action-router";
 import addChangeUrlEvent from "./change-url-event.js";
@@ -6,16 +6,16 @@ import addMissingHistoryEvents from "./history-events.js";
 
 const console_log = console.log;
 console.log = () => {};
-function with_console(cb) {
-  console.log = console_log;
-  try {
-    cb();
-  } catch (e) {
-    console.log = () => {};
-    throw e;
-  }
-  console.log = () => {};
-}
+// function with_console(cb) {
+//   console.log = console_log;
+//   try {
+//     cb();
+//   } catch (e) {
+//     console.log = () => {};
+//     throw e;
+//   }
+//   console.log = () => {};
+// }
 
 function createLocation(path) {
   return {
@@ -62,7 +62,7 @@ function createFakeWindow(path = "/path/to/thing") {
   });
 
   function prepareEvent(window, evName) {
-    if (evName == "popstate") {
+    if (evName === "popstate") {
       window.location = popLocation(window);
     }
   }
@@ -141,7 +141,7 @@ it("router doees not dispatch an action from url change that is caused by action
     ["/somewhere/:id/:view", actionType, {}],
     ["/somewhere/:id/default", actionType, { view: "home" }]
   ];
-  const { urlChanges, store, actionsDispatched, init } = setupTest(
+  const { store, actionsDispatched } = setupTest(
     routesConfig
   );
 
@@ -155,9 +155,6 @@ it("router doees not dispatch an action from url change that is caused by action
 it("popstate doesn't cause a pushstate", () => {
   //given
   const actionType = "THE_ACTION";
-  const id = "1";
-  const view = "home";
-  const action = { type: actionType, id, view };
   const routesConfig = [
     ["/somewhere/:id/:view", actionType, {}],
     ["/somewhere/:id/default", actionType, { view: "home" }]
@@ -165,9 +162,6 @@ it("popstate doesn't cause a pushstate", () => {
 
   const {
     urlChanges,
-    store,
-    actionsDispatched,
-    fireUrlChange,
     init,
     window
   } = setupTest(routesConfig, "/somewhere/foo/default");
