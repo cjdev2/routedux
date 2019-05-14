@@ -88,7 +88,6 @@
     "react-test-renderer": "^16.5.2"
   },
   "scripts": {
-    "start": "node scripts/start.js",
     "build": "npx babel src -d dist",
     "watch": "npx babel -w src -d dist",
     "test": "node scripts/test.js --env=jsdom",
