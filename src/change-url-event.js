@@ -16,7 +16,7 @@ export default function addChangeUrlEvent(window) {
   debounce(window, MISSING_CHANGE_URL, () => {
     const changeUrlEventCreator = {
       lastLocation: null,
-      handleEvent(ev) {
+      handleEvent(_) {
         // interface for EventListener
 
         let { hash, host, hostname, origin, href, pathname, port, protocol } =

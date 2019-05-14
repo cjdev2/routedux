@@ -36,9 +36,15 @@ const ActionLink = ({ action, children, ...props }, { store }) => {
 try {
   React = require("react");
   PropTypes = require("prop-types");
+  ActionLink.propTypes = {
+    action: PropTypes.string,
+    children: PropTypes.node
+  };
   ActionLink.contextTypes = {
     store: PropTypes.object
   };
-} catch (e) {}
+} catch (e) {
+  /* empty */
+}
 
 export default ActionLink;

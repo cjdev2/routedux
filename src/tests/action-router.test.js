@@ -4,7 +4,9 @@ import installBrowserRouter from "../action-router";
 import addChangeUrlEvent from "../change-url-event.js";
 import addMissingHistoryEvents from "../history-events.js";
 
+//eslint-disable-next-line no-console
 const console_log = console.log;
+//eslint-disable-next-line no-console
 console.log = () => {};
 // function with_console(cb) {
 //   console.log = console_log;
@@ -376,4 +378,5 @@ it("pathForAction should render a route", () => {
   expect(actual).toEqual("/something/hooray");
 });
 
+//eslint-disable-next-line no-console
 console.log = console_log;

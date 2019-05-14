@@ -43,7 +43,7 @@ function matchRoute(loc, matchers) {
     Object.assign({ extractedParams }, route);
 
   return R.toPairs(matchers).reduce(
-    (match, [path, { type: matcherType, route }]) => {
+    (match, [_, { type: matcherType, route }]) => {
       const pathMatcher = route.routeMatcher;
       const matchedParams = pathMatcher(inputPath);
 
@@ -393,9 +393,11 @@ export default function installBrowserRouter(routesConfig, window) {
   const actionDispatcher = createActionDispatcher(routesConfig, window);
 
   const middleware = x => {
+    //eslint-disable-next-line no-console
     console.warn(
-      "Using the routedux middleware directly is deprecated, the enhancer now applies it automatically" +
-        " and the middleware is now a no-op that will be removed in later versions."
+      "Using the routedux middleware directly is deprecated, the enhancer now" +
+        " applies it automatically and the middleware is now a no-op that" +
+        " will be removed in later versions."
     );
     return y => y;
   };
