@@ -83,6 +83,7 @@
     "flow": "^0.2.3",
     "flow-bin": "^0.82.0",
     "flow-typed": "^2.5.1",
+    "prettier": "^1.17.1",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-test-renderer": "^16.5.2"

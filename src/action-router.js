@@ -1,27 +1,31 @@
-import * as R from 'ramda';
+import * as R from "ramda";
 
 function pathSplit(path) {
-  return path.split('/');
+  return path.split("/");
 }
 
 function mostSpecificRouteMatch(match1, match2) {
-
   if (!match1) {
     return match2;
   }
 
   const paramLength1 = match1.routeParams.length;
   const paramLength2 = match2.routeParams.length;
-  let findWildcard = R.compose(R.findIndex.bind(R, isWildcard), pathSplit);
+  let findWildcard = R.compose(
+    R.findIndex.bind(R, isWildcard),
+    pathSplit
+  );
 
-  let result = (paramLength1 > paramLength2) ? match2 : match1;
+  let result = paramLength1 > paramLength2 ? match2 : match1;
 
   if (paramLength1 === paramLength2) {
-
     let path1WildcardIdx = findWildcard(match1.path);
     let path2WildcardIdx = findWildcard(match2.path);
 
-    result = (path1WildcardIdx !== -1 && path1WildcardIdx < path2WildcardIdx) ? match2 : match1;
+    result =
+      path1WildcardIdx !== -1 && path1WildcardIdx < path2WildcardIdx
+        ? match2
+        : match1;
   }
 
   if (result === null) {
@@ -33,35 +37,39 @@ function mostSpecificRouteMatch(match1, match2) {
 
 // do something with routes.
 function matchRoute(loc, matchers) {
-
   const inputPath = loc.pathname;
 
-  const buildMatch = (extractedParams, route) => Object.assign({extractedParams}, route);
+  const buildMatch = (extractedParams, route) =>
+    Object.assign({ extractedParams }, route);
 
-  return R.toPairs(matchers).reduce((match, [path,{type: matcherType, route}]) => {
-    const pathMatcher = route.routeMatcher;
-    const matchedParams = pathMatcher(inputPath);
+  return R.toPairs(matchers).reduce(
+    (match, [path, { type: matcherType, route }]) => {
+      const pathMatcher = route.routeMatcher;
+      const matchedParams = pathMatcher(inputPath);
 
-    if (matchedParams) {
-      if (matcherType === 'exact') {
-        return buildMatch(matchedParams, route);
+      if (matchedParams) {
+        if (matcherType === "exact") {
+          return buildMatch(matchedParams, route);
+        } else {
+          return mostSpecificRouteMatch(
+            match,
+            buildMatch(matchedParams, route)
+          );
+        }
       } else {
-        return mostSpecificRouteMatch(match, buildMatch(matchedParams, route));
+        return match;
       }
-    } else {
-      return match;
-    }
-
-  }, null);
+    },
+    null
+  );
 }
 
 function mostSpecificActionMatch(match1, match2) {
-
   if (!match1) {
     return match2;
   }
 
-  let countExtraParams = ({extraParams: obj}) => Object.keys(obj).length;
+  let countExtraParams = ({ extraParams: obj }) => Object.keys(obj).length;
   return countExtraParams(match1) >= countExtraParams(match2) ? match1 : match2;
 }
 
@@ -70,7 +78,7 @@ function matchAction(action, matchers) {
   // match on params in action vs possible actions if more than 1
   let match = null;
 
-  const {type: actionType, ...args} = action;
+  const { type: actionType, ...args } = action;
   const routes = matchers[actionType];
 
   // Specificity:
@@ -78,22 +86,31 @@ function matchAction(action, matchers) {
   // 2. wildcards /  exact extra params match with remaining wildcard
   // 3. no-wildcard / exact extra params match
 
-  for (const {type: matcherType, route} of routes) {
+  for (const { type: matcherType, route } of routes) {
     if (matcherType === "exact" && R.equals(route.extraParams, args)) {
-      match = Object.assign({extractedParams: {}}, route);
+      match = Object.assign({ extractedParams: {} }, route);
       // case 3
       break; // most specific
     } else if (matcherType === "wildcard") {
       // case 1+2
 
-      const unallocatedArgKeys = R.difference(Object.keys(args), Object.keys(route.extraParams));
+      const unallocatedArgKeys = R.difference(
+        Object.keys(args),
+        Object.keys(route.extraParams)
+      );
       // if all keys ^ are equal to all keys in route
-      const intersectCount = R.intersection(unallocatedArgKeys, route.routeParams).length;
+      const intersectCount = R.intersection(
+        unallocatedArgKeys,
+        route.routeParams
+      ).length;
       const unionCount = R.union(unallocatedArgKeys, route.routeParams).length;
 
       if (intersectCount === unionCount) {
         const extractedParams = R.pick(unallocatedArgKeys, args);
-        match = mostSpecificActionMatch(match, Object.assign({extractedParams}, route));
+        match = mostSpecificActionMatch(
+          match,
+          Object.assign({ extractedParams }, route)
+        );
       }
     }
   }
@@ -126,13 +143,12 @@ function extractParams(path) {
 }
 
 function normalizePathParts(path) {
-  const rawPathParts = R.split('/', path);
+  const rawPathParts = R.split("/", path);
   const normalizedPathParts = R.filter(p => p !== "", rawPathParts);
   return normalizedPathParts;
 }
 
 function makeRoute(path, action, extraParams) {
-
   let type = "exact";
   if (path.indexOf(":") !== -1) {
     type = "wildcard";
@@ -141,11 +157,11 @@ function makeRoute(path, action, extraParams) {
   const normalizedPathParts = normalizePathParts(path);
 
   const updateWildcard = (wildcards, match, input) => {
-    const wildcardName = match.replace(':', '');
-    return Object.assign(wildcards, {[wildcardName]: input});
+    const wildcardName = match.replace(":", "");
+    return Object.assign(wildcards, { [wildcardName]: input });
   };
 
-  const routeMatcher = function (inputPath) {
+  const routeMatcher = function(inputPath) {
     let result = null;
     const normMatchPath = normalizedPathParts;
     const normInputPath = normalizePathParts(inputPath);
@@ -165,7 +181,7 @@ function makeRoute(path, action, extraParams) {
           return null;
         }
 
-        if(match === input) {
+        if (match === input) {
           return acc;
         } else if (match[0] === ":") {
           return updateWildcard(acc, match, input);
@@ -195,7 +211,7 @@ function makeRoute(path, action, extraParams) {
 
 function normalizeWildcards(path) {
   let curIdx = 0;
-  return path.map((el) => {
+  return path.map(el => {
     if (isWildcard(el)) {
       return `:wildcard${curIdx}`;
     } else {
@@ -208,13 +224,18 @@ function routeAlreadyExists(compiledRouteMatchers, path) {
   let result = compiledRouteMatchers.hasOwnProperty(path);
 
   if (!result) {
-    const normalizingSplit = R.compose(normalizeWildcards, pathSplit);
+    const normalizingSplit = R.compose(
+      normalizeWildcards,
+      pathSplit
+    );
     const pathParts = normalizingSplit(path);
 
     for (const otherPath of Object.keys(compiledRouteMatchers)) {
       const otherPathParts = normalizingSplit(otherPath);
       if (R.equals(pathParts, otherPathParts)) {
-        throw new Error(`invalid routing configuration — route ${path} overlaps with route ${otherPath}`);
+        throw new Error(
+          `invalid routing configuration — route ${path} overlaps with route ${otherPath}`
+        );
       }
     }
   }
@@ -227,9 +248,10 @@ function compileRoutes(routesConfig) {
   let compiledRouteMatchers = {};
 
   for (let [path, action, extraParams] of routesConfig) {
-
-    if(typeof path !== 'string' || typeof action !== 'string') {
-      throw new Error("invalid routing configuration - path and action must both be strings");
+    if (typeof path !== "string" || typeof action !== "string") {
+      throw new Error(
+        "invalid routing configuration - path and action must both be strings"
+      );
     }
 
     if (!compiledActionMatchers[action]) {
@@ -247,33 +269,36 @@ function compileRoutes(routesConfig) {
   }
   return {
     compiledActionMatchers, // { ACTION: [Route] }
-    compiledRouteMatchers  // { PATH: Route }
+    compiledRouteMatchers // { PATH: Route }
   };
 }
 
 function constructAction(match) {
-  return {type: match.action, ...match.extractedParams, ...match.extraParams};
+  return { type: match.action, ...match.extractedParams, ...match.extraParams };
 }
 
 function constructPath(match) {
-  let parts = match.path.split('/');
+  let parts = match.path.split("/");
   let resultParts = [];
 
   for (let part of parts) {
     if (part[0] === ":") {
       const name = part.slice(1);
       const val = match.extractedParams.hasOwnProperty(name)
-            ? match.extractedParams[name] : match.extraParams[name];
+        ? match.extractedParams[name]
+        : match.extraParams[name];
       resultParts.push(val);
     } else {
       resultParts.push(part);
     }
   }
-  return resultParts.join('/');
+  return resultParts.join("/");
 }
 
 function createActionDispatcher(routesConfig, window) {
-  let {compiledActionMatchers, compiledRouteMatchers} = compileRoutes(routesConfig);
+  let { compiledActionMatchers, compiledRouteMatchers } = compileRoutes(
+    routesConfig
+  );
 
   function pathForAction(action) {
     const match = matchAction(action, compiledActionMatchers);
@@ -285,7 +310,7 @@ function createActionDispatcher(routesConfig, window) {
 
     store: null,
     activateDispatcher(store) {
-      window.addEventListener('urlchanged', this);
+      window.addEventListener("urlchanged", this);
       this.store = store;
     },
     enhanceStore(nextStoreCreator) {
@@ -294,14 +319,17 @@ function createActionDispatcher(routesConfig, window) {
         let theStore = nextStoreCreator(reducer, finalInitialState, enhancer);
         this.activateDispatcher(theStore);
         theStore.pathForAction = pathForAction;
-        theStore.dispatch = middleware(theStore)(theStore.dispatch.bind(theStore));
+        theStore.dispatch = middleware(theStore)(
+          theStore.dispatch.bind(theStore)
+        );
         return theStore;
       };
     },
     handleEvent(ev) {
-
       if (!this.store) {
-        throw new Error("You must call activateDispatcher with redux store as argument");
+        throw new Error(
+          "You must call activateDispatcher with redux store as argument"
+        );
       }
 
       const location = ev.detail;
@@ -322,7 +350,7 @@ function createActionDispatcher(routesConfig, window) {
     receiveLocation(location) {
       this.onLocationChanged(location.pathname, () => {
         const match = matchRoute(location, compiledRouteMatchers);
-        if(match) {
+        if (match) {
           const action = constructAction(match);
 
           this.store.dispatch(action);
@@ -332,10 +360,10 @@ function createActionDispatcher(routesConfig, window) {
 
     receiveAction(action) {
       let matcher = matchAction(action, compiledActionMatchers);
-      if(matcher) {
+      if (matcher) {
         let path = constructPath(matcher);
         this.onLocationChanged(path, () => {
-          window.history.pushState({}, '', path);
+          window.history.pushState({}, "", path);
         });
       }
     },
@@ -345,7 +373,9 @@ function createActionDispatcher(routesConfig, window) {
     }
   };
 
-  actionDispatcher.enhanceStore = actionDispatcher.enhanceStore.bind(actionDispatcher);
+  actionDispatcher.enhanceStore = actionDispatcher.enhanceStore.bind(
+    actionDispatcher
+  );
 
   return actionDispatcher;
 }
@@ -360,16 +390,22 @@ function buildMiddleware(actionDispatcher) {
 }
 
 export default function installBrowserRouter(routesConfig, window) {
-
   const actionDispatcher = createActionDispatcher(routesConfig, window);
 
   const middleware = x => {
     console.warn(
-      'Using the routedux middleware directly is deprecated, the enhancer now applies it automatically'
-      + ' and the middleware is now a no-op that will be removed in later versions.'
+      "Using the routedux middleware directly is deprecated, the enhancer now applies it automatically" +
+        " and the middleware is now a no-op that will be removed in later versions."
     );
     return y => y;
   };
 
-  return {middleware, enhancer: actionDispatcher.enhanceStore, init: actionDispatcher.receiveLocation.bind(actionDispatcher, window.location)};
+  return {
+    middleware,
+    enhancer: actionDispatcher.enhanceStore,
+    init: actionDispatcher.receiveLocation.bind(
+      actionDispatcher,
+      window.location
+    )
+  };
 }

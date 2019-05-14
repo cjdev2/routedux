@@ -1,15 +1,14 @@
-import React from 'react';
-import Fragment from './fragment';
-import ezJson from 'enzyme-to-json';
-import {shallow} from 'enzyme';
-import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import React from "react";
+import Fragment from "./fragment";
+import ezJson from "enzyme-to-json";
+import { shallow } from "enzyme";
+import Enzyme from "enzyme";
+import Adapter from "enzyme-adapter-react-16";
 Enzyme.configure({ adapter: new Adapter() });
-
 
 it("should display when state is truthy", () => {
   // given
-  const state = {property : true};
+  const state = { property: true };
   // when
 
   const wrapper = shallow(
@@ -24,7 +23,7 @@ it("should display when state is truthy", () => {
 
 it("should not display when state is falsy", () => {
   // given
-  const state = {property : undefined};
+  const state = { property: undefined };
   // when
 
   const wrapper = shallow(
@@ -39,7 +38,7 @@ it("should not display when state is falsy", () => {
 
 it("should handle paths in the state tree", () => {
   // given
-  const state = {property : {subproperty: true}};
+  const state = { property: { subproperty: true } };
   // when
 
   const wrapper = shallow(
@@ -54,7 +53,7 @@ it("should handle paths in the state tree", () => {
 
 it("should handle arrays in the state tree", () => {
   // given
-  const state = {property : [{bar: {}}]};
+  const state = { property: [{ bar: {} }] };
   // when
 
   const wrapper = shallow(
@@ -69,7 +68,7 @@ it("should handle arrays in the state tree", () => {
 
 it("should be falsy if missing state tree", () => {
   // given
-  const state = {property : {subproperty: true}};
+  const state = { property: { subproperty: true } };
 
   const wrapper = shallow(
     <Fragment state={state} filterOn="property.missingproperty.something">
@@ -78,5 +77,4 @@ it("should be falsy if missing state tree", () => {
   );
 
   expect(ezJson(wrapper)).toBeFalsy();
-
 });

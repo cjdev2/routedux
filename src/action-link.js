@@ -2,8 +2,7 @@
 let React = null;
 let PropTypes = null;
 
-const ActionLink = ({action, children, ...props}, {store}) => {
-
+const ActionLink = ({ action, children, ...props }, { store }) => {
   if (!React) {
     throw new Error("You cannot use ActionLink unless react is available");
   }
@@ -13,30 +12,33 @@ const ActionLink = ({action, children, ...props}, {store}) => {
   }
 
   if (!store) {
-    throw new Error("You cannot use ActionLink without providing store via context (possibly using react-redux Provider?)");
+    throw new Error(
+      "You cannot use ActionLink without providing store via context (possibly using react-redux Provider?)"
+    );
   }
 
   const renderedRoute = store.pathForAction(action);
 
   return (
-    <a href={renderedRoute}
-       onClick={ev => {
-         ev.preventDefault();
-         store.dispatch(action);
-       }}
-       {...props}>{children}</a>
+    <a
+      href={renderedRoute}
+      onClick={ev => {
+        ev.preventDefault();
+        store.dispatch(action);
+      }}
+      {...props}
+    >
+      {children}
+    </a>
   );
 };
 
 try {
-  React = require('react');
-  PropTypes = require('prop-types');
+  React = require("react");
+  PropTypes = require("prop-types");
   ActionLink.contextTypes = {
     store: PropTypes.object
   };
-
-} catch (e) {
-
-}
+} catch (e) {}
 
 export default ActionLink;
