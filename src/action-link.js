@@ -1,4 +1,4 @@
-export const ActionLink = (React, PropTypes) => {
+const ActionLink = (React, PropTypes) => {
   function ActionLink({ action, children, ...props }, { store }) {
     const renderedRoute = store.pathForAction(action);
 

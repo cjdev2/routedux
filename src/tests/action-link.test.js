@@ -1,14 +1,13 @@
-import { ActionLink } from "../action-link";
-import { mount } from "enzyme";
+import { _internal } from "../action-link";
+import Enzyme, { mount } from "enzyme";
 import ezJson from "enzyme-to-json";
-import Enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 Enzyme.configure({ adapter: new Adapter() });
 
 import React from "react";
 import PropTypes from "prop-types";
 
-const Link = ActionLink(React, PropTypes);
+const Link = _internal.ActionLink(React, PropTypes);
 
 it("dispatches an action on click", () => {
   // given
