@@ -1,6 +1,7 @@
 {
   "name": "routedux",
-  "contributors": [{
+  "contributors": [
+    {
       "name": "Maximilian Summe",
       "email": "msumme@gmail.com"
     },
@@ -22,7 +23,6 @@
     "prop-types": "^15.5.10"
   },
   "devDependencies": {
-    "node": "^10.15.3",
     "@babel/cli": "^7.0.0",
     "@babel/core": "7.2.2",
     "@babel/plugin-proposal-class-properties": "^7.0.0",
@@ -32,11 +32,11 @@
     "@babel/plugin-transform-react-jsx": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-flow": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "9.0.0",
     "babel-jest": "23.6.0",
     "babel-plugin-named-asset-import": "^0.3.1",
-    "babel-preset-react-app": "^7.0.2",
     "bfj": "6.1.1",
     "case-sensitive-paths-webpack-plugin": "2.2.0",
     "dotenv": "6.0.0",
@@ -45,7 +45,6 @@
     "enzyme-adapter-react-16": "^1.5.0",
     "enzyme-to-json": "^3.3.4",
     "eslint": "5.12.0",
-    "eslint-config-react-app": "^3.0.8",
     "eslint-plugin-flowtype": "2.50.1",
     "eslint-plugin-import": "2.14.0",
     "eslint-plugin-jsx-a11y": "6.1.2",
@@ -59,6 +58,7 @@
     "jest-resolve": "23.6.0",
     "jest-watch-typeahead": "^0.2.1",
     "mini-css-extract-plugin": "0.5.0",
+    "node": "^10.15.3",
     "prettier": "^1.17.1",
     "react": "^16.5.2",
     "react-app-polyfill": "^1.0.1",
@@ -74,20 +74,23 @@
     "buildPub": "yarn build && npm publish",
     "lint": "eslint src"
   },
-  "npmFileMap": [{
-    "basePath": "/dist/",
-    "files": [
-      "*.js"
-    ]
-  }],
+  "npmFileMap": [
+    {
+      "basePath": "/dist/",
+      "files": [
+        "*.js"
+      ]
+    }
+  ],
   "babel": {
     "presets": [
-      "react-app"
+      "@babel/preset-react",
+      "@babel/preset-env"
     ]
   },
   "jest": {
     "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}",
+      "src/**/*.js",
       "!src/**/*.d.ts"
     ],
     "resolver": "jest-pnp-resolver",
@@ -95,35 +98,20 @@
       "react-app-polyfill/jsdom"
     ],
     "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
-      "<rootDir>/src/**/?(*.)(spec|test).{js,jsx,ts,tsx}"
+      "<rootDir>/src/**/tests/*.test.js"
     ],
     "testEnvironment": "jsdom",
     "testURL": "http://localhost",
     "transform": {
-      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
-      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
-      "^(?!.*\\.(js|jsx|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
+      "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
+      "^(?!.*\\.js$)": "<rootDir>/config/jest/fileTransform.js"
     },
     "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$",
-      "^.+\\.module\\.(css|sass|scss)$"
+      "[/\\\\]node_modules[/\\\\].+\\.js$"
     ],
-    "moduleNameMapper": {
-      "^react-native$": "react-native-web",
-      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
-    },
     "moduleFileExtensions": [
-      "web.js",
       "js",
-      "web.ts",
-      "ts",
-      "web.tsx",
-      "tsx",
-      "json",
-      "web.jsx",
-      "jsx",
-      "node"
+      "json"
     ],
     "watchPlugins": [
       "/Users/elangley/git_repos/routedux/node_modules/jest-watch-typeahead/filename.js",
@@ -151,10 +139,13 @@
       }
     },
     "rules": {
-      "no-unused-vars": ["error", {
-        "argsIgnorePattern": "(^[_][_]*$)|(^.$)",
-        "varsIgnorePattern": "(^[_][_]*$)|(^R$)"
-      }]
+      "no-unused-vars": [
+        "error",
+        {
+          "argsIgnorePattern": "(^[_][_]*$)|(^.$)",
+          "varsIgnorePattern": "(^[_][_]*$)|(^R$)"
+        }
+      ]
     }
   }
 }

@@ -1,9 +1,14 @@
-import ActionLink from "../action-link";
+import { ActionLink } from "../action-link";
 import { mount } from "enzyme";
 import ezJson from "enzyme-to-json";
 import Enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 Enzyme.configure({ adapter: new Adapter() });
+
+import React from "react";
+import PropTypes from "prop-types";
+
+const Link = ActionLink(React, PropTypes);
 
 it("dispatches an action on click", () => {
   // given
@@ -17,7 +22,7 @@ it("dispatches an action on click", () => {
   };
   const context = { store };
 
-  const wrapper = mount(ActionLink(props, context));
+  const wrapper = mount(Link(props, context));
   // when
   wrapper.simulate("click");
 
@@ -40,7 +45,7 @@ it("renders the url calculated by our internal function", () => {
   };
   const context = { store };
 
-  const wrapper = mount(ActionLink(props, context));
+  const wrapper = mount(Link(props, context));
 
   expect(ezJson(wrapper)).toMatchSnapshot();
 });
@@ -58,7 +63,7 @@ it("additional props are passed through", () => {
   };
   const context = { store };
 
-  const wrapper = mount(ActionLink(props, context));
+  const wrapper = mount(Link(props, context));
 
   expect(ezJson(wrapper)).toMatchSnapshot();
 });

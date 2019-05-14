@@ -1,41 +1,21 @@
-// Ugly way to deal with optional dependency so we don't break projects not using react.
-let React = null;
-let PropTypes = null;
+export const ActionLink = (React, PropTypes) => {
+  function ActionLink({ action, children, ...props }, { store }) {
+    const renderedRoute = store.pathForAction(action);
 
-const ActionLink = ({ action, children, ...props }, { store }) => {
-  if (!React) {
-    throw new Error("You cannot use ActionLink unless react is available");
-  }
-
-  if (!PropTypes) {
-    throw new Error("You cannot use ActionLink unless prop-types is available");
-  }
-
-  if (!store) {
-    throw new Error(
-      "You cannot use ActionLink without providing store via context (possibly using react-redux Provider?)"
+    return (
+      <a
+        href={renderedRoute}
+        onClick={ev => {
+          ev.preventDefault();
+          store.dispatch(action);
+        }}
+        {...props}
+      >
+        {children}
+      </a>
     );
   }
 
-  const renderedRoute = store.pathForAction(action);
-
-  return (
-    <a
-      href={renderedRoute}
-      onClick={ev => {
-        ev.preventDefault();
-        store.dispatch(action);
-      }}
-      {...props}
-    >
-      {children}
-    </a>
-  );
-};
-
-try {
-  React = require("react");
-  PropTypes = require("prop-types");
   ActionLink.propTypes = {
     action: PropTypes.string,
     children: PropTypes.node
@@ -43,8 +23,21 @@ try {
   ActionLink.contextTypes = {
     store: PropTypes.object
   };
+
+  return ActionLink;
+};
+
+let OutComponent = ActionLink;
+try {
+  const React = require("react");
+  const PropTypes = require("prop-types");
+  OutComponent = ActionLink(React, PropTypes);
 } catch (e) {
   /* empty */
 }
 
-export default ActionLink;
+export const _internal = {
+  ActionLink
+};
+
+export default OutComponent;
