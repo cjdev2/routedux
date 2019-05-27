@@ -28,7 +28,7 @@
     "babel-preset-stage-3": "^6.24.1",
     "enzyme": "^3.6.0",
     "enzyme-adapter-react-16": "^1.5.0",
-    "enzyme-to-json": "^3.3.4",
+    "enzyme-to-json": "^3.3.5",
     "flow": "^0.2.3",
     "flow-bin": "^0.82.0",
     "flow-typed": "^2.5.1",
