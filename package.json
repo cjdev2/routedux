@@ -14,7 +14,7 @@
   "version": "1.0.2",
   "license": "MIT",
   "dependencies": {
-    "ramda": "^0.25.0",
+    "ramda": "^0.26.1",
     "redux": "^4.0.0"
   },
   "optionalDependencies": {
