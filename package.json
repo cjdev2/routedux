@@ -30,7 +30,7 @@
     "enzyme-adapter-react-16": "^1.5.0",
     "enzyme-to-json": "^3.3.4",
     "flow": "^0.2.3",
-    "flow-bin": "^0.82.0",
+    "flow-bin": "^0.99.0",
     "flow-typed": "^2.5.1",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
