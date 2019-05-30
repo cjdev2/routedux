@@ -110,10 +110,6 @@
     "moduleFileExtensions": [
       "js",
       "json"
-    ],
-    "watchPlugins": [
-      "/Users/elangley/git_repos/routedux/node_modules/jest-watch-typeahead/filename.js",
-      "/Users/elangley/git_repos/routedux/node_modules/jest-watch-typeahead/testname.js"
     ]
   },
   "eslintConfig": {
