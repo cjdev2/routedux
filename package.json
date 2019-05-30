@@ -33,7 +33,7 @@
     "flow-bin": "^0.99.0",
     "flow-typed": "^2.5.1",
     "react": "^16.5.2",
-    "react-dom": "^16.5.2",
+    "react-dom": "^16.8.6",
     "react-scripts": "^2.0.4",
     "react-test-renderer": "^16.8.6"
   },
