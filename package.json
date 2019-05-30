@@ -14,10 +14,13 @@
   "version": "1.0.2",
   "license": "MIT",
   "peerDependencies": {
+    "redux": "^4.0.0",
+    "react": "^16.5.2",
+    "react-dom": "^16.8.6",
     "redux": "^4.0.0"
   },
   "dependencies": {
-    "ramda": "^0.25.0"
+    "ramda": "^0.26.1"
   },
   "optionalDependencies": {
     "prop-types": "^15.5.10"
@@ -39,26 +42,26 @@
     "dotenv": "6.0.0",
     "dotenv-expand": "4.2.0",
     "enzyme": "^3.6.0",
-    "enzyme-adapter-react-16": "^1.5.0",
-    "enzyme-to-json": "^3.3.4",
+    "enzyme-adapter-react-16": "^1.13.2",
+    "enzyme-to-json": "^3.3.5",
     "eslint": "5.12.0",
     "eslint-plugin-flowtype": "2.50.1",
     "eslint-plugin-import": "2.14.0",
     "eslint-plugin-react": "7.12.4",
     "flow": "^0.2.3",
-    "flow-bin": "^0.82.0",
-    "flow-typed": "^2.5.1",
+    "flow-bin": "^0.99.0",
+    "flow-typed": "^2.5.2",
     "fs-extra": "7.0.1",
-    "jest": "23.6.0",
+    "jest": "^23.6.0",
     "jest-pnp-resolver": "1.0.2",
     "jest-resolve": "23.6.0",
     "jest-watch-typeahead": "^0.2.1",
-    "node": "^10.15.3",
     "prettier": "^1.17.1",
     "react": "^16.5.2",
     "react-app-polyfill": "^1.0.1",
-    "react-dom": "^16.5.2",
-    "react-test-renderer": "^16.5.2",
+    "react-dom": "^16.8.6",
+    "react-scripts": "^3.0.1",
+    "react-test-renderer": "^16.8.6",
     "redux": "^4.0.0"
   },
   "scripts": {
@@ -107,10 +110,6 @@
     "moduleFileExtensions": [
       "js",
       "json"
-    ],
-    "watchPlugins": [
-      "/Users/elangley/git_repos/routedux/node_modules/jest-watch-typeahead/filename.js",
-      "/Users/elangley/git_repos/routedux/node_modules/jest-watch-typeahead/testname.js"
     ]
   },
   "eslintConfig": {

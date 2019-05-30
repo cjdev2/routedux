@@ -177,3 +177,5 @@ store.pathForAction({type:LOAD_USER, id: currentUserId()}); // returns /user/me
 ```
 
 Now you have links, but your links always stay up to date with your routing configuration.  
+
+bump
