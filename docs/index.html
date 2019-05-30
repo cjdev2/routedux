@@ -28,10 +28,16 @@
     <article>
       <root><section><h1>Routedux — Routes the Redux Way</h1><p>
 <img align="right" alt="Route Dux" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Ducks_crossing_the_road_sign.png/92px-Ducks_crossing_the_road_sign.png"/></p><p><a href="https://badge.fury.io/js/routedux"><img src="https://badge.fury.io/js/routedux.svg"/></a>
-<a href="https://travis-ci.org/cjdev/routedux"><img alt="Build Status" src="https://travis-ci.org/cjdev/routedux.svg?branch=master"/></a></p><p>Routedux routes URLs to Redux actions and vice versa.</p><p>Your application doesn't need to know it lives in a browser, but your users want pretty urls and deep links.</p><section><h2>Wait, my application doesn't need to know it lives in a browser?</h2><p>URLs are great for finding things on the internet.  But a single page application is not the same as a collection of
-resources that lives on a remote server.</p><p>A single page application is a web application only in the sense that it lives on the web.  URLs are are not essential
-to it working well.</p><p>URLs give users accessing your application in a browser the ability to bookmark a particular view in your application
-so that their expectation of browser-based applications will continue to work.</p><p>We think that's a good thing, but we also don't think the idea of url paths should be littered through your application.</p><p>When you are developing a redux application, you want your UI to be a pure function of the current state tree.</p><p>By adding routes to that, it makes it harder to test.  And this difficulty can be compounded by other decisions about how
+<a href="https://travis-ci.org/cjdev/routedux"><img alt="Build Status" src="https://travis-ci.org/cjdev/routedux.svg?branch=master"/></a></p><p>Routedux routes URLs to Redux actions and vice versa.</p><p>Your application doesn't need to know it lives in a browser, but your
+users want pretty urls and deep links.</p><section><h2>Wait, my application doesn't need to know it lives in a browser?</h2><p>URLs are great for finding things on the internet.  But a single page
+application is not the same as a collection of resources that lives on
+a remote server.</p><p>A single page application is a web application only in the sense that
+it lives on the web.  URLs are are not essential to it working well.</p><p>URLs give users accessing your application in a browser the ability to
+bookmark a particular view in your application so that their
+expectation of browser-based applications will continue to work.</p><p>We think that's a good thing, but we also don't think the idea of url
+paths should be littered through your application.</p><p>When you are developing a redux application, you want your UI to be a
+pure function of the current state tree.</p><p>By adding routes to that, it makes it harder to test.  And this
+difficulty can be compounded by other decisions about how
 to add routes to your application.</p></section><section><h2>An alternative approach</h2><p>React Router is the currently-accepted way to do URL routing in React
 applications.  For a standard React application without Redux, this
 solution isn't too bad.  But once you add Redux, things get difficult.</p><p>We basically discovered the same lessons as Formidable Labs:<splice-me><label for="REACTROUTERWRONG" class="margin-toggle sidenote-number"></label><input id="REACTROUTERWRONG" class="margin-toggle" type="checkbox"/><span class="sidenote"><a href="http://formidable.com/blog/2016/07/11/let-the-url-do-the-talking-part-1-the-pain-of-react-router-in-redux/">React
@@ -55,9 +61,11 @@ import {createStore, compose} from 'redux';</p><p>const LOAD_USER = 'LOAD_USER';
   ['/', 'LOAD_ARTICLE', {slug: "home-content"}]
 ];</p><p>const {enhancer} = installBrowserRouter(routesConfig);</p><p>const store = createStore(reduce, compose(
   enhancer
-));</p></code></pre><p>Any time a handled action fires the url in the address bar will change, and if the url in the address bar changes
-the corresponding action will fire (unless the action was initiated by a url change).</p></section><section><h2>Route matching precedence - which route matches best?</h2><p>Route precedence is a function of the type of matching done in each segment and the order in which the wildcard segments
-match.  Exact matches are always preferred to wildcards moving from left to right.</p><pre><code class="javascript">const routesInOrderOfPrecedence = [
+));</p></code></pre><p>Any time a handled action fires the url in the address bar will
+change, and if the url in the address bar changes the corresponding
+action will fire (unless the action was initiated by a url change).</p></section><section><h2>Route matching precedence - which route matches best?</h2><p>Route precedence is a function of the type of matching done in each
+segment and the order in which the wildcard segments match.  Exact
+matches are always preferred to wildcards moving from left to right.</p><pre><code class="javascript">const routesInOrderOfPrecedence = [
   ['/user/me/update', '/user/me'], // both perfectly specific - will match above any wildcard route
   '/user/me/:view',
   '/user/:id/update', // less specific because 'me' is exact match, while :id is a wildcard
@@ -93,9 +101,10 @@ const view = (
 (
   &lt;PageFrame&gt;
   &lt;/PageFrame&gt;
-)</p></code></pre></section><section><h2>ActionLink and pathForAction(action)</h2><p>Occasionally it is nice to render URLs inside of your application.</p><p>As a convenience, we have attached <code class="javascript">pathForAction</code> to the  <code class="javascript">store</code>
-object, which uses the same matcher that the action matcher uses.  This allows you to create links in your application
-by using the actions.</p><pre><code class="javascript"><p>const routesConfig = [
+)</p></code></pre></section><section><h2>ActionLink and pathForAction(action)</h2><p>Occasionally it is nice to render URLs inside of your application.</p><p>As a convenience, we have attached <code class="javascript">pathForAction</code>
+to the <code class="javascript">store</code> object, which uses the same
+matcher that the action matcher uses.  This allows you to create links
+in your application by using the actions.</p><pre><code class="javascript"><p>const routesConfig = [
   ['/user/:id', LOAD_USER, {}],
   ['/user/me', LOAD_USER, {id: currentUserId()}]
 ];

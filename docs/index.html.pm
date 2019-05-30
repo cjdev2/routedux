@@ -9,27 +9,35 @@
 
 Routedux routes URLs to Redux actions and vice versa.
 
-Your application doesn't need to know it lives in a browser, but your users want pretty urls and deep links.
+Your application doesn't need to know it lives in a browser, but your
+users want pretty urls and deep links.
 
 ◊section[#:headline "Wait, my application doesn't need to know it lives in a browser?"]{
-URLs are great for finding things on the internet.  But a single page application is not the same as a collection of
-resources that lives on a remote server.
 
-A single page application is a web application only in the sense that it lives on the web.  URLs are are not essential
-to it working well.
+URLs are great for finding things on the internet.  But a single page
+application is not the same as a collection of resources that lives on
+a remote server.
 
-URLs give users accessing your application in a browser the ability to bookmark a particular view in your application
-so that their expectation of browser-based applications will continue to work.
+A single page application is a web application only in the sense that
+it lives on the web.  URLs are are not essential to it working well.
 
-We think that's a good thing, but we also don't think the idea of url paths should be littered through your application.
+URLs give users accessing your application in a browser the ability to
+bookmark a particular view in your application so that their
+expectation of browser-based applications will continue to work.
 
-When you are developing a redux application, you want your UI to be a pure function of the current state tree.
+We think that's a good thing, but we also don't think the idea of url
+paths should be littered through your application.
 
-By adding routes to that, it makes it harder to test.  And this difficulty can be compounded by other decisions about how
+When you are developing a redux application, you want your UI to be a
+pure function of the current state tree.
+
+By adding routes to that, it makes it harder to test.  And this
+difficulty can be compounded by other decisions about how
 to add routes to your application.
 }
 
 ◊section[#:headline "An alternative approach"]{
+
 React Router is the currently-accepted way to do URL routing in React
 applications.  For a standard React application without Redux, this
 solution isn't too bad.  But once you add Redux, things get difficult.
@@ -85,13 +93,15 @@ const store = createStore(reduce, compose(
 ));
 }}
 
-Any time a handled action fires the url in the address bar will change, and if the url in the address bar changes
-the corresponding action will fire (unless the action was initiated by a url change).
+Any time a handled action fires the url in the address bar will
+change, and if the url in the address bar changes the corresponding
+action will fire (unless the action was initiated by a url change).
 }
 
 ◊section[#:headline "Route matching precedence - which route matches best?"]{
-Route precedence is a function of the type of matching done in each segment and the order in which the wildcard segments
-match.  Exact matches are always preferred to wildcards moving from left to right.
+Route precedence is a function of the type of matching done in each
+segment and the order in which the wildcard segments match.  Exact
+matches are always preferred to wildcards moving from left to right.
 
 ◊pre{
 ◊code[#:class "javascript"]{
@@ -157,9 +167,10 @@ const view = (
 ◊section[#:headline "ActionLink and pathForAction(action)"]{
 Occasionally it is nice to render URLs inside of your application.
 
-As a convenience, we have attached ◊code[#:class "javascript"]{pathForAction} to the  ◊code[#:class "javascript"]{store}
-object, which uses the same matcher that the action matcher uses.  This allows you to create links in your application
-by using the actions.
+As a convenience, we have attached ◊code[#:class "javascript"]{pathForAction}
+to the ◊code[#:class "javascript"]{store} object, which uses the same
+matcher that the action matcher uses.  This allows you to create links
+in your application by using the actions.
 
 ◊pre{
 ◊code[#:class "javascript"]{
@@ -182,6 +193,4 @@ store.pathForAction({type:LOAD_USER, id: currentUserId()});
 
 Now you have links, but your links always stay up to date with your
 routing configuration.
-
-
 }

@@ -13,19 +13,31 @@
   "main": "dist/index.js",
   "version": "1.0.2",
   "license": "MIT",
+  "peerDependencies": {
+    "redux": "^4.0.0"
+  },
   "dependencies": {
     "ramda": "^0.26.1",
-    "redux": "^4.0.0"
   },
   "optionalDependencies": {
     "prop-types": "^15.7.2"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-flow": "^6.23.0",
-    "babel-preset-stage-3": "^6.24.1",
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "7.2.2",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/plugin-proposal-json-strings": "^7.0.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+    "@babel/plugin-syntax-import-meta": "^7.0.0",
+    "@babel/plugin-transform-react-jsx": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-flow": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "9.0.0",
+    "babel-jest": "23.6.0",
+    "dotenv": "6.0.0",
+    "dotenv-expand": "4.2.0",
     "enzyme": "^3.6.0",
     "enzyme-adapter-react-16": "^1.13.2",
     "enzyme-to-json": "^3.3.5",
@@ -36,15 +48,27 @@
     "react-dom": "^16.8.6",
     "react-scripts": "^3.0.1",
     "react-test-renderer": "^16.8.6"
+    "eslint": "5.12.0",
+    "eslint-plugin-flowtype": "2.50.1",
+    "eslint-plugin-import": "2.14.0",
+    "eslint-plugin-react": "7.12.4",
+    "fs-extra": "7.0.1",
+    "jest": "23.6.0",
+    "jest-pnp-resolver": "1.0.2",
+    "jest-resolve": "23.6.0",
+    "jest-watch-typeahead": "^0.2.1",
+    "node": "^10.15.3",
+    "prettier": "^1.17.1",
+    "react-app-polyfill": "^1.0.1",
+    "redux": "^4.0.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "babel src -d dist",
-    "watch": "babel -w src -d dist",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
+    "build": "npx babel src -d dist",
+    "watch": "npx babel -w src -d dist",
+    "test": "node scripts/test.js --env=jsdom",
     "flow": "flow",
-    "buildPub": "yarn build && npm publish"
+    "buildPub": "yarn build && npm publish",
+    "lint": "eslint src"
   },
   "npmFileMap": [
     {
@@ -55,12 +79,71 @@
     }
   ],
   "babel": {
-    "plugins": [
-      "transform-react-jsx"
-    ],
     "presets": [
-      "env",
-      "stage-3"
+      "@babel/preset-react",
+      "@babel/preset-env"
     ]
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/**/*.d.ts"
+    ],
+    "resolver": "jest-pnp-resolver",
+    "setupFiles": [
+      "react-app-polyfill/jsdom"
+    ],
+    "testMatch": [
+      "<rootDir>/src/**/tests/*.test.js"
+    ],
+    "testEnvironment": "jsdom",
+    "testURL": "http://localhost",
+    "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
+      "^(?!.*\\.js$)": "<rootDir>/config/jest/fileTransform.js"
+    },
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.js$"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "json"
+    ],
+    "watchPlugins": [
+      "/Users/elangley/git_repos/routedux/node_modules/jest-watch-typeahead/filename.js",
+      "/Users/elangley/git_repos/routedux/node_modules/jest-watch-typeahead/testname.js"
+    ]
+  },
+  "eslintConfig": {
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:import/errors",
+      "plugin:import/warnings"
+    ],
+    "env": {
+      "browser": true,
+      "node": true,
+      "jest": true,
+      "es6": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 2018,
+      "sourceType": "module"
+    },
+    "settings": {
+      "react": {
+        "version": "16.0"
+      }
+    },
+    "rules": {
+      "no-unused-vars": [
+        "error",
+        {
+          "argsIgnorePattern": "(^[_][_]*$)|(^.$)",
+          "varsIgnorePattern": "(^[_][_]*$)|(^R$)"
+        }
+      ]
+    }
   }
 }
