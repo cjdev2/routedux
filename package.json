@@ -16,10 +16,14 @@
   "peerDependencies": {
     "redux": "^4.0.0",
     "react": "^16.5.2",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "redux": "^4.0.0"
+  },
+  "dependencies": {
+    "ramda": "^0.26.1"
   },
   "optionalDependencies": {
-    "prop-types": "^15.7.2"
+    "prop-types": "^15.5.10"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
@@ -59,9 +63,6 @@
     "react-scripts": "^3.0.1",
     "react-test-renderer": "^16.8.6",
     "redux": "^4.0.0"
-  },
-  "dependencies": {
-    "ramda": "^0.26.1"
   },
   "scripts": {
     "build": "npx babel src -d dist",
