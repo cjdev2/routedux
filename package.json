@@ -37,7 +37,7 @@
     "@babel/preset-flow": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
     "babel-core": "7.0.0-bridge.0",
-    "babel-eslint": "9.0.0",
+    "babel-eslint": "10.0.1",
     "babel-jest": "23.6.0",
     "dotenv": "8.0.0",
     "dotenv-expand": "4.2.0",
