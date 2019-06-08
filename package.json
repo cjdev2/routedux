@@ -87,23 +87,15 @@
     ]
   },
   "jest": {
+    "testEnvironment": "jsdom",
+    "testURL": "http://localhost",
     "collectCoverageFrom": [
       "src/**/*.js",
       "!src/**/*.d.ts"
     ],
-    "resolver": "jest-pnp-resolver",
-    "setupFiles": [
-      "react-app-polyfill/jsdom"
-    ],
     "testMatch": [
       "<rootDir>/src/**/tests/*.test.js"
     ],
-    "testEnvironment": "jsdom",
-    "testURL": "http://localhost",
-    "transform": {
-      "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
-      "^(?!.*\\.js$)": "<rootDir>/config/jest/fileTransform.js"
-    },
     "transformIgnorePatterns": [
       "[/\\\\]node_modules[/\\\\].+\\.js$"
     ],
