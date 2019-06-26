@@ -49,7 +49,7 @@
     "eslint-plugin-import": "2.17.3",
     "eslint-plugin-react": "7.14.2",
     "flow": "^0.2.3",
-    "flow-bin": "^0.101.1",
+    "flow-bin": "^0.102.0",
     "flow-typed": "^2.5.2",
     "fs-extra": "8.0.1",
     "jest": "^24.8.0",
