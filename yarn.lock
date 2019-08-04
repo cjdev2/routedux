@@ -4454,10 +4454,10 @@ flow-bin@^0.102.0:
   resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.102.0.tgz#3d5de44bcc26d26585e932b3201988b766f9b380"
   integrity sha512-mYon6noeLO0Q5SbiWULLQeM1L96iuXnRtYMd47j3bEWXAwUW9EnwNWcn+cZg/jC/Dg4Wj/jnkdTDEuFtbeu1ww==
 
-flow-typed@^2.6.0:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/flow-typed/-/flow-typed-2.6.0.tgz#504e6a7e7312ab31adc1717e6527b94014a459a6"
-  integrity sha512-aTd2ygnb9e0/O4Rskzh/zYMU0NJR3PygoheTfiDEOCbEVdXS6mpX/TfcpcbpPVcJpqqV44+pjhOt36VXlYkLRA==
+flow-typed@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/flow-typed/-/flow-typed-2.6.1.tgz#e991f53840ad121d9e1f61bd8f8b844cfae57ab1"
+  integrity sha512-UXhkAHcv4t+sSsuGud35zkV5CVXkEfIbGee545/1WnajM0+na1IKhmccuawg/PVu1Jtc3i127JcuKV/CLhF0oQ==
   dependencies:
     "@babel/polyfill" "^7.0.0"
     "@octokit/rest" "^15.12.1"
