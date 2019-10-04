@@ -61,7 +61,7 @@
     "react-app-polyfill": "^1.0.1",
     "react-dom": "^16.8.6",
     "react-redux": "^7.0.3",
-    "react-scripts": "^3.0.1",
+    "react-scripts": "^3.2.0",
     "react-test-renderer": "^16.8.6",
     "redux": "^4.0.4"
   },
