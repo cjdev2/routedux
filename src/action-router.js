@@ -12,7 +12,7 @@ function mostSpecificRouteMatch(match1, match2) {
   const paramLength1 = match1.routeParams.length;
   const paramLength2 = match2.routeParams.length;
 
-  let findWildcard = R.compose(
+  const findWildcard = R.compose(
     R.findIndex(isWildcard),
     pathSplit
   );
@@ -20,8 +20,8 @@ function mostSpecificRouteMatch(match1, match2) {
   let result = paramLength1 > paramLength2 ? match2 : match1;
 
   if (paramLength1 === paramLength2) {
-    let path1WildcardIdx = findWildcard(match1.path);
-    let path2WildcardIdx = findWildcard(match2.path);
+    const path1WildcardIdx = findWildcard(match1.path);
+    const path2WildcardIdx = findWildcard(match2.path);
 
     result =
       path1WildcardIdx !== -1 && path1WildcardIdx < path2WildcardIdx
@@ -65,7 +65,7 @@ function mostSpecificActionMatch(match1, match2) {
     return match2;
   }
 
-  let countExtraParams = ({ extraParams: obj }) => R.keys(obj).length;
+  const countExtraParams = ({ extraParams: obj }) => R.keys(obj).length;
   return countExtraParams(match1) >= countExtraParams(match2) ? match1 : match2;
 }
 
@@ -263,10 +263,10 @@ function constructAction(match) {
 }
 
 function constructPath(match) {
-  let parts = match.path.split("/");
-  let resultParts = [];
+  const parts = match.path.split("/");
+  const resultParts = [];
 
-  for (let part of parts) {
+  for (const part of parts) {
     if (part[0] === ":") {
       const name = part.slice(1);
       const val = match.extractedParams.hasOwnProperty(name)
@@ -281,7 +281,7 @@ function constructPath(match) {
 }
 
 function createActionDispatcher(routesConfig, window) {
-  let { compiledActionMatchers, compiledRouteMatchers } = compileRoutes(
+  const { compiledActionMatchers, compiledRouteMatchers } = compileRoutes(
     routesConfig
   );
 
@@ -295,7 +295,7 @@ function createActionDispatcher(routesConfig, window) {
     return match ? constructAction(match) : null;
   }
 
-  let actionDispatcher = {
+  const actionDispatcher = {
     currentLocation: null,
     store: null,
 
@@ -305,10 +305,10 @@ function createActionDispatcher(routesConfig, window) {
     },
 
     enhanceStore(nextStoreCreator) {
-      let middleware = buildMiddleware(this);
+      const middleware = buildMiddleware(this);
 
       return (reducer, finalInitialState, enhancer) => {
-        let theStore = nextStoreCreator(reducer, finalInitialState, enhancer);
+        const theStore = nextStoreCreator(reducer, finalInitialState, enhancer);
 
         this.activateDispatcher(theStore);
 
