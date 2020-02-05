@@ -42,25 +42,21 @@ function matchRoute(loc, matchers) {
 
   const buildMatch = (extractedParams, route) => ({ extractedParams, ...route });
 
-  return R.toPairs(matchers).reduce(
+  return R.reduce(
     (match, [_, { type: matcherType, route }]) => {
-      const pathMatcher = route.routeMatcher;
+      const { pathMatcher } = route;
       const matchedParams = pathMatcher(inputPath);
 
       if (matchedParams) {
-        if (matcherType === "exact") {
-          return buildMatch(matchedParams, route);
-        } else {
-          return mostSpecificRouteMatch(
-            match,
-            buildMatch(matchedParams, route)
-          );
-        }
+        return matcherType === 'exact'
+          ? buildMatch(matchedParams, route)
+          : mostSpecificRouteMatch(match, buildMatch(matchedParams, route));
       } else {
         return match;
       }
     },
-    null
+    null,
+    R.toPairs(matchers)
   );
 }
 
@@ -73,7 +69,7 @@ function mostSpecificActionMatch(match1, match2) {
   return countExtraParams(match1) >= countExtraParams(match2) ? match1 : match2;
 }
 
-// matchers is {action : [routeMatcher]} structure
+// matchers is {action : [pathMatcher]} structure
 function matchAction(action, matchers) {
   // match on params in action vs possible actions if more than 1
   let match = null;
@@ -88,8 +84,8 @@ function matchAction(action, matchers) {
 
   for (const { type: matcherType, route } of routes) {
     if (matcherType === "exact" && R.equals(route.extraParams, args)) {
-      match = { extractedParams: {}, ...route};
       // case 3
+      match = { extractedParams: {}, ...route};
       break; // most specific
     } else if (matcherType === "wildcard") {
       // case 1+2
@@ -99,18 +95,12 @@ function matchAction(action, matchers) {
         R.keys(route.extraParams)
       );
       // if all keys ^ are equal to all keys in route
-      const intersectCount = R.intersection(
-        unallocatedArgKeys,
-        route.routeParams
-      ).length;
+      const intersectCount = R.intersection(unallocatedArgKeys, route.routeParams).length;
       const unionCount = R.union(unallocatedArgKeys, route.routeParams).length;
 
       if (intersectCount === unionCount) {
         const extractedParams = R.pick(unallocatedArgKeys, args);
-        match = mostSpecificActionMatch(
-          match,
-          { extractedParams, ...route }
-        );
+        match = mostSpecificActionMatch(match, { extractedParams, ...route });
       }
     }
   }
@@ -128,24 +118,23 @@ function isWildcard(segment) {
 
 function extractParams(path) {
   const pathParts = path.split("/");
-  let params = [];
 
-  for (const part of pathParts.filter(isWildcard)) {
-    const name = part.slice(1);
+  const params = R.compose(
+    R.map(x => x.substr(1)),
+    R.filter(isWildcard)
+  )(pathParts);
 
-    if (params.indexOf(name) !== -1) {
-      throw new Error("duplicate param");
-    }
-
-    params.push(name);
+  if(R.uniq(params).length !== params.length) {
+    throw new Error("duplicate param");
   }
+
   return params;
 }
 
 function normalizePathParts(path) {
-  const splitAndFilterEmpty = R.pipe(
-    R.split('/'),
-    R.filter(p => p !== "")
+  const splitAndFilterEmpty = R.compose(
+    R.filter(p => p !== ""),
+    R.split('/')
   );
 
   return splitAndFilterEmpty(path);
@@ -156,12 +145,7 @@ function makeRoute(path, action, extraParams) {
 
   const normalizedPathParts = normalizePathParts(path);
 
-  const updateWildcard = (wildcards, match, input) => {
-    const wildcardName = match.replace(":", "");
-    return {...wildcards, [wildcardName]: input};
-  };
-
-  const routeMatcher = function(inputPath) {
+  const pathMatcher = function(inputPath) {
     let result = null;
 
     const normMatchPath = normalizedPathParts;
@@ -177,20 +161,20 @@ function makeRoute(path, action, extraParams) {
     const matchLength = normMatchPath.length;
 
     if (inputLength === matchLength) {
-      const f = (acc, [match, input]) => {
-        if (acc === null) {
+      result = R.reduce((extractedValues, [match, input]) => {
+        if (extractedValues === null) {
           return null;
         }
 
         if (match === input) {
-          return acc;
-        } else if (match[0] === ":") {
-          return updateWildcard(acc, match, input);
+          return extractedValues;
+        } else if (R.startsWith(":", match)) {
+          const wildcardName = R.replace(':', '', match);
+          return {...extractedValues, [wildcardName]: input};
         } else {
           return null;
         }
-      };
-      result = R.zip(normMatchPath, normInputPath).reduce(f, {});
+      }, {}, R.zip(normMatchPath, normInputPath));
     }
 
     return result;
@@ -201,7 +185,7 @@ function makeRoute(path, action, extraParams) {
   return {
     type,
     route: {
-      routeMatcher,
+      pathMatcher,
       path,
       action,
       routeParams,
