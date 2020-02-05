@@ -1,9 +1,13 @@
 language: node_js
 node_js:
-- node
+  - node
+arch:
+  - amd64
+  - ppc64le
+  - s390x
+  - arm64
 script: yarn install --frozen-lockfile && yarn test && yarn build
 deploy:
-  matrix:
   - provider: releases
     skip_cleanup: true
     api_key:

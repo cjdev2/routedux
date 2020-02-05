@@ -4,7 +4,7 @@ export function wrapEvent(target, name, obj) {
   target.addEventListener(name, obj);
 }
 
-function debounce(object, flag, cb) {
+function runOnceFor(object, flag, cb) {
   if (!object[flag]) {
     object[flag] = true;
     cb();
@@ -13,7 +13,7 @@ function debounce(object, flag, cb) {
 
 let MISSING_CHANGE_URL = Symbol("missing_change_url");
 export default function addChangeUrlEvent(window) {
-  debounce(window, MISSING_CHANGE_URL, () => {
+  runOnceFor(window, MISSING_CHANGE_URL, () => {
     const changeUrlEventCreator = {
       lastLocation: null,
       handleEvent(_) {
