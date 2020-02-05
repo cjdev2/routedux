@@ -18,7 +18,7 @@ function polyfillCustomEvent() {
   window.CustomEvent = CustomEvent;
 }
 
-function debounce(object, flag, cb) {
+function runOnceFor(object, flag, cb) {
   if (!object[flag]) {
     object[flag] = true;
     cb();
@@ -27,7 +27,7 @@ function debounce(object, flag, cb) {
 
 let MISSING_HISTORY = Symbol("missing_history");
 export default function addMissingHistoryEvents(window, history) {
-  debounce(history, MISSING_HISTORY, () => {
+  runOnceFor(history, MISSING_HISTORY, () => {
     const pushState = history.pushState.bind(history);
     const replaceState = history.replaceState.bind(history);
 
