@@ -1300,7 +1300,7 @@
     source-map "^0.6.1"
     write-file-atomic "^3.0.0"
 
-"@jest/types@^24.8.0", "@jest/types@^24.9.0":
+"@jest/types@^24.9.0":
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/@jest/types/-/types-24.9.0.tgz#63cb26cb7500d069e5a389441a7c6ab5e909fc59"
   integrity sha512-XKK7ze1apu5JWQ5eZjHITP66AX+QsLlbaJRBGYr8pNzwcAE2JVkwnf0yqjHTsDRcjR0mujy/NmZMXw5kl+kGBw==
@@ -6369,17 +6369,6 @@ jest-resolve-dependencies@^24.9.0:
     jest-regex-util "^24.3.0"
     jest-snapshot "^24.9.0"
 
-jest-resolve@24.8.0:
-  version "24.8.0"
-  resolved "https://registry.yarnpkg.com/jest-resolve/-/jest-resolve-24.8.0.tgz#84b8e5408c1f6a11539793e2b5feb1b6e722439f"
-  integrity sha512-+hjSzi1PoRvnuOICoYd5V/KpIQmkAsfjFO71458hQ2Whi/yf1GDeBOFj8Gxw4LrApHsVJvn5fmjcPdmoUHaVKw==
-  dependencies:
-    "@jest/types" "^24.8.0"
-    browser-resolve "^1.11.3"
-    chalk "^2.0.1"
-    jest-pnp-resolver "^1.2.1"
-    realpath-native "^1.1.0"
-
 jest-resolve@24.9.0, jest-resolve@^24.9.0:
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/jest-resolve/-/jest-resolve-24.9.0.tgz#dff04c7687af34c4dd7e524892d9cf77e5d17321"
@@ -6388,6 +6377,17 @@ jest-resolve@24.9.0, jest-resolve@^24.9.0:
     "@jest/types" "^24.9.0"
     browser-resolve "^1.11.3"
     chalk "^2.0.1"
+    jest-pnp-resolver "^1.2.1"
+    realpath-native "^1.1.0"
+
+jest-resolve@25.1.0:
+  version "25.1.0"
+  resolved "https://registry.yarnpkg.com/jest-resolve/-/jest-resolve-25.1.0.tgz#23d8b6a4892362baf2662877c66aa241fa2eaea3"
+  integrity sha512-XkBQaU1SRCHj2Evz2Lu4Czs+uIgJXWypfO57L7JYccmAXv4slXA6hzNblmcRmf7P3cQ1mE7fL3ABV6jAwk4foQ==
+  dependencies:
+    "@jest/types" "^25.1.0"
+    browser-resolve "^1.11.3"
+    chalk "^3.0.0"
     jest-pnp-resolver "^1.2.1"
     realpath-native "^1.1.0"
 
@@ -9824,14 +9824,6 @@ saxes@^3.1.9:
   integrity sha512-Ydydq3zC+WYDJK1+gRxRapLIED9PWeSuuS41wqyoRmzvhhh9nc+QQrVMKJYzJFULazeGhzSV0QleN2wD3boh2g==
   dependencies:
     xmlchars "^2.1.1"
-
-scheduler@^0.16.2:
-  version "0.16.2"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.16.2.tgz#f74cd9d33eff6fc554edfb79864868e4819132c1"
-  integrity sha512-BqYVWqwz6s1wZMhjFvLfVR5WXP7ZY32M/wYPo04CcuPM7XZEbV2TBNW7Z0UkguPTl0dWMA59VbNXxK6q+pHItg==
-  dependencies:
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
 
 scheduler@^0.18.0:
   version "0.18.0"
