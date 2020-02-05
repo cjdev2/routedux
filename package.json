@@ -14,9 +14,9 @@
   "version": "1.0.4",
   "license": "MIT",
   "peerDependencies": {
-    "redux": "^4.0.0",
     "react": "^16.5.2",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "redux": "^4.0.0"
   },
   "dependencies": {
     "ramda": "^0.26.1"
