@@ -20,7 +20,7 @@
     "redux": "^4.0.4"
   },
   "dependencies": {
-    "ramda": "^0.26.1"
+    "ramda": "^0.27.0"
   },
   "optionalDependencies": {
     "prop-types": "^15.5.10"
