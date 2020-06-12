@@ -7,14 +7,14 @@ fi
 
 version="$1"
 
-foo="`mktemp`"
+foo="$(mktemp)"
 
-sedscript=$(printf '/version/s/"[^"]*",/"%s",/' $version)
+sedscript=$(printf '/version/s/"[^"]*",/"%s",/' "$version")
 
-sed "$sedscript" package.json > $foo;
+sed "$sedscript" package.json > "$foo";
 
-cat $foo
-grep version $foo
+cat "$foo"
+grep version "$foo"
 
 result=y
 read -p "Correct [Y/n]? " -r result
@@ -39,7 +39,7 @@ fi
 npm run buildPub
 
 git tag "v${version}"
-git push
-git push --tags
+git push git@github.com:cjdev/routedux.git
+git push --tags git@github.com:cjdev/routedux.git
 
 
