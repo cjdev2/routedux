@@ -6,7 +6,7 @@ arch:
   - ppc64le
   - s390x
   - arm64
-script: yarn install --frozen-lockfile && yarn test && yarn build
+script: npm ci && npm test && npm run build
 deploy:
   - provider: releases
     skip_cleanup: true
