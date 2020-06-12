@@ -178,16 +178,34 @@ const routesConfig = [
   ['/user/:id', LOAD_USER, {}],
   ['/user/me', LOAD_USER, {id: currentUserId()}]
 ];
-// ... do store initialization
+/* ... do store initialization */
 
 store.pathForAction({type:LOAD_USER, id: currentUserId()});
+/* returns /user/me */
 
-// returns /user/me
+/* ActionLink */
 
-//  ActionLink
+import { ActionLink as _ActionLink } from "routedux";
 
-<ActionLink action={{type:LOAD_USER, id: 123}}>Link Text</ActionLink>
-// renders as <a href="/user/123">Link Text</a>
+const store = createStore(...);
+
+class ActionLink extends _ActionLink {
+    constructor(props) {
+        super({ ...props });
+        this.store = store;
+    }
+}
+
+const action = {
+  type: LOAD_USER,
+  id: 123
+};
+
+return (
+  <ActionLink action={action}>Link Text</ActionLink>
+);
+
+/* renders as a link to <a href="/usr/123">Link Text</a> with the text */
 }}
 }
 

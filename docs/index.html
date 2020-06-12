@@ -108,8 +108,18 @@ in your application by using the actions.</p><pre><code class="javascript"><p>co
   ['/user/:id', LOAD_USER, {}],
   ['/user/me', LOAD_USER, {id: currentUserId()}]
 ];
-// ... do store initialization</p><p>store.pathForAction({type:LOAD_USER, id: currentUserId()});</p><p>// returns /user/me</p><p>//  ActionLink</p><p>&lt;ActionLink action={{type:LOAD_USER, id: 123}}&gt;Link Text&lt;/ActionLink&gt;
-// renders as &lt;a href="/user/123"&gt;Link Text&lt;/a&gt;</p></code></pre></section><p>Now you have links, but your links always stay up to date with your
+/* ... do store initialization */</p><p>store.pathForAction({type:LOAD_USER, id: currentUserId()});
+/* returns /user/me */</p><p>/* ActionLink */</p><p>import { ActionLink as _ActionLink } from "routedux";</p><p>const store = createStore(...);</p><p>class ActionLink extends _ActionLink {
+    constructor(props) {
+        super({ ...props });
+        this.store = store;
+    }
+}</p><p>const action = {
+  type: LOAD_USER,
+  id: 123
+};</p><p>return (
+  &lt;ActionLink action={action}&gt;Link Text&lt;/ActionLink&gt;
+);</p><p>/* renders as a link to &lt;a href="/usr/123"&gt;Link Text&lt;/a&gt; with the text */</p></code></pre></section><p>Now you have links, but your links always stay up to date with your
 routing configuration.</p></section>
 </root>
     </article>

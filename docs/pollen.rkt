@@ -8,32 +8,11 @@
   `(define (,name ,@args)
      ,@body))
 
-(defun 1+ (n)
-  (+ 1 n))
+(defmacro funcall (fun . args)
+  `(,fun ,@args))
 
-(define head-tag-num (make-parameter 0))
-(defun current-head-tag ()
-  (string->symbol (format "h~d" (head-tag-num))))
-
-(defun headline (element)
-  ((default-tag-function (current-head-tag)) empty element))
-
-(define (term val)
-  (let ([code (default-tag-function 'code)]
-        [u (default-tag-function 'u)]
-        [a (default-tag-function 'a)])
-    (code (u (a #:href (string-append "#" val)
-                val)))))
-
-(define def (default-tag-function 'a #:name "foo"))
-
-(define items (default-tag-function 'ul))
-
-(define item (default-tag-function 'li 'p))
-
-(define (link url text) `(a ((href ,url)) ,text))
-
-(define %section-tag (default-tag-function 'section))
+(defmacro defvar (name def)
+  `(define ,name ,def))
 
 ;; This is a macro so that the parameterize form evaluates in the right order
 (define-syntax section
@@ -50,7 +29,41 @@
                                                    #:linebreak-proc
                                                    (lambda (y) y)))))]))
 
-(define (sidenote label . xs)
+(defvar head-tag-num
+  (make-parameter 0))
+
+(defvar def
+  (default-tag-function 'a #:name "foo"))
+
+(defvar items
+  (default-tag-function 'ul))
+
+(defvar item
+  (default-tag-function 'li 'p))
+
+(defvar %section-tag
+  (default-tag-function 'section))
+
+(defun 1+ (n)
+  (+ 1 n))
+
+(defun current-head-tag ()
+  (string->symbol (format "h~d" (head-tag-num))))
+
+(defun headline (element)
+  (funcall (default-tag-function (current-head-tag)) empty element))
+
+(defun term (val)
+  (let ([code (default-tag-function 'code)]
+        [u (default-tag-function 'u)]
+        [a (default-tag-function 'a)])
+    (code (u (a #:href (string-append "#" val)
+                val)))))
+
+(defun link (url text)
+  `(a (funcall (href ,url)) ,text))
+
+(defun sidenote (label . xs)
   `(splice-me
     (label ((for ,label) (class "margin-toggle sidenote-number")))
     (input ((id ,label) (class "margin-toggle")(type "checkbox")))
