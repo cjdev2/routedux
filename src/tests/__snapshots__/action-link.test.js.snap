@@ -1,20 +1,101 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`additional props are passed through 1`] = `
-<a
+<Link
+  action={Object {}}
   className="foo"
-  href="/my/path"
-  onClick={[Function]}
+  store={
+    Object {
+      "dispatch": [MockFunction],
+      "pathForAction": [MockFunction] {
+        "calls": Array [
+          Array [
+            Object {},
+          ],
+        ],
+        "results": Array [
+          Object {
+            "type": "return",
+            "value": "/my/path",
+          },
+        ],
+      },
+    }
+  }
 >
-  Hello World!
-</a>
+  <a
+    className="foo"
+    href="/my/path"
+    onClick={[Function]}
+    store={
+      Object {
+        "dispatch": [MockFunction],
+        "pathForAction": [MockFunction] {
+          "calls": Array [
+            Array [
+              Object {},
+            ],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": "/my/path",
+            },
+          ],
+        },
+      }
+    }
+  >
+    Hello World!
+  </a>
+</Link>
 `;
 
 exports[`renders the url calculated by our internal function 1`] = `
-<a
-  href="/my/path"
-  onClick={[Function]}
+<Link
+  action={Object {}}
+  store={
+    Object {
+      "dispatch": [MockFunction],
+      "pathForAction": [MockFunction] {
+        "calls": Array [
+          Array [
+            Object {},
+          ],
+        ],
+        "results": Array [
+          Object {
+            "type": "return",
+            "value": "/my/path",
+          },
+        ],
+      },
+    }
+  }
 >
-  Hello World!
-</a>
+  <a
+    href="/my/path"
+    onClick={[Function]}
+    store={
+      Object {
+        "dispatch": [MockFunction],
+        "pathForAction": [MockFunction] {
+          "calls": Array [
+            Array [
+              Object {},
+            ],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": "/my/path",
+            },
+          ],
+        },
+      }
+    }
+  >
+    Hello World!
+  </a>
+</Link>
 `;

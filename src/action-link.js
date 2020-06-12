@@ -1,27 +1,31 @@
 const ActionLink = (React, PropTypes) => {
-  function ActionLink({ action, children, ...props }, { store }) {
-    const renderedRoute = store.pathForAction(action);
+  class ActionLink extends React.Component {
+    constructor(props) {
+      super(props);
+    }
+    render() {
+      const { action, children, ...props } = this.props;
 
-    return (
-      <a
-        href={renderedRoute}
-        onClick={ev => {
-          ev.preventDefault();
-          store.dispatch(action);
-        }}
-        {...props}
-      >
-        {children}
-      </a>
-    );
+      const renderedRoute = this.store.pathForAction(action);
+
+      return (
+        <a
+          href={renderedRoute}
+          onClick={ev => {
+            ev.preventDefault();
+            this.store.dispatch(action);
+          }}
+          {...props}
+        >
+          {children}
+        </a>
+      );
+    }
   }
 
   ActionLink.propTypes = {
-    action: PropTypes.string,
+    action: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     children: PropTypes.node
-  };
-  ActionLink.contextTypes = {
-    store: PropTypes.object
   };
 
   return ActionLink;
@@ -31,6 +35,7 @@ let OutComponent = ActionLink;
 try {
   const React = require("react");
   const PropTypes = require("prop-types");
+
   OutComponent = ActionLink(React, PropTypes);
 } catch (e) {
   /* empty */
