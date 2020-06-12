@@ -7,7 +7,7 @@ Enzyme.configure({ adapter: new Adapter() });
 import React from "react";
 import PropTypes from "prop-types";
 
-const Link = _internal.ActionLink(React, PropTypes);
+const _Link = _internal.ActionLink(React, PropTypes);
 
 it("dispatches an action on click", () => {
   // given
@@ -19,9 +19,14 @@ it("dispatches an action on click", () => {
     action: { type: "ACTION", id: "123" },
     children: "Hello World!"
   };
-  const context = { store };
+  class Link extends _Link {
+    constructor() {
+      super();
+      this.store = store;
+    }
+  }
 
-  const wrapper = mount(Link(props, context));
+  const wrapper = mount(<Link {...{ ...props, store }} />);
   // when
   wrapper.simulate("click");
 
@@ -42,9 +47,15 @@ it("renders the url calculated by our internal function", () => {
     action: {},
     children: "Hello World!"
   };
-  const context = { store };
 
-  const wrapper = mount(Link(props, context));
+  class Link extends _Link {
+    constructor() {
+      super();
+      this.store = store;
+    }
+  }
+
+  const wrapper = mount(<Link {...{ ...props, store }} />);
 
   expect(ezJson(wrapper)).toMatchSnapshot();
 });
@@ -60,9 +71,15 @@ it("additional props are passed through", () => {
     children: "Hello World!",
     className: "foo"
   };
-  const context = { store };
 
-  const wrapper = mount(Link(props, context));
+  class Link extends _Link {
+    constructor() {
+      super();
+      this.store = store;
+    }
+  }
+
+  const wrapper = mount(<Link {...{ ...props, store }} />);
 
   expect(ezJson(wrapper)).toMatchSnapshot();
 });
