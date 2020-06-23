@@ -1,4 +1,6 @@
+
 const ActionLink = (React, PropTypes) => {
+
   class ActionLink extends React.Component {
     constructor(props) {
       super(props);
@@ -22,6 +24,7 @@ const ActionLink = (React, PropTypes) => {
       );
     }
   }
+
 
   ActionLink.propTypes = {
     action: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),

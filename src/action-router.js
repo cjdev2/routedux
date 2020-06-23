@@ -71,6 +71,7 @@ function mostSpecificActionMatch(match1, match2) {
 
 // matchers is {action : [pathMatcher]} structure
 function matchAction(action, matchers) {
+  console.log('action?', action);
   // match on params in action vs possible actions if more than 1
   let match = null;
 
@@ -403,3 +404,5 @@ export default function installBrowserRouter(routesConfig, window) {
     )
   };
 }
+
+export {createActionDispatcher};
