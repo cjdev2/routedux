@@ -1,6 +1,6 @@
 import { createStore } from "redux";
 
-import installBrowserRouter from "../action-router";
+import installBrowserRouter from "../redux-api";
 import addChangeUrlEvent from "../change-url-event.js";
 import addMissingHistoryEvents from "../history-events.js";
 
@@ -86,7 +86,7 @@ function setupTest(routesConfig, path = "/path/to/thing") {
   addMissingHistoryEvents(window, window.history);
   addChangeUrlEvent(window, window.history);
 
-  const { enhancer, init } = installBrowserRouter(routesConfig, window);
+  const { enhancer, init, _actionDispatcher } = installBrowserRouter(routesConfig, window);
   const reduce = jest.fn();
 
   const store = createStore(reduce, enhancer);
@@ -112,7 +112,8 @@ function setupTest(routesConfig, path = "/path/to/thing") {
     urlChanges,
     actionsDispatched,
     fireUrlChange,
-    init
+    init,
+    _actionDispatcher
   };
 }
 
@@ -370,9 +371,9 @@ it("pathForAction should render a route", () => {
     ["/:dyn/something", "ACTION_NAME", {}]
   ];
   const action = { type: "ACTION_NAME", dynamic: "hooray" };
-  const { store } = setupTest(routesConfig);
+  const { _actionDispatcher } = setupTest(routesConfig);
   // when
-  const actual = store.pathForAction(action);
+  const actual = _actionDispatcher.pathForAction(action);
 
   // then
   expect(actual).toEqual("/something/hooray");

@@ -1,15 +1,13 @@
 import React, {useReducer, useMemo, useEffect} from 'react';
 import {createActionDispatcher} from "./action-router";
 
-window.React2 = React;
-
-export default function createNav(routesConfig, _window = window) {
+export function createRouteProvider(routesConfig, _window = window) {
 
   const RoutingContext = React.createContext(null);
   const actionDispatcher = createActionDispatcher(routesConfig, _window)
 
 
-  function Navigation({children}) {
+  function RouteProvider({children}) {
 
     const [route, updateRoute] = useReducer((state, action) => action, {});
     const store = useMemo(() => {
@@ -32,7 +30,7 @@ export default function createNav(routesConfig, _window = window) {
 
   }
 
-  function withNav(Component) {
+  function withRoute(Component) {
     return function ({children, ...restProps}) {
       return (<RoutingContext.Consumer>
           {route =>
@@ -43,5 +41,22 @@ export default function createNav(routesConfig, _window = window) {
     }
   }
 
-  return {Navigation, withNav};
+  function routeToUrl(routeName, params) {
+     return actionDispatcher.pathForAction({
+       type: routeName, ...params
+     })
+  }
+
+  function RouteLink({route, params, children, ...props}) {
+    const url = routeToUrl(route, params);
+
+    return <a href={url} {...props}>{children}</a>;
+  }
+
+  const init = actionDispatcher.receiveLocation.bind(
+    actionDispatcher,
+    _window.location
+  );
+
+  return {RouteProvider, withRoute, routeToUrl, RouteLink};
 }

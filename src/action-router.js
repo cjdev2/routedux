@@ -71,7 +71,6 @@ function mostSpecificActionMatch(match1, match2) {
 
 // matchers is {action : [pathMatcher]} structure
 function matchAction(action, matchers) {
-  console.log('action?', action);
   // match on params in action vs possible actions if more than 1
   let match = null;
 
@@ -305,22 +304,8 @@ function createActionDispatcher(routesConfig, window) {
       this.store = store;
     },
 
-    enhanceStore(nextStoreCreator) {
-      const middleware = buildMiddleware(this);
+    pathForAction,
 
-      return (reducer, finalInitialState, enhancer) => {
-        const theStore = nextStoreCreator(reducer, finalInitialState, enhancer);
-
-        this.activateDispatcher(theStore);
-
-        theStore.pathForAction = pathForAction;
-
-        theStore.dispatch = middleware(theStore)(
-          theStore.dispatch.bind(theStore)
-        );
-        return theStore;
-      };
-    },
 
     handleEvent(ev) {
       if (!this.store) {
@@ -366,43 +351,9 @@ function createActionDispatcher(routesConfig, window) {
     }
   };
 
-  actionDispatcher.enhanceStore = actionDispatcher.enhanceStore.bind(
-    actionDispatcher
-  );
-
   return actionDispatcher;
 }
 
-function buildMiddleware(actionDispatcher) {
-  return store => next => action => {
-    if (actionDispatcher.handlesAction(action)) {
-      actionDispatcher.receiveAction(action, store);
-    }
-    return next(action);
-  };
-}
 
-export default function installBrowserRouter(routesConfig, window) {
-  const actionDispatcher = createActionDispatcher(routesConfig, window);
-
-  const middleware = x => {
-    //eslint-disable-next-line no-console
-    console.warn(
-      "Using the routedux middleware directly is deprecated, the enhancer now" +
-        " applies it automatically and the middleware is now a no-op that" +
-        " will be removed in later versions."
-    );
-    return y => y;
-  };
-
-  return {
-    middleware,
-    enhancer: actionDispatcher.enhanceStore,
-    init: actionDispatcher.receiveLocation.bind(
-      actionDispatcher,
-      window.location
-    )
-  };
-}
 
 export {createActionDispatcher};
