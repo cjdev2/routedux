@@ -36,7 +36,7 @@ if [[ "${result/Y/y}" != 'y' ]]; then
   exit 1;
 fi
 
-npm run buildPub
+#npm run buildPub
 
 git tag "v${version}"
 git push git@github.com:cjdev/routedux.git
