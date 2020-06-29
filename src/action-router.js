@@ -196,6 +196,7 @@ function makeRoute(path, action, extraParams) {
 
 function normalizeWildcards(path) {
   let curIdx = 0;
+  //todo curIdx doesn't increment
   return path.map(el => {
     if (isWildcard(el)) {
       return `:wildcard${curIdx}`;
@@ -295,111 +296,69 @@ function createActionDispatcher(routesConfig, window) {
     return match ? constructAction(match) : null;
   }
 
+  let actionListeners = [];
+  let currentPath = null;
+
+  function ifPathChanged(newPath, cb) {
+    if (currentPath !== newPath) {
+      currentPath = newPath;
+      cb();
+    }
+  }
+
   const actionDispatcher = {
-    currentLocation: null,
-    store: null,
 
-    activateDispatcher(store) {
-      window.addEventListener("urlchanged", this);
-      this.store = store;
-    },
+    pathForAction,
 
-    enhanceStore(nextStoreCreator) {
-      const middleware = buildMiddleware(this);
-
-      return (reducer, finalInitialState, enhancer) => {
-        const theStore = nextStoreCreator(reducer, finalInitialState, enhancer);
-
-        this.activateDispatcher(theStore);
-
-        theStore.pathForAction = pathForAction;
-
-        theStore.dispatch = middleware(theStore)(
-          theStore.dispatch.bind(theStore)
-        );
-        return theStore;
-      };
-    },
-
-    handleEvent(ev) {
-      if (!this.store) {
-        throw new Error(
-          "You must call activateDispatcher with redux store as argument"
-        );
+    //hook for everything to get action on route change
+    addActionListener(cb) {
+      actionListeners.push(cb);
+      return () => {
+        const index = R.findIndex(x => x === cb, actionListeners);
+        actionListeners = R.remove(index, 1, actionListeners);
       }
+    },
 
+    //needed for window event listener
+    handleEvent(ev) {
       const location = ev.detail;
       this.receiveLocation(location);
     },
 
-    onLocationChanged(newLoc, cb) {
-      if (this.currentLocation !== newLoc) {
-        this.currentLocation = newLoc;
-        cb();
-      }
-    },
-
     receiveLocation(location) {
-      this.onLocationChanged(location.pathname, () => {
+      ifPathChanged(location.pathname, () => {
 
         const action = actionForLocation(location);
 
         if (action) {
-          this.store.dispatch(action);
+          actionListeners.forEach(cb => cb(action));
         }
       });
     },
 
-    receiveAction(action) {
-      const path = pathForAction(action);
+    // can this be simplified to get rid of fundamental action model?
+    receiveAction(action, fireCallbacks = false) {
+      const newPath = matchesAction(action, compiledActionMatchers)
+                    ? pathForAction(action)
+                    : null;
 
-      if (path) {
-        this.onLocationChanged(path, () => {
-          window.history.pushState({}, "", path);
+      if (newPath) {
+        ifPathChanged(newPath, () => {
+          window.history.pushState({}, "", newPath);
+          if(fireCallbacks) {
+            actionListeners.forEach(cb => cb(action));
+          }
         });
       }
     },
 
-    handlesAction(action) {
-      return matchesAction(action, compiledActionMatchers);
-    }
   };
 
-  actionDispatcher.enhanceStore = actionDispatcher.enhanceStore.bind(
-    actionDispatcher
-  );
+  window.addEventListener("urlchanged", actionDispatcher);
 
   return actionDispatcher;
 }
 
-function buildMiddleware(actionDispatcher) {
-  return store => next => action => {
-    if (actionDispatcher.handlesAction(action)) {
-      actionDispatcher.receiveAction(action, store);
-    }
-    return next(action);
-  };
-}
 
-export default function installBrowserRouter(routesConfig, window) {
-  const actionDispatcher = createActionDispatcher(routesConfig, window);
 
-  const middleware = x => {
-    //eslint-disable-next-line no-console
-    console.warn(
-      "Using the routedux middleware directly is deprecated, the enhancer now" +
-        " applies it automatically and the middleware is now a no-op that" +
-        " will be removed in later versions."
-    );
-    return y => y;
-  };
-
-  return {
-    middleware,
-    enhancer: actionDispatcher.enhanceStore,
-    init: actionDispatcher.receiveLocation.bind(
-      actionDispatcher,
-      window.location
-    )
-  };
-}
+export {createActionDispatcher};
