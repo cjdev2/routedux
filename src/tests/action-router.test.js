@@ -134,7 +134,7 @@ it("router handles exact match in preference to wildcard match", () => {
   expect(urlChanges()).toEqual(["/somewhere"]);
 });
 
-it("router doees not dispatch an action from url change that is caused by action dispatch", () => {
+it("router does not dispatch an action from url change that is caused by action dispatch", () => {
   //given
   const actionType = "THE_ACTION";
   const id = "1";

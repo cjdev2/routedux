@@ -2,7 +2,7 @@ import {createActionDispatcher} from "./action-router";
 
 function buildMiddleware(actionDispatcher) {
   return store => next => action => {
-    actionDispatcher.receiveAction(action, store);
+    actionDispatcher.receiveAction(action);
 
     return next(action);
   };
