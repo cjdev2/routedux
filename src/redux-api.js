@@ -2,9 +2,8 @@ import {createActionDispatcher} from "./action-router";
 
 function buildMiddleware(actionDispatcher) {
   return store => next => action => {
-    if (actionDispatcher.handlesAction(action)) {
-      actionDispatcher.receiveAction(action, store);
-    }
+    actionDispatcher.receiveAction(action, store);
+
     return next(action);
   };
 }
@@ -16,7 +15,7 @@ function enhanceStoreCreator(actionDispatcher) {
     return (reducer, finalInitialState, enhancer) => {
       const theStore = nextStoreCreator(reducer, finalInitialState, enhancer);
 
-      actionDispatcher.activateDispatcher(theStore);
+      actionDispatcher.addActionListener((action) => theStore.dispatch(action));
 
       theStore.dispatch = middleware(theStore)(
         theStore.dispatch.bind(theStore)
@@ -26,8 +25,9 @@ function enhanceStoreCreator(actionDispatcher) {
   };
 }
 
-export default function installBrowserRouter(routesConfig, window) {
-  const actionDispatcher = createActionDispatcher(routesConfig, window);
+
+export default function installBrowserRouter(routesConfig, _window = window) {
+  const actionDispatcher = createActionDispatcher(routesConfig, _window);
 
   const middleware = x => {
     //eslint-disable-next-line no-console
@@ -44,7 +44,7 @@ export default function installBrowserRouter(routesConfig, window) {
     enhancer: enhanceStoreCreator(actionDispatcher),
     init: actionDispatcher.receiveLocation.bind(
       actionDispatcher,
-      window.location
+      _window.location
     ),
     _actionDispatcher: actionDispatcher
   };

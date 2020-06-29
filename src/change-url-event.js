@@ -1,6 +1,6 @@
 import * as R from "ramda";
 
-export function wrapEvent(target, name, obj) {
+function wrapEvent(target, name, obj) {
   target.addEventListener(name, obj);
 }
 

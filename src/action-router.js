@@ -196,6 +196,7 @@ function makeRoute(path, action, extraParams) {
 
 function normalizeWildcards(path) {
   let curIdx = 0;
+  //todo curIdx doesn't increment
   return path.map(el => {
     if (isWildcard(el)) {
       return `:wildcard${curIdx}`;
@@ -295,61 +296,76 @@ function createActionDispatcher(routesConfig, window) {
     return match ? constructAction(match) : null;
   }
 
-  const actionDispatcher = {
-    currentLocation: null,
-    store: null,
+  let actionListeners = [];
+  let currentPath = null;
 
-    activateDispatcher(store) {
-      window.addEventListener("urlchanged", this);
-      this.store = store;
-    },
+  function ifPathChanged(newPath, cb) {
+    if (currentPath !== newPath) {
+      currentPath = newPath;
+      cb();
+    }
+  }
+
+  const actionDispatcher = {
 
     pathForAction,
 
-
-    handleEvent(ev) {
-      if (!this.store) {
-        throw new Error(
-          "You must call activateDispatcher with redux store as argument"
-        );
+    //hook for everything to get action on route change
+    addActionListener(cb) {
+      actionListeners.push(cb);
+      return () => {
+        const index = R.findIndex(x => x === cb, actionListeners);
+        actionListeners = R.remove(index, 1, actionListeners);
       }
+    },
 
+    //needed for window event listener
+    handleEvent(ev) {
       const location = ev.detail;
       this.receiveLocation(location);
     },
 
-    onLocationChanged(newLoc, cb) {
-      if (this.currentLocation !== newLoc) {
-        this.currentLocation = newLoc;
-        cb();
-      }
-    },
-
     receiveLocation(location) {
-      this.onLocationChanged(location.pathname, () => {
+      ifPathChanged(location.pathname, () => {
 
         const action = actionForLocation(location);
 
         if (action) {
-          this.store.dispatch(action);
+          actionListeners.forEach(cb => cb(action));
         }
       });
     },
+    // necessary for new APIs that aren't redux-focused - need to propagate
+    navigateToRoute(route, params) {
+      const action = {type: route, ...params};
+      const newPath = matchesAction(action, compiledActionMatchers)
+        ? pathForAction(action)
+        : null;
 
-    receiveAction(action) {
-      const path = pathForAction(action);
-
-      if (path) {
-        this.onLocationChanged(path, () => {
-          window.history.pushState({}, "", path);
+      if (newPath) {
+        ifPathChanged(newPath, () => {
+          window.history.pushState({}, "", newPath);
+          actionListeners.forEach(cb => cb(action));
         });
       }
     },
 
-    handlesAction(action) {
-      return matchesAction(action, compiledActionMatchers);
-    }
+    // can this be simplified to get rid of fundamental action model?
+    receiveAction(action) {
+      const newPath = matchesAction(action, compiledActionMatchers)
+                    ? pathForAction(action)
+                    : null;
+
+      if (newPath) {
+        ifPathChanged(newPath, () => {
+          window.history.pushState({}, "", newPath);
+        });
+      }
+    },
+
   };
+
+  window.addEventListener("urlchanged", actionDispatcher);
 
   return actionDispatcher;
 }

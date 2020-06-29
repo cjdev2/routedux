@@ -1,14 +1,16 @@
 import addMissingHistoryEvents from "./history-events";
 import addChangeUrlEvent from "./change-url-event";
-import installRouter from "./action-router";
+import installBrowserRouter from "./redux-api";
 import Fragment from "./fragment";
 import ActionLink from "./action-link";
+import {createActionDispatcher} from "./action-router";
 
 addMissingHistoryEvents(window, window.history);
 addChangeUrlEvent(window);
 
-const installBrowserRouter = function(routesConfig) {
-  return installRouter(routesConfig, window);
+export {
+  installBrowserRouter,
+  Fragment,
+  ActionLink,
+  createActionDispatcher
 };
-
-export { installBrowserRouter, Fragment, ActionLink};
