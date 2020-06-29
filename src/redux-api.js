@@ -8,7 +8,7 @@ function buildMiddleware(actionDispatcher) {
   };
 }
 
-function enhanceStoreCreator(actionDispatcher) {
+function enhanceStoreFactory(actionDispatcher) {
   return function enhanceStore(nextStoreCreator) {
     const middleware = buildMiddleware(actionDispatcher);
 
@@ -16,6 +16,8 @@ function enhanceStoreCreator(actionDispatcher) {
       const theStore = nextStoreCreator(reducer, finalInitialState, enhancer);
 
       actionDispatcher.addActionListener((action) => theStore.dispatch(action));
+
+      theStore.pathForAction = actionDispatcher.pathForAction.bind(actionDispatcher);
 
       theStore.dispatch = middleware(theStore)(
         theStore.dispatch.bind(theStore)
@@ -41,7 +43,7 @@ export default function installBrowserRouter(routesConfig, _window = window) {
 
   return {
     middleware,
-    enhancer: enhanceStoreCreator(actionDispatcher),
+    enhancer: enhanceStoreFactory(actionDispatcher),
     init: actionDispatcher.receiveLocation.bind(
       actionDispatcher,
       _window.location

@@ -50,7 +50,7 @@ function RouteLink({route, params, children, ...props}) {
       return <a
         onClick={(ev) => {
           ev.preventDefault();
-          dispatcher.navigateToRoute(route, params);
+          dispatcher.receiveAction(action, true);
         }}
         href={url} {...props}>{children}</a>
     }

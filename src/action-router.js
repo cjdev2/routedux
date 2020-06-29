@@ -335,23 +335,9 @@ function createActionDispatcher(routesConfig, window) {
         }
       });
     },
-    // necessary for new APIs that aren't redux-focused - need to propagate
-    navigateToRoute(route, params) {
-      const action = {type: route, ...params};
-      const newPath = matchesAction(action, compiledActionMatchers)
-        ? pathForAction(action)
-        : null;
-
-      if (newPath) {
-        ifPathChanged(newPath, () => {
-          window.history.pushState({}, "", newPath);
-          actionListeners.forEach(cb => cb(action));
-        });
-      }
-    },
 
     // can this be simplified to get rid of fundamental action model?
-    receiveAction(action) {
+    receiveAction(action, fireCallbacks = false) {
       const newPath = matchesAction(action, compiledActionMatchers)
                     ? pathForAction(action)
                     : null;
@@ -359,6 +345,9 @@ function createActionDispatcher(routesConfig, window) {
       if (newPath) {
         ifPathChanged(newPath, () => {
           window.history.pushState({}, "", newPath);
+          if(fireCallbacks) {
+            actionListeners.forEach(cb => cb(action));
+          }
         });
       }
     },
