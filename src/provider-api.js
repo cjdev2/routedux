@@ -2,24 +2,24 @@ import * as R from 'ramda';
 import React, {useReducer, useEffect} from 'react';
 import PropTypes from 'prop-types';
 
+import {createActionDispatcher} from "./action-router";
+
 const RouteContext = React.createContext(null);
 const ActionDispatcherContext = React.createContext(null);
 
-function RouteProvider({children, actionDispatcher, _window}) {
+function RouteProvider({children, routeDispatcher, _window}) {
 
-  const [route, updateRoute] = useReducer((state, action) =>
-      R.omit(['type'], R.assoc('routeName', action.type, action))
-    , {});
+  const [route, updateRoute] = useReducer((state, action) => action, {});
 
   useEffect(() => {
-    return actionDispatcher.addActionListener(action => updateRoute(action));
+    return routeDispatcher.addRouteListener(updateRoute);
   });
 
   useEffect(() => {
-    actionDispatcher.receiveLocation(_window.location);
+    routeDispatcher.receiveLocation(_window.location);
   });
 
-  return (<ActionDispatcherContext.Provider value={actionDispatcher}>
+  return (<ActionDispatcherContext.Provider value={routeDispatcher}>
     <RouteContext.Provider value={route}>
       {children}
     </RouteContext.Provider>
@@ -36,7 +36,7 @@ RouteProvider.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
   ]),
-  actionDispatcher: PropTypes.object
+  routeDispatcher: PropTypes.object
 };
 
 function getDisplayName(WrappedComponent) {
@@ -89,4 +89,28 @@ RouteLink.propTypes = {
   ]),
 };
 
-export {RouteProvider, withRoute, RouteLink};
+function routeToAction(route) {
+  return R.omit(['routeName'], R.assoc('type', route.routeName, action))
+}
+function actionToRoute(action) {
+  return R.omit(['type'], R.assoc('routeName', action.type, action))
+}
+
+function createRouteDispatcher(routesConfig, _window = window) {
+  const actionDispatcher = createActionDispatcher(routesConfig, _window);
+
+  actionDispatcher.receiveRoute = (route) => actionDispatcher.receiveAction(routeToAction(route));
+  actionDispatcher.addRouteListener = (cb) => actionDispatcher.addActionListener((action) => cb(actionToRoute(action)));
+
+  Object.defineProperty(actionDispatcher, "currentRoute", {
+    enumerable: true,
+    writable: false,
+    get: function() {
+      return actionToRoute(this.currentAction)
+    }
+  });
+
+  return actionDispatcher;
+}
+
+export {RouteProvider, withRoute, RouteLink, createRouteDispatcher};

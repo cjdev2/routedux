@@ -281,7 +281,7 @@ function constructPath(match) {
   return resultParts.join("/");
 }
 
-function createActionDispatcher(routesConfig, window) {
+function createActionDispatcher(routesConfig, _window = window) {
   const { compiledActionMatchers, compiledRouteMatchers } = compileRoutes(
     routesConfig
   );
@@ -298,6 +298,7 @@ function createActionDispatcher(routesConfig, window) {
 
   let actionListeners = [];
   let currentPath = null;
+  let currentAction = null;
 
   function ifPathChanged(newPath, cb) {
     if (currentPath !== newPath) {
@@ -307,7 +308,12 @@ function createActionDispatcher(routesConfig, window) {
   }
 
   const actionDispatcher = {
-
+    get currentPath() {
+      return currentPath;
+    },
+    get currentAction() {
+      return currentAction;
+    },
     pathForAction,
 
     //hook for everything to get action on route change
@@ -330,6 +336,8 @@ function createActionDispatcher(routesConfig, window) {
 
         const action = actionForLocation(location);
 
+        currentAction = action;
+
         if (action) {
           actionListeners.forEach(cb => cb(action));
         }
@@ -344,7 +352,10 @@ function createActionDispatcher(routesConfig, window) {
 
       if (newPath) {
         ifPathChanged(newPath, () => {
-          window.history.pushState({}, "", newPath);
+          currentAction = action;
+
+          _window.history.pushState({}, "", newPath);
+
           if(fireCallbacks) {
             actionListeners.forEach(cb => cb(action));
           }
@@ -354,7 +365,7 @@ function createActionDispatcher(routesConfig, window) {
 
   };
 
-  window.addEventListener("urlchanged", actionDispatcher);
+  _window.addEventListener("urlchanged", actionDispatcher);
 
   return actionDispatcher;
 }
