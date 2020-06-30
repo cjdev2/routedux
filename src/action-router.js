@@ -207,7 +207,7 @@ function normalizeWildcards(path) {
 }
 
 function routeAlreadyExists(compiledRouteMatchers, path) {
-  let result = compiledRouteMatchers.hasOwnProperty(path);
+  let result = Object.prototype.hasOwnProperty.call(compiledRouteMatchers, path);
 
   if (!result) {
     const normalizingSplit = R.compose(
@@ -270,7 +270,7 @@ function constructPath(match) {
   for (const part of parts) {
     if (part[0] === ":") {
       const name = part.slice(1);
-      const val = match.extractedParams.hasOwnProperty(name)
+      const val = Object.prototype.hasOwnProperty.call(match.extractedParams, name)
         ? match.extractedParams[name]
         : match.extraParams[name];
       resultParts.push(val);
