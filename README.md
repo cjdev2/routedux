@@ -1,4 +1,4 @@
-# Routedux — Routes the Redux Way [![npm version](https://badge.fury.io/js/routedux.svg)](https://badge.fury.io/js/routedux) [![Build Status](https://travis-ci.org/cjdev/routedux.svg?branch=master)](https://travis-ci.org/cjdev/routedux)
+# Routedux — Routes the Redux Way [![npm version](https://badge.fury.io/js/routedux.svg)](https://badge.fury.io/js/routedux) ![Node.js CI](https://github.com/fiddlerwoaroof/routedux/workflows/Node.js%20CI/badge.svg)
 
 <img alt="Route Dux" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Ducks_crossing_the_road_sign.png/92px-Ducks_crossing_the_road_sign.png" align="right" />
 
