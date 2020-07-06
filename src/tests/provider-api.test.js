@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import Adapter from "enzyme-adapter-react-16";
 import { act } from "react-dom/test-utils";
 
@@ -96,19 +95,7 @@ describe("RouteProvider and helpers", () => {
     expect(received).toEqual({ routeName: "bar", id: "foo" });
   });
 
-  let container;
-
-  beforeEach(() => {
-    container = document.createElement("div");
-    document.body.appendChild(container);
-  });
-
-  afterEach(() => {
-    document.body.removeChild(container);
-    container = null;
-  });
-
-  test("withRoute", async () => {
+  test("withRoute", () => {
     // given
     const Dummy = ({ route, children }) => {
       return (
@@ -123,20 +110,26 @@ describe("RouteProvider and helpers", () => {
     const routeDispatcher = createRouteDispatcher(routesConfig, _window);
 
     let wrapper;
-    await act(async () => {
-      ReactDOM.render(
+    act(() => {
+      wrapper = mount(
         <RouteProvider routeDispatcher={routeDispatcher}>
           <DummyWithRoute>children text</DummyWithRoute>
-        </RouteProvider>,
-        container
+        </RouteProvider>
       );
     });
     // when
 
-    const routeText = container.querySelector(".route").textContext;
-    const childrenText = container.querySelector(".children").textContext;
+    let routeText = wrapper.find(".route").text();
+    const childrenText = wrapper.find(".children").text();
     // then
     expect(routeText).toEqual(JSON.stringify({ routeName: "foo" }));
     expect(childrenText).toEqual("children text");
+
+    act(() => {
+      routeDispatcher.receiveLocation(createLocation("/bar/foo"));
+    });
+    routeText = wrapper.find(".route").text();
+    // then
+    expect(routeText).toEqual(JSON.stringify({ id: "foo", routeName: "bar" }));
   });
 });

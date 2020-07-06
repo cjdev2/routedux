@@ -7,19 +7,16 @@ import { createActionDispatcher } from "./action-router";
 const RouteContext = React.createContext(null);
 const ActionDispatcherContext = React.createContext(null);
 
-function RouteProvider({ children, routeDispatcher, _window }) {
-  const [route, updateRoute] = useReducer((state, action) => action, {});
+function RouteProvider({ children, routeDispatcher }) {
+  const [route, updateRoute] = useReducer((state, route) => route, {});
 
   useEffect(() => {
     return routeDispatcher.addRouteListener(updateRoute);
   });
 
   useEffect(() => {
-    console.log("location received", _window.location);
-    routeDispatcher.receiveLocation(_window.location);
-  });
-
-  console.log("route", route);
+    routeDispatcher.init();
+  }, []);
 
   return (
     <ActionDispatcherContext.Provider value={routeDispatcher}>
@@ -28,12 +25,7 @@ function RouteProvider({ children, routeDispatcher, _window }) {
   );
 }
 
-RouteProvider.defaultProps = {
-  _window: window ? window : null,
-};
-
 RouteProvider.propTypes = {
-  _window: PropTypes.object,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
@@ -49,10 +41,9 @@ function withRoute(Component) {
   const routeAdded = ({ children, ...restProps }) => {
     return (
       <RouteContext.Consumer>
-        {(route) => {
-          console.log(route);
-          return <Component {...{ ...restProps, route }}>{children}</Component>;
-        }}
+        {(route) => (
+          <Component {...{ ...restProps, route }}>{children}</Component>
+        )}
       </RouteContext.Consumer>
     );
   };

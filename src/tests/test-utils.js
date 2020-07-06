@@ -1,4 +1,3 @@
-
 export function createLocation(path) {
   return {
     hash: "#hash",
@@ -8,7 +7,7 @@ export function createLocation(path) {
     href: "",
     pathname: path,
     port: 80,
-    protocol: "https:"
+    protocol: "https:",
   };
 }
 
@@ -32,8 +31,8 @@ export function createFakeWindow(path = "/path/to/thing") {
       pushState: jest.fn((_, __, path) => {
         window.location = pushLocation(window, path);
       }),
-      replaceState: jest.fn()
-    }
+      replaceState: jest.fn(),
+    },
   };
 
   pushLocation(window, path);
@@ -49,7 +48,7 @@ export function createFakeWindow(path = "/path/to/thing") {
     }
   }
 
-  window.dispatchEvent = jest.fn(ev => {
+  window.dispatchEvent = jest.fn((ev) => {
     const evName = ev.type;
     if (map[evName]) {
       prepareEvent(window, evName);

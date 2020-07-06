@@ -4,7 +4,7 @@ import installBrowserRouter from "../redux-api";
 import addChangeUrlEvent from "../change-url-event.js";
 import addMissingHistoryEvents from "../history-events.js";
 
-import {createFakeWindow, createLocation} from "./test-utils";
+import { createFakeWindow, createLocation } from "./test-utils";
 
 //eslint-disable-next-line no-console
 const console_log = console.log;
@@ -21,25 +21,26 @@ console.log = () => {};
 //   console.log = () => {};
 // }
 
-
-
 function setupTest(routesConfig, path = "/path/to/thing") {
   const window = createFakeWindow(path);
   const mockPushState = window.history.pushState;
   addMissingHistoryEvents(window, window.history);
   addChangeUrlEvent(window, window.history);
 
-  const { enhancer, init, _actionDispatcher } = installBrowserRouter(routesConfig, window);
+  const { enhancer, init, _actionDispatcher } = installBrowserRouter(
+    routesConfig,
+    window
+  );
   const reduce = jest.fn();
 
   const store = createStore(reduce, enhancer);
 
   function urlChanges() {
-    return mockPushState.mock.calls.map(item => item[2]);
+    return mockPushState.mock.calls.map((item) => item[2]);
   }
 
   function actionsDispatched() {
-    return reduce.mock.calls.map(item => item[1]).slice(1);
+    return reduce.mock.calls.map((item) => item[1]).slice(1);
   }
 
   function fireUrlChange(path) {
@@ -56,7 +57,7 @@ function setupTest(routesConfig, path = "/path/to/thing") {
     actionsDispatched,
     fireUrlChange,
     init,
-    _actionDispatcher
+    _actionDispatcher,
   };
 }
 
@@ -66,7 +67,7 @@ it("router handles exact match in preference to wildcard match", () => {
   const action = { type: actionType, id: 1 };
   const routesConfig = [
     ["/somewhere/:id", actionType, {}],
-    ["/somewhere", actionType, { id: 1 }]
+    ["/somewhere", actionType, { id: 1 }],
   ];
   const { urlChanges, store } = setupTest(routesConfig);
 
@@ -85,7 +86,7 @@ it("router does not dispatch an action from url change that is caused by action 
   const action = { type: actionType, id, view };
   const routesConfig = [
     ["/somewhere/:id/:view", actionType, {}],
-    ["/somewhere/:id/default", actionType, { view: "home" }]
+    ["/somewhere/:id/default", actionType, { view: "home" }],
   ];
   const { store, actionsDispatched } = setupTest(routesConfig);
 
@@ -101,7 +102,7 @@ it("popstate doesn't cause a pushstate", () => {
   const actionType = "THE_ACTION";
   const routesConfig = [
     ["/somewhere/:id/:view", actionType, {}],
-    ["/somewhere/:id/default", actionType, { view: "home" }]
+    ["/somewhere/:id/default", actionType, { view: "home" }],
   ];
 
   const { urlChanges, init, window } = setupTest(
@@ -125,7 +126,7 @@ it("router handles wildcard with extra args correctly", () => {
   const action = { type: actionType, id: 1, view: "home" };
   const routesConfig = [
     ["/somewhere/:id/:view", actionType, {}],
-    ["/somewhere/:id/default", actionType, { view: "home" }]
+    ["/somewhere/:id/default", actionType, { view: "home" }],
   ];
   const { urlChanges, store } = setupTest(routesConfig);
 
@@ -142,7 +143,7 @@ it("router handles wildcard with extraArgs correctly with reverse order", () => 
   const action = { type: actionType, id: 1, view: "home" };
   const routesConfig = [
     ["/somewhere/:id/default", actionType, { view: "home" }],
-    ["/somewhere/:id/:view", actionType, {}]
+    ["/somewhere/:id/:view", actionType, {}],
   ];
   const { urlChanges, store } = setupTest(routesConfig);
 
@@ -199,7 +200,7 @@ it("router should match non-wildcard route in preference to wildcard route", () 
   // given
   const routesConfig = [
     ["/somewhere/:id", "ACTION_NAME", {}],
-    ["/somewhere/specific", "ACTION_NAME", { id: 1 }]
+    ["/somewhere/specific", "ACTION_NAME", { id: 1 }],
   ];
   const { actionsDispatched, fireUrlChange } = setupTest(routesConfig);
 
@@ -214,7 +215,7 @@ it("router should throw on duplicate paths", () => {
   // given
   const routesConfig = [
     ["/somewhere/:id", "ACTION_NAME", {}],
-    ["/somewhere/:id", "ACTION_NAME", {}]
+    ["/somewhere/:id", "ACTION_NAME", {}],
   ];
 
   expect(() => {
@@ -226,7 +227,7 @@ it("router should throw on equally specific routes", () => {
   // given
   const routesConfig = [
     ["/somewhere/:id", "ACTION_NAME", {}],
-    ["/somewhere/:specific", "ACTION_NAME", {}]
+    ["/somewhere/:specific", "ACTION_NAME", {}],
   ];
 
   expect(() => {
@@ -238,7 +239,7 @@ it("router should match less-wildcarded routes in preference to more wildcarded 
   //given
   const routesConfig = [
     ["/somewhere/:id/:view/:bar", "ACTION_NAME", {}],
-    ["/somewhere/:foo/:id/:view/:baz", "ACTION_NAME", {}]
+    ["/somewhere/:foo/:id/:view/:baz", "ACTION_NAME", {}],
   ];
   const { actionsDispatched, fireUrlChange } = setupTest(routesConfig);
 
@@ -247,7 +248,7 @@ it("router should match less-wildcarded routes in preference to more wildcarded 
 
   // then
   expect(actionsDispatched()).toEqual([
-    { type: "ACTION_NAME", id: "specific", view: "etc", bar: "bar" }
+    { type: "ACTION_NAME", id: "specific", view: "etc", bar: "bar" },
   ]);
 });
 
@@ -256,7 +257,7 @@ it("router should propagate matches through non-matching cases", () => {
   const routesConfig = [
     ["/somewhere/specific/:view", "ACTION_NAME", { id: 1 }],
     ["/somewhere/:id/:view", "ACTION_NAME", {}],
-    ["/not/a/match", "ACTION_NAME", {}]
+    ["/not/a/match", "ACTION_NAME", {}],
   ];
   const { actionsDispatched, fireUrlChange } = setupTest(routesConfig);
 
@@ -265,7 +266,7 @@ it("router should propagate matches through non-matching cases", () => {
 
   // then
   expect(actionsDispatched()).toEqual([
-    { type: "ACTION_NAME", id: 1, view: "etc" }
+    { type: "ACTION_NAME", id: 1, view: "etc" },
   ]);
 });
 
@@ -273,7 +274,7 @@ it("router should give precedence to exact match first in equally-specific route
   // given
   const routesConfig = [
     ["/something/:dynamic", "ACTION_NAME", {}],
-    ["/:dyn/something", "ACTION_NAME", {}]
+    ["/:dyn/something", "ACTION_NAME", {}],
   ];
   const { actionsDispatched, fireUrlChange } = setupTest(routesConfig);
 
@@ -282,7 +283,7 @@ it("router should give precedence to exact match first in equally-specific route
 
   // then
   expect(actionsDispatched()).toEqual([
-    { type: "ACTION_NAME", dynamic: "something" }
+    { type: "ACTION_NAME", dynamic: "something" },
   ]);
 });
 
@@ -290,15 +291,18 @@ it("actionDispatcher keeps track of current action and current path", () => {
   // given
   const routesConfig = [
     ["/something/:dynamic", "ACTION_NAME", {}],
-    ["/hi/something", "ACTION_NAME", {dynamic: 'foo'}]
+    ["/hi/something", "ACTION_NAME", { dynamic: "foo" }],
   ];
-  const { actionsDispatched, fireUrlChange, _actionDispatcher } = setupTest(routesConfig);
+  const { actionsDispatched, fireUrlChange, _actionDispatcher } = setupTest(
+    routesConfig
+  );
 
   // when
   fireUrlChange("/something/something");
   //then
   expect(_actionDispatcher.currentAction).toEqual({
-    type: "ACTION_NAME", dynamic: "something"
+    type: "ACTION_NAME",
+    dynamic: "something",
   });
   expect(_actionDispatcher.currentPath).toEqual("/something/something");
 
@@ -306,17 +310,17 @@ it("actionDispatcher keeps track of current action and current path", () => {
   fireUrlChange("/hi/something");
   //then
   expect(_actionDispatcher.currentAction).toEqual({
-    type: "ACTION_NAME", dynamic: "foo"
+    type: "ACTION_NAME",
+    dynamic: "foo",
   });
   expect(_actionDispatcher.currentPath).toEqual("/hi/something");
-
 });
 
 it("router handles the current location when initialized", () => {
   // given
   const routesConfig = [
     ["/something/:dynamic", "ACTION_NAME", {}],
-    ["/:dyn/something", "ACTION_NAME", {}]
+    ["/:dyn/something", "ACTION_NAME", {}],
   ];
 
   // when
@@ -329,7 +333,7 @@ it("router handles the current location when initialized", () => {
 
   // then
   expect(actionsDispatched()).toEqual([
-    { type: "ACTION_NAME", dynamic: "something" }
+    { type: "ACTION_NAME", dynamic: "something" },
   ]);
 });
 
@@ -337,7 +341,7 @@ it("pathForAction should render a route", () => {
   // given
   const routesConfig = [
     ["/something/:dynamic", "ACTION_NAME", {}],
-    ["/:dyn/something", "ACTION_NAME", {}]
+    ["/:dyn/something", "ACTION_NAME", {}],
   ];
   const action = { type: "ACTION_NAME", dynamic: "hooray" };
   const { _actionDispatcher } = setupTest(routesConfig);
@@ -346,6 +350,25 @@ it("pathForAction should render a route", () => {
 
   // then
   expect(actual).toEqual("/something/hooray");
+});
+
+it("cannot be double init'd", () => {
+  // given
+  const routesConfig = [
+    ["/something/:dynamic", "ACTION_NAME", {}],
+    ["/:dyn/something", "ACTION_NAME", {}],
+  ];
+  const { init, fireUrlChange, _actionDispatcher } = setupTest(
+    routesConfig,
+    "/something/foo"
+  );
+  // when
+  init();
+  expect(_actionDispatcher.currentPath).toEqual("/something/foo");
+  fireUrlChange("/foo/something");
+  expect(_actionDispatcher.currentPath).toEqual("/foo/something");
+  init();
+  expect(_actionDispatcher.currentPath).toEqual("/foo/something");
 });
 
 //eslint-disable-next-line no-console
