@@ -62,9 +62,9 @@ function withRoute(Component) {
   return routeAdded;
 }
 
-function RouteLink({route, params, children, ...props}) {
+function RouteLink({routeName, params, children, ...props}) {
   const action = {
-    type: route, ...params
+    type: routeName, ...params
   };
   return <ActionDispatcherContext.Consumer>{
     dispatcher => {
@@ -90,7 +90,7 @@ RouteLink.propTypes = {
 };
 
 function routeToAction(route) {
-  return R.omit(['routeName'], R.assoc('type', route.routeName, action))
+  return R.omit(['routeName'], R.assoc('type', route.routeName, route))
 }
 function actionToRoute(action) {
   return R.omit(['type'], R.assoc('routeName', action.type, action))
@@ -99,12 +99,11 @@ function actionToRoute(action) {
 function createRouteDispatcher(routesConfig, _window = window) {
   const actionDispatcher = createActionDispatcher(routesConfig, _window);
 
-  actionDispatcher.receiveRoute = (route) => actionDispatcher.receiveAction(routeToAction(route));
+  actionDispatcher.receiveRoute = (route) => actionDispatcher.receiveAction(routeToAction(route), true);
   actionDispatcher.addRouteListener = (cb) => actionDispatcher.addActionListener((action) => cb(actionToRoute(action)));
 
   Object.defineProperty(actionDispatcher, "currentRoute", {
     enumerable: true,
-    writable: false,
     get: function() {
       return actionToRoute(this.currentAction)
     }

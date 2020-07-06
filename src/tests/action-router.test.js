@@ -4,6 +4,8 @@ import installBrowserRouter from "../redux-api";
 import addChangeUrlEvent from "../change-url-event.js";
 import addMissingHistoryEvents from "../history-events.js";
 
+import {createFakeWindow, createLocation} from "./test-utils";
+
 //eslint-disable-next-line no-console
 const console_log = console.log;
 //eslint-disable-next-line no-console
@@ -19,66 +21,7 @@ console.log = () => {};
 //   console.log = () => {};
 // }
 
-function createLocation(path) {
-  return {
-    hash: "#hash",
-    host: "example.com",
-    hostname: "example",
-    origin: "",
-    href: "",
-    pathname: path,
-    port: 80,
-    protocol: "https:"
-  };
-}
 
-function createFakeWindow(path = "/path/to/thing") {
-  let locations = [createLocation("(root)")];
-  function pushLocation(window, path) {
-    let newLoc = createLocation(path);
-    locations.push(newLoc);
-    window.location = newLoc;
-    return newLoc;
-  }
-  function popLocation(window) {
-    locations.pop();
-    let newLoc = locations[locations.length - 1];
-    window.location = newLoc;
-    return newLoc;
-  }
-
-  const window = {
-    history: {
-      pushState: jest.fn((_, __, path) => {
-        window.location = pushLocation(window, path);
-      }),
-      replaceState: jest.fn()
-    }
-  };
-
-  pushLocation(window, path);
-  const map = {};
-
-  window.addEventListener = jest.fn((event, cb) => {
-    map[event] = cb;
-  });
-
-  function prepareEvent(window, evName) {
-    if (evName === "popstate") {
-      window.location = popLocation(window);
-    }
-  }
-
-  window.dispatchEvent = jest.fn(ev => {
-    const evName = ev.type;
-    if (map[evName]) {
-      prepareEvent(window, evName);
-      map[evName].handleEvent(ev);
-    }
-  });
-
-  return window;
-}
 
 function setupTest(routesConfig, path = "/path/to/thing") {
   const window = createFakeWindow(path);
@@ -341,6 +284,32 @@ it("router should give precedence to exact match first in equally-specific route
   expect(actionsDispatched()).toEqual([
     { type: "ACTION_NAME", dynamic: "something" }
   ]);
+});
+
+it("actionDispatcher keeps track of current action and current path", () => {
+  // given
+  const routesConfig = [
+    ["/something/:dynamic", "ACTION_NAME", {}],
+    ["/hi/something", "ACTION_NAME", {dynamic: 'foo'}]
+  ];
+  const { actionsDispatched, fireUrlChange, _actionDispatcher } = setupTest(routesConfig);
+
+  // when
+  fireUrlChange("/something/something");
+  //then
+  expect(_actionDispatcher.currentAction).toEqual({
+    type: "ACTION_NAME", dynamic: "something"
+  });
+  expect(_actionDispatcher.currentPath).toEqual("/something/something");
+
+  //when
+  fireUrlChange("/hi/something");
+  //then
+  expect(_actionDispatcher.currentAction).toEqual({
+    type: "ACTION_NAME", dynamic: "foo"
+  });
+  expect(_actionDispatcher.currentPath).toEqual("/hi/something");
+
 });
 
 it("router handles the current location when initialized", () => {
