@@ -1,7 +1,7 @@
-import {createActionDispatcher} from "./action-router";
+import { createActionDispatcher } from "./action-router";
 
 function buildMiddleware(actionDispatcher) {
-  return _ => next => action => {
+  return (_) => (next) => (action) => {
     actionDispatcher.receiveAction(action);
 
     return next(action);
@@ -17,7 +17,9 @@ function enhanceStoreFactory(actionDispatcher) {
 
       actionDispatcher.addActionListener((action) => theStore.dispatch(action));
 
-      theStore.pathForAction = actionDispatcher.pathForAction.bind(actionDispatcher);
+      theStore.pathForAction = actionDispatcher.pathForAction.bind(
+        actionDispatcher
+      );
 
       theStore.dispatch = middleware(theStore)(
         theStore.dispatch.bind(theStore)
@@ -27,27 +29,23 @@ function enhanceStoreFactory(actionDispatcher) {
   };
 }
 
-
 export default function installBrowserRouter(routesConfig, _window = window) {
   const actionDispatcher = createActionDispatcher(routesConfig, _window);
 
-  const middleware = x => {
+  const middleware = (x) => {
     //eslint-disable-next-line no-console
     console.warn(
       "Using the routedux middleware directly is deprecated, the enhancer now" +
-      " applies it automatically and the middleware is now a no-op that" +
-      " will be removed in later versions."
+        " applies it automatically and the middleware is now a no-op that" +
+        " will be removed in later versions."
     );
-    return y => y;
+    return (y) => y;
   };
 
   return {
     middleware,
     enhancer: enhanceStoreFactory(actionDispatcher),
-    init: actionDispatcher.receiveLocation.bind(
-      actionDispatcher,
-      _window.location
-    ),
-    _actionDispatcher: actionDispatcher
+    init: actionDispatcher.init.bind(actionDispatcher),
+    _actionDispatcher: actionDispatcher,
   };
 }
