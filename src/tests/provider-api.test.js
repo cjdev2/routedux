@@ -1,15 +1,10 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
-import { act } from "react-dom/test-utils";
+import {act} from "react-dom/test-utils";
 
-import {
-  createRouteDispatcher,
-  RouteProvider,
-  RouteLink,
-  withRoute,
-} from "../provider-api";
-import { createFakeWindow, createLocation } from "./test-utils";
-import Enzyme, { mount } from "enzyme";
+import {createRouteDispatcher, RouteLink, RouteProvider, withRoute,} from "../provider-api";
+import {createFakeWindow, createLocation} from "./test-utils";
+import Enzyme, {mount} from "enzyme";
 
 const routesConfig = [
   ["/foo", "foo", {}],
@@ -97,15 +92,14 @@ describe("RouteProvider and helpers", () => {
 
   test("withRoute", () => {
     // given
-    const Dummy = ({ route, children }) => {
+    const DummyWithRoute = withRoute(({route, children}) => {
       return (
         <div>
           <span className="route">{JSON.stringify(route)}</span>
           <span className="children">{children}</span>
         </div>
       );
-    };
-    const DummyWithRoute = withRoute(Dummy);
+    });
     const _window = createFakeWindow("/foo");
     const routeDispatcher = createRouteDispatcher(routesConfig, _window);
 

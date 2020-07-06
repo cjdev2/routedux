@@ -84,7 +84,7 @@ function RouteLink({ routeName, params, children, ...props }) {
 }
 
 RouteLink.propTypes = {
-  route: PropTypes.string,
+  routeName: PropTypes.string,
   params: PropTypes.object,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),

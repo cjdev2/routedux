@@ -293,7 +293,7 @@ it("actionDispatcher keeps track of current action and current path", () => {
     ["/something/:dynamic", "ACTION_NAME", {}],
     ["/hi/something", "ACTION_NAME", { dynamic: "foo" }],
   ];
-  const { actionsDispatched, fireUrlChange, _actionDispatcher } = setupTest(
+  const { fireUrlChange, _actionDispatcher } = setupTest(
     routesConfig
   );
 
