@@ -1,6 +1,4 @@
-
 const ActionLink = (React, PropTypes) => {
-
   class ActionLink extends React.Component {
     constructor(props) {
       super(props);
@@ -17,18 +15,16 @@ const ActionLink = (React, PropTypes) => {
             ev.preventDefault();
             this.store.dispatch(action);
           }}
-          {...props}
-        >
+          {...props}>
           {children}
         </a>
       );
     }
   }
 
-
   ActionLink.propTypes = {
     action: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    children: PropTypes.node
+    children: PropTypes.node,
   };
 
   return ActionLink;
@@ -45,7 +41,7 @@ try {
 }
 
 export const _internal = {
-  ActionLink
+  ActionLink,
 };
 
 export default OutComponent;

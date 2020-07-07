@@ -36,11 +36,11 @@ function setupTest(routesConfig, path = "/path/to/thing") {
   const store = createStore(reduce, enhancer);
 
   function urlChanges() {
-    return mockPushState.mock.calls.map((item) => item[2]);
+    return mockPushState.mock.calls.map(item => item[2]);
   }
 
   function actionsDispatched() {
-    return reduce.mock.calls.map((item) => item[1]).slice(1);
+    return reduce.mock.calls.map(item => item[1]).slice(1);
   }
 
   function fireUrlChange(path) {
@@ -293,9 +293,7 @@ it("actionDispatcher keeps track of current action and current path", () => {
     ["/something/:dynamic", "ACTION_NAME", {}],
     ["/hi/something", "ACTION_NAME", { dynamic: "foo" }],
   ];
-  const { fireUrlChange, _actionDispatcher } = setupTest(
-    routesConfig
-  );
+  const { fireUrlChange, _actionDispatcher } = setupTest(routesConfig);
 
   // when
   fireUrlChange("/something/something");

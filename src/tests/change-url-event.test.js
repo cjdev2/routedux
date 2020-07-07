@@ -29,8 +29,8 @@ it("given event handler should generate a urlchange event only when url changes"
       href: "",
       pathname: "/path/to/thing",
       port: 80,
-      protocol: "https:"
-    }
+      protocol: "https:",
+    },
   };
   const map = {};
   const calls = [];

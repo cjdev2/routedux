@@ -11,12 +11,12 @@ users want pretty urls and deep links.
 
 ## Wait, my application doesn't need to know it lives in a browser?
 
-URLs are great for finding things on the internet.  But a single page
+URLs are great for finding things on the internet. But a single page
 application is not the same as a collection of resources that lives on
 a remote server.
 
 A single page application is a web application only in the sense that
-it lives on the web.  URLs are are not essential
+it lives on the web. URLs are are not essential
 to it working well.
 
 URLs give users accessing your application in a browser the ability to
@@ -29,15 +29,15 @@ paths should be littered through your application.
 When you are developing a redux application, you want your UI to be a
 pure function of the current state tree.
 
-By adding routes to that, it makes it harder to test.  And this
+By adding routes to that, it makes it harder to test. And this
 difficulty can be compounded by other decisions about how to add
 routes to your application.
 
 ## An alternative approach
 
 React Router is the currently-accepted way to do URL routing in React
-applications.  For a standard React application without Redux, this
-solution isn't too bad.  But once you add Redux, things get difficult.
+applications. For a standard React application without Redux, this
+solution isn't too bad. But once you add Redux, things get difficult.
 
 We basically discovered the same lessons as Formidable Labs:
 [React Router is the wrong way to route in Redux apps.](http://formidable.com/blog/2016/07/11/let-the-url-do-the-talking-part-1-the-pain-of-react-router-in-redux/)
@@ -98,23 +98,19 @@ Any time a handled action fires the url in the address bar will
 change, and if the url in the address bar changes the corresponding
 action will fire (unless the action was initiated by a url change).
 
-
 ## Route matching precedence - which route matches best?
 
 Route precedence is a function of the type of matching done in each
-segment and the order in which the wildcard segments match.  Exact
+segment and the order in which the wildcard segments match. Exact
 matches are always preferred to wildcards moving from left to right.
 
 ```javascript
-
-    const routesInOrderOfPrecedence = [
-
-      ['/user/me/update', '/user/me'], // both perfectly specific - will match above any wildcard route
-      '/user/me/:view',
-      '/user/:id/update', // less specific because 'me' is exact match, while :id is a wildcard
-      '/user/:id/:view'
-    ];
-
+const routesInOrderOfPrecedence = [
+  ["/user/me/update", "/user/me"], // both perfectly specific - will match above any wildcard route
+  "/user/me/:view",
+  "/user/:id/update", // less specific because 'me' is exact match, while :id is a wildcard
+  "/user/:id/:view",
+];
 ```
 
 ## Fragment component

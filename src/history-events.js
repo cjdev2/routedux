@@ -33,21 +33,21 @@ export default function addMissingHistoryEvents(window, history) {
 
     polyfillCustomEvent();
 
-    history.pushState = function(state, title, url) {
+    history.pushState = function (state, title, url) {
       let result = pushState(...arguments);
 
       var pushstate = new CustomEvent("pushstate", {
-        detail: { state, title, url }
+        detail: { state, title, url },
       });
       window.dispatchEvent(pushstate);
       return result;
     };
 
-    history.replaceState = function(state, title, url) {
+    history.replaceState = function (state, title, url) {
       const result = replaceState(...arguments);
 
       var replacestate = new CustomEvent("replacestate", {
-        detail: { state, title, url }
+        detail: { state, title, url },
       });
       window.dispatchEvent(replacestate);
       return result;

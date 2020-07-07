@@ -1,10 +1,15 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
-import {act} from "react-dom/test-utils";
+import { act } from "react-dom/test-utils";
 
-import {createRouteDispatcher, RouteLink, RouteProvider, withRoute,} from "../provider-api";
-import {createFakeWindow, createLocation} from "./test-utils";
-import Enzyme, {mount} from "enzyme";
+import {
+  createRouteDispatcher,
+  RouteLink,
+  RouteProvider,
+  withRoute,
+} from "../provider-api";
+import { createFakeWindow, createLocation } from "./test-utils";
+import Enzyme, { mount } from "enzyme";
 
 const routesConfig = [
   ["/foo", "foo", {}],
@@ -18,7 +23,7 @@ describe("routeDispatcher", () => {
     const _window = createFakeWindow("/foo");
     const routeDispatcher = createRouteDispatcher(routesConfig, _window);
     let thing = null;
-    routeDispatcher.addRouteListener((r) => {
+    routeDispatcher.addRouteListener(r => {
       thing = r;
     });
     //when
@@ -32,7 +37,7 @@ describe("routeDispatcher", () => {
     const _window = createFakeWindow("/foo");
     const routeDispatcher = createRouteDispatcher(routesConfig, _window);
     let thing = null;
-    routeDispatcher.addRouteListener((r) => {
+    routeDispatcher.addRouteListener(r => {
       thing = r;
     });
     //when
@@ -76,7 +81,7 @@ describe("RouteProvider and helpers", () => {
     const _window = createFakeWindow("/foo");
     const routeDispatcher = createRouteDispatcher(routesConfig, _window);
     let received = null;
-    routeDispatcher.receiveRoute = (route) => {
+    routeDispatcher.receiveRoute = route => {
       received = route;
     };
     const wrapper = mount(
@@ -92,7 +97,7 @@ describe("RouteProvider and helpers", () => {
 
   test("withRoute", () => {
     // given
-    const DummyWithRoute = withRoute(({route, children}) => {
+    const DummyWithRoute = withRoute(({ route, children }) => {
       return (
         <div>
           <span className="route">{JSON.stringify(route)}</span>

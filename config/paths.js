@@ -47,7 +47,7 @@ const moduleFileExtensions = [
   "tsx",
   "json",
   "web.jsx",
-  "jsx"
+  "jsx",
 ];
 
 // Resolve file paths in the same order as webpack
@@ -79,7 +79,7 @@ module.exports = {
   proxySetup: resolveApp("src/setupProxy.js"),
   appNodeModules: resolveApp("node_modules"),
   publicUrl: getPublicUrl(resolveApp("package.json")),
-  servedPath: getServedPath(resolveApp("package.json"))
+  servedPath: getServedPath(resolveApp("package.json")),
 };
 
 module.exports.moduleFileExtensions = moduleFileExtensions;

@@ -8,8 +8,8 @@ it("should overwrite pushstate and replacestate with event-emitting functions", 
     dispatchEvent: jest.fn(),
     history: {
       pushState,
-      replaceState
-    }
+      replaceState,
+    },
   };
 
   // when
@@ -23,10 +23,10 @@ it("should overwrite pushstate and replacestate with event-emitting functions", 
 
   //then
   expect(pushState.mock.calls).toEqual([
-    [{ item: "push" }, "pushstate", "/pushstate"]
+    [{ item: "push" }, "pushstate", "/pushstate"],
   ]);
   expect(replaceState.mock.calls).toEqual([
-    [{ item: "replace" }, "replacestate", "/replacestate"]
+    [{ item: "replace" }, "replacestate", "/replacestate"],
   ]);
   expect(window.dispatchEvent.mock.calls.length).toEqual(2);
   const windowCalls = window.dispatchEvent.mock.calls;
@@ -34,12 +34,12 @@ it("should overwrite pushstate and replacestate with event-emitting functions", 
   expect(windowCalls[0][0].detail).toEqual({
     state: { item: "push" },
     title: "pushstate",
-    url: "/pushstate"
+    url: "/pushstate",
   });
   expect(windowCalls[1][0].detail).toEqual({
     state: { item: "replace" },
     title: "replacestate",
-    url: "/replacestate"
+    url: "/replacestate",
   });
 });
 
@@ -51,8 +51,8 @@ it("should only add history-events once if called any number of times on same ob
     dispatchEvent: jest.fn(),
     history: {
       pushState,
-      replaceState
-    }
+      replaceState,
+    },
   };
 
   // when

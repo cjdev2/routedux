@@ -123,7 +123,7 @@ function extractParams(path) {
   const pathParts = path.split("/");
 
   const params = R.compose(
-    R.map((x) => x.substr(1)),
+    R.map(x => x.substr(1)),
     R.filter(isWildcard)
   )(pathParts);
 
@@ -136,7 +136,7 @@ function extractParams(path) {
 
 function normalizePathParts(path) {
   const splitAndFilterEmpty = R.compose(
-    R.filter((p) => p !== ""),
+    R.filter(p => p !== ""),
     R.split("/")
   );
 
@@ -204,7 +204,7 @@ function makeRoute(path, action, extraParams) {
 function normalizeWildcards(path) {
   let curIdx = 0;
   //todo curIdx doesn't increment
-  return path.map((el) => {
+  return path.map(el => {
     if (isWildcard(el)) {
       return `:wildcard${curIdx}`;
     } else {
@@ -338,7 +338,7 @@ function createActionDispatcher(routesConfig, _window = window) {
     addActionListener(cb) {
       actionListeners.push(cb);
       return () => {
-        const index = R.findIndex((x) => x === cb, actionListeners);
+        const index = R.findIndex(x => x === cb, actionListeners);
         actionListeners = R.remove(index, 1, actionListeners);
       };
     },
@@ -355,7 +355,7 @@ function createActionDispatcher(routesConfig, _window = window) {
 
         currentAction = action;
         if (action) {
-          actionListeners.forEach((cb) => cb(action));
+          actionListeners.forEach(cb => cb(action));
         }
       });
     },
@@ -373,7 +373,7 @@ function createActionDispatcher(routesConfig, _window = window) {
           _window.history.pushState({}, "", newPath);
 
           if (fireCallbacks) {
-            actionListeners.forEach((cb) => cb(action));
+            actionListeners.forEach(cb => cb(action));
           }
         });
       }

@@ -1,2 +1,1 @@
-module.exports = require('./dist/provider-api');
-
+module.exports = require("./dist/provider-api");

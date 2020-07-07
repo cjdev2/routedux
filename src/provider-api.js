@@ -41,7 +41,7 @@ function withRoute(Component) {
   const routeAdded = ({ children, ...restProps }) => {
     return (
       <RouteContext.Consumer>
-        {(route) => (
+        {route => (
           <Component {...{ ...restProps, route }}>{children}</Component>
         )}
       </RouteContext.Consumer>
@@ -64,17 +64,16 @@ function RouteLink({ routeName, params, children, ...props }) {
   };
   return (
     <ActionDispatcherContext.Consumer>
-      {(dispatcher) => {
+      {dispatcher => {
         const url = dispatcher.pathForAction(action);
         return (
           <a
-            onClick={(ev) => {
+            onClick={ev => {
               ev.preventDefault();
               dispatcher.receiveRoute({ routeName, ...params }, true);
             }}
             href={url}
-            {...props}
-          >
+            {...props}>
             {children}
           </a>
         );
@@ -102,10 +101,10 @@ function actionToRoute(action) {
 function createRouteDispatcher(routesConfig, _window = window) {
   const actionDispatcher = createActionDispatcher(routesConfig, _window);
 
-  actionDispatcher.receiveRoute = (route) =>
+  actionDispatcher.receiveRoute = route =>
     actionDispatcher.receiveAction(routeToAction(route), true);
-  actionDispatcher.addRouteListener = (cb) =>
-    actionDispatcher.addActionListener((action) => cb(actionToRoute(action)));
+  actionDispatcher.addRouteListener = cb =>
+    actionDispatcher.addActionListener(action => cb(actionToRoute(action)));
 
   Object.defineProperty(actionDispatcher, "currentRoute", {
     enumerable: true,

@@ -30,18 +30,18 @@ export default function addChangeUrlEvent(window) {
           href,
           pathname,
           port,
-          protocol
+          protocol,
         };
 
         // only dispatch action when url has actually changed so same link can be clicked repeatedly.
         if (!R.equals(pushedLocation, this.lastLocation)) {
           var urlChangeEvent = new CustomEvent("urlchanged", {
-            detail: pushedLocation
+            detail: pushedLocation,
           });
           window.dispatchEvent(urlChangeEvent);
           this.lastLocation = pushedLocation;
         }
-      }
+      },
     };
 
     // / make sure we fire urlchanged for these

@@ -1,17 +1,22 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8"/>
+    <meta charset="UTF-8" />
     <script src="assets/highlight.pack.js"></script>
-    <link href="assets/tufte.css" rel="stylesheet"/>
-    <link href="assets/style.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="assets/zenburn.css">
+    <link href="assets/tufte.css" rel="stylesheet" />
+    <link href="assets/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/zenburn.css" />
     <style>
       article {
         -webkit-hyphens: auto;
         hyphens: auto;
       }
-      h1,h2,h3,h4,h5,h6 {
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
         -webkit-hyphens: manual;
         hyphens: manual;
       }
@@ -20,36 +25,129 @@
   <body>
     <a href="https://github.com/cjdev/routedux">
       <img
-        style="position: fixed; top: 0; right: 0; border: 0; z-index: 10"
+        style="position: fixed; top: 0; right: 0; border: 0; z-index: 10;"
         src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67"
         alt="Fork me on GitHub"
-        data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" />
+        data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"
+      />
     </a>
     <article>
-      <root><section><h1>Routedux — Routes the Redux Way</h1><p>
-<img align="right" alt="Route Dux" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Ducks_crossing_the_road_sign.png/92px-Ducks_crossing_the_road_sign.png"/></p><p><a href="https://badge.fury.io/js/routedux"><img src="https://badge.fury.io/js/routedux.svg"/></a>
-<a href="https://travis-ci.org/cjdev/routedux"><img alt="Build Status" src="https://travis-ci.org/cjdev/routedux.svg?branch=master"/></a></p><p>Routedux routes URLs to Redux actions and vice versa.</p><p>Your application doesn't need to know it lives in a browser, but your
-users want pretty urls and deep links.</p><section><h2>Wait, my application doesn't need to know it lives in a browser?</h2><p>URLs are great for finding things on the internet.  But a single page
-application is not the same as a collection of resources that lives on
-a remote server.</p><p>A single page application is a web application only in the sense that
-it lives on the web.  URLs are are not essential to it working well.</p><p>URLs give users accessing your application in a browser the ability to
-bookmark a particular view in your application so that their
-expectation of browser-based applications will continue to work.</p><p>We think that's a good thing, but we also don't think the idea of url
-paths should be littered through your application.</p><p>When you are developing a redux application, you want your UI to be a
-pure function of the current state tree.</p><p>By adding routes to that, it makes it harder to test.  And this
-difficulty can be compounded by other decisions about how
-to add routes to your application.</p></section><section><h2>An alternative approach</h2><p>React Router is the currently-accepted way to do URL routing in React
-applications.  For a standard React application without Redux, this
-solution isn't too bad.  But once you add Redux, things get difficult.</p><p>We basically discovered the same lessons as Formidable Labs:<splice-me><label for="REACTROUTERWRONG" class="margin-toggle sidenote-number"></label><input id="REACTROUTERWRONG" class="margin-toggle" type="checkbox"/><span class="sidenote"><a href="http://formidable.com/blog/2016/07/11/let-the-url-do-the-talking-part-1-the-pain-of-react-router-in-redux/">React
-Router is the wrong way to route in Redux apps.</a></span></splice-me>  However, we don't
-think their solution (<a href="https://github.com/FormidableLabs/redux-little-router">redux-little-router</a>)
-goes far enough, as it still embeds the idea of routes throughout your
-user interface.</p><p>Once you separate URLs from your application state, you can easily
-port it to other environments that don't know what URLs are, and by
-simply removing the routing declaration, things will work as before.</p><p>As an added (and we think absolutely essential) benefit, your entire
-application becomes easier to test, as rendering is a pure function of
-Redux state, and model logic and route actions are entirely
-encapsulated in Redux outside of the app.</p></section><section><h2>Demo Site</h2><p>We have a demo codebase at <a href="https://github.com/cjdev/routedux-docs-demo">demo repository</a>.</p></section><section><h2>Simple Routing in 25 lines</h2><pre><code class="javascript"><p>import installBrowserRouter from 'routedux';
+      <root
+        ><section>
+          <h1>Routedux — Routes the Redux Way</h1>
+          <p>
+            <img
+              align="right"
+              alt="Route Dux"
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Ducks_crossing_the_road_sign.png/92px-Ducks_crossing_the_road_sign.png"
+            />
+          </p>
+          <p>
+            <a href="https://badge.fury.io/js/routedux"
+              ><img src="https://badge.fury.io/js/routedux.svg"
+            /></a>
+            <a href="https://travis-ci.org/cjdev/routedux"
+              ><img
+                alt="Build Status"
+                src="https://travis-ci.org/cjdev/routedux.svg?branch=master"
+            /></a>
+          </p>
+          <p>Routedux routes URLs to Redux actions and vice versa.</p>
+          <p>
+            Your application doesn't need to know it lives in a browser, but
+            your users want pretty urls and deep links.
+          </p>
+          <section>
+            <h2>
+              Wait, my application doesn't need to know it lives in a browser?
+            </h2>
+            <p>
+              URLs are great for finding things on the internet. But a single
+              page application is not the same as a collection of resources that
+              lives on a remote server.
+            </p>
+            <p>
+              A single page application is a web application only in the sense
+              that it lives on the web. URLs are are not essential to it working
+              well.
+            </p>
+            <p>
+              URLs give users accessing your application in a browser the
+              ability to bookmark a particular view in your application so that
+              their expectation of browser-based applications will continue to
+              work.
+            </p>
+            <p>
+              We think that's a good thing, but we also don't think the idea of
+              url paths should be littered through your application.
+            </p>
+            <p>
+              When you are developing a redux application, you want your UI to
+              be a pure function of the current state tree.
+            </p>
+            <p>
+              By adding routes to that, it makes it harder to test. And this
+              difficulty can be compounded by other decisions about how to add
+              routes to your application.
+            </p>
+          </section>
+          <section>
+            <h2>An alternative approach</h2>
+            <p>
+              React Router is the currently-accepted way to do URL routing in
+              React applications. For a standard React application without
+              Redux, this solution isn't too bad. But once you add Redux, things
+              get difficult.
+            </p>
+            <p>
+              We basically discovered the same lessons as Formidable
+              Labs:<splice-me
+                ><label
+                  for="REACTROUTERWRONG"
+                  class="margin-toggle sidenote-number"
+                ></label
+                ><input
+                  id="REACTROUTERWRONG"
+                  class="margin-toggle"
+                  type="checkbox"
+                /><span class="sidenote"
+                  ><a
+                    href="http://formidable.com/blog/2016/07/11/let-the-url-do-the-talking-part-1-the-pain-of-react-router-in-redux/"
+                    >React Router is the wrong way to route in Redux apps.</a
+                  ></span
+                ></splice-me
+              >
+              However, we don't think their solution (<a
+                href="https://github.com/FormidableLabs/redux-little-router"
+                >redux-little-router</a
+              >) goes far enough, as it still embeds the idea of routes
+              throughout your user interface.
+            </p>
+            <p>
+              Once you separate URLs from your application state, you can easily
+              port it to other environments that don't know what URLs are, and
+              by simply removing the routing declaration, things will work as
+              before.
+            </p>
+            <p>
+              As an added (and we think absolutely essential) benefit, your
+              entire application becomes easier to test, as rendering is a pure
+              function of Redux state, and model logic and route actions are
+              entirely encapsulated in Redux outside of the app.
+            </p>
+          </section>
+          <section>
+            <h2>Demo Site</h2>
+            <p>
+              We have a demo codebase at
+              <a href="https://github.com/cjdev/routedux-docs-demo"
+                >demo repository</a
+              >.
+            </p>
+          </section>
+          <section>
+            <h2>Simple Routing in 25 lines</h2>
+            <pre><code class="javascript"><p>import installBrowserRouter from 'routedux';
 import {createStore, compose} from 'redux';</p><p>const LOAD_USER = 'LOAD_USER';</p><p>function currentUserId() {
   return 42;
 };</p><p>function reduce(state = initialState(), action) {
@@ -61,19 +159,38 @@ import {createStore, compose} from 'redux';</p><p>const LOAD_USER = 'LOAD_USER';
   ['/', 'LOAD_ARTICLE', {slug: "home-content"}]
 ];</p><p>const {enhancer} = installBrowserRouter(routesConfig);</p><p>const store = createStore(reduce, compose(
   enhancer
-));</p></code></pre><p>Any time a handled action fires the url in the address bar will
-change, and if the url in the address bar changes the corresponding
-action will fire (unless the action was initiated by a url change).</p></section><section><h2>Route matching precedence - which route matches best?</h2><p>Route precedence is a function of the type of matching done in each
-segment and the order in which the wildcard segments match.  Exact
-matches are always preferred to wildcards moving from left to right.</p><pre><code class="javascript">const routesInOrderOfPrecedence = [
+));</p></code></pre>
+            <p>
+              Any time a handled action fires the url in the address bar will
+              change, and if the url in the address bar changes the
+              corresponding action will fire (unless the action was initiated by
+              a url change).
+            </p>
+          </section>
+          <section>
+            <h2>Route matching precedence - which route matches best?</h2>
+            <p>
+              Route precedence is a function of the type of matching done in
+              each segment and the order in which the wildcard segments match.
+              Exact matches are always preferred to wildcards moving from left
+              to right.
+            </p>
+            <pre><code class="javascript">const routesInOrderOfPrecedence = [
   ['/user/me/update', '/user/me'], // both perfectly specific - will match above any wildcard route
   '/user/me/:view',
   '/user/:id/update', // less specific because 'me' is exact match, while :id is a wildcard
   '/user/:id/:view'
-];</code></pre></section><section><h2>Fragment component</h2><p>Given that every UI state will be in your state tree as a function of
-your reducer logic, you can express any restriction on which parts of
-the UI display, even those that have nothing to do with the specific
-transformations caused by your URL actions.</p><pre><code class="javascript"><p>const state = {
+];</code></pre>
+          </section>
+          <section>
+            <h2>Fragment component</h2>
+            <p>
+              Given that every UI state will be in your state tree as a function
+              of your reducer logic, you can express any restriction on which
+              parts of the UI display, even those that have nothing to do with
+              the specific transformations caused by your URL actions.
+            </p>
+            <pre><code class="javascript"><p>const state = {
   menu: ...
 }</p><p>const view = (
   &lt;PageFrame&gt;
@@ -101,10 +218,21 @@ const view = (
 (
   &lt;PageFrame&gt;
   &lt;/PageFrame&gt;
-)</p></code></pre></section><section><h2>ActionLink and pathForAction(action)</h2><p>Occasionally it is nice to render URLs inside of your application.</p><p>As a convenience, we have attached <code class="javascript">pathForAction</code>
-to the <code class="javascript">store</code> object, which uses the same
-matcher that the action matcher uses.  This allows you to create links
-in your application by using the actions.</p><pre><code class="javascript"><p>const routesConfig = [
+)</p></code></pre>
+          </section>
+          <section>
+            <h2>ActionLink and pathForAction(action)</h2>
+            <p>
+              Occasionally it is nice to render URLs inside of your application.
+            </p>
+            <p>
+              As a convenience, we have attached
+              <code class="javascript">pathForAction</code> to the
+              <code class="javascript">store</code> object, which uses the same
+              matcher that the action matcher uses. This allows you to create
+              links in your application by using the actions.
+            </p>
+            <pre><code class="javascript"><p>const routesConfig = [
   ['/user/:id', LOAD_USER, {}],
   ['/user/me', LOAD_USER, {id: currentUserId()}]
 ];
@@ -119,10 +247,17 @@ in your application by using the actions.</p><pre><code class="javascript"><p>co
   id: 123
 };</p><p>return (
   &lt;ActionLink action={action}&gt;Link Text&lt;/ActionLink&gt;
-);</p><p>/* renders as a link to &lt;a href="/usr/123"&gt;Link Text&lt;/a&gt; with the text */</p></code></pre></section><p>Now you have links, but your links always stay up to date with your
-routing configuration.</p></section>
-</root>
+);</p><p>/* renders as a link to &lt;a href="/usr/123"&gt;Link Text&lt;/a&gt; with the text */</p></code></pre>
+          </section>
+          <p>
+            Now you have links, but your links always stay up to date with your
+            routing configuration.
+          </p>
+        </section>
+      </root>
     </article>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script>
+      hljs.initHighlightingOnLoad();
+    </script>
   </body>
 </html>

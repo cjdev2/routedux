@@ -48,7 +48,7 @@ export function createFakeWindow(path = "/path/to/thing") {
     }
   }
 
-  window.dispatchEvent = jest.fn((ev) => {
+  window.dispatchEvent = jest.fn(ev => {
     const evName = ev.type;
     if (map[evName]) {
       prepareEvent(window, evName);
