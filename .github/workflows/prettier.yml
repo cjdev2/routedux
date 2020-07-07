@@ -1,6 +1,7 @@
 name: Format (prettier)
 
 on:
+  push:
   pull_request:
     paths:
       - "**.css"
