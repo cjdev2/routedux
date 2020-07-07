@@ -1,1 +1,141 @@
-{ "name": "routedux", "contributors": [ { "name": "Maximilian Summe", "email": "msumme@gmail.com" }, { "name": "Edward Langley", "email": "el-os@elangley.org" } ], "main": "dist/index.js", "version": "1.2.0", "license": "MIT", "peerDependencies": { "react": "^16.8.2", "react-dom": "^16.12.0", "react-redux": "^7.0.3", "redux": "^4.0.4" }, "dependencies": { "ramda": "^0.27.0" }, "devDependencies": { "@babel/cli": "^7.10.4", "@babel/core": "^7.10.4", "@babel/plugin-proposal-class-properties": "^7.10.4", "@babel/plugin-proposal-json-strings": "^7.10.4", "@babel/plugin-syntax-dynamic-import": "^7.0.0", "@babel/plugin-syntax-import-meta": "^7.10.4", "@babel/plugin-transform-react-jsx": "^7.10.4", "@babel/preset-env": "^7.10.4", "@babel/preset-flow": "^7.10.4", "@babel/preset-react": "^7.10.4", "babel-core": "7.0.0-bridge.0", "babel-eslint": "10.1.0", "babel-jest": "^26.1.0", "dotenv": "8.2.0", "dotenv-expand": "5.1.0", "enzyme": "^3.10.0", "enzyme-adapter-react-16": "^1.14.0", "enzyme-to-json": "^3.4.4", "eslint": "^7.4.0", "eslint-plugin-flowtype": "^5.2.0", "eslint-plugin-import": "^2.22.0", "eslint-plugin-react": "^7.20.3", "flow": "^0.2.3", "flow-bin": "^0.128.0", "flow-typed": "^3.1.0", "fs-extra": "9.0.1", "jest": "^26.1.0", "jest-pnp-resolver": "1.2.2", "jest-resolve": "26.1.0", "jest-watch-typeahead": "^0.6.0", "prettier": "^2.0.5", "prop-types": "^15.5.10", "react": "^16.12.0", "react-app-polyfill": "^1.0.4", "react-dom": "^16.12.0", "redux": "^4.0.4" }, "scripts": { "build": "npx babel src -d dist", "watch": "npx babel -w src -d dist", "test": "node scripts/test.js --env=jsdom", "flow": "flow", "buildPub": "yarn build && npm publish", "lint": "eslint src", "format": "prettier --write \"$(git rev-parse --show-toplevel)\"" }, "npmFileMap": [ { "basePath": "/dist/", "files": [ "*.js" ] } ], "babel": { "presets": [ "@babel/preset-react", "@babel/preset-env" ] }, "jest": { "testEnvironment": "jsdom", "testURL": "http://localhost", "collectCoverageFrom": [ "src/**/*.js", "!src/**/*.d.ts" ], "testMatch": [ "<rootDir>/src/**/tests/*.test.js" ], "transformIgnorePatterns": [ "[/\\\\]node_modules[/\\\\].+\\.js$" ], "moduleFileExtensions": [ "js", "json" ] }, "eslintConfig": { "extends": [ "eslint:recommended", "plugin:react/recommended", "plugin:import/errors", "plugin:import/warnings" ], "env": { "browser": true, "node": true, "jest": true, "es6": true }, "parserOptions": { "ecmaVersion": 2018, "sourceType": "module" }, "settings": { "react": { "version": "16.0" } }, "rules": { "no-unused-vars": [ "error", { "argsIgnorePattern": "(^[_][_]*$)|(^.$)", "varsIgnorePattern": "(^[_][_]*$)|(^R$)" } ] } }, "prettier": { "trailingComma": "es5", "jsxBracketSameLine": true, "arrowParens": "avoid" } }
+{
+  "name": "routedux",
+  "contributors": [
+    {
+      "name": "Maximilian Summe",
+      "email": "msumme@gmail.com"
+    },
+    {
+      "name": "Edward Langley",
+      "email": "el-os@elangley.org"
+    }
+  ],
+  "main": "dist/index.js",
+  "version": "1.2.0",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "^16.8.2",
+    "react-dom": "^16.12.0",
+    "react-redux": "^7.0.3",
+    "redux": "^4.0.4"
+  },
+  "dependencies": {
+    "ramda": "^0.27.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.4",
+    "@babel/core": "^7.10.4",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/plugin-proposal-json-strings": "^7.10.4",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+    "@babel/plugin-syntax-import-meta": "^7.10.4",
+    "@babel/plugin-transform-react-jsx": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-flow": "^7.10.4",
+    "@babel/preset-react": "^7.10.4",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "10.1.0",
+    "babel-jest": "^26.1.0",
+    "dotenv": "8.2.0",
+    "dotenv-expand": "5.1.0",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
+    "enzyme-to-json": "^3.4.4",
+    "eslint": "^7.4.0",
+    "eslint-plugin-flowtype": "^5.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-react": "^7.20.3",
+    "flow": "^0.2.3",
+    "flow-bin": "^0.128.0",
+    "flow-typed": "^3.1.0",
+    "fs-extra": "9.0.1",
+    "jest": "^26.1.0",
+    "jest-pnp-resolver": "1.2.2",
+    "jest-resolve": "26.1.0",
+    "jest-watch-typeahead": "^0.6.0",
+    "prettier": "^2.0.5",
+    "prop-types": "^15.5.10",
+    "react": "^16.12.0",
+    "react-app-polyfill": "^1.0.4",
+    "react-dom": "^16.12.0",
+    "redux": "^4.0.4"
+  },
+  "scripts": {
+    "build": "npx babel src -d dist",
+    "watch": "npx babel -w src -d dist",
+    "test": "node scripts/test.js --env=jsdom",
+    "flow": "flow",
+    "buildPub": "yarn build && npm publish",
+    "lint": "eslint src",
+    "format": "prettier --write \"$(git rev-parse --show-toplevel)\""
+  },
+  "npmFileMap": [
+    {
+      "basePath": "/dist/",
+      "files": [
+        "*.js"
+      ]
+    }
+  ],
+  "babel": {
+    "presets": [
+      "@babel/preset-react",
+      "@babel/preset-env"
+    ]
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "testURL": "http://localhost",
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/**/*.d.ts"
+    ],
+    "testMatch": [
+      "<rootDir>/src/**/tests/*.test.js"
+    ],
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.js$"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "json"
+    ]
+  },
+  "eslintConfig": {
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:import/errors",
+      "plugin:import/warnings"
+    ],
+    "env": {
+      "browser": true,
+      "node": true,
+      "jest": true,
+      "es6": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 2018,
+      "sourceType": "module"
+    },
+    "settings": {
+      "react": {
+        "version": "16.0"
+      }
+    },
+    "rules": {
+      "no-unused-vars": [
+        "error",
+        {
+          "argsIgnorePattern": "(^[_][_]*$)|(^.$)",
+          "varsIgnorePattern": "(^[_][_]*$)|(^R$)"
+        }
+      ]
+    }
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "jsxBracketSameLine": true,
+    "arrowParens": "avoid"
+  }
+}
