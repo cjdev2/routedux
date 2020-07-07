@@ -24,7 +24,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-/flow-typed
 /docs
 .travis.yml
 .tern-port
