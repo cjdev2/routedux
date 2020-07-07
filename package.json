@@ -66,7 +66,8 @@
     "test": "node scripts/test.js --env=jsdom",
     "flow": "flow",
     "buildPub": "yarn build && npm publish",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "format": "prettier --write \"$(git rev-parse --show-toplevel)\""
   },
   "npmFileMap": [
     {
@@ -131,5 +132,10 @@
         }
       ]
     }
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "jsxBracketSameLine": true,
+    "arrowParens": "avoid"
   }
 }
