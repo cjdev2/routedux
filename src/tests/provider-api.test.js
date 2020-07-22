@@ -1,9 +1,8 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import { act } from "react-dom/test-utils";
-
+import {createRouteDispatcher} from "../route-dispatcher";
 import {
-  createRouteDispatcher,
   RouteLink,
   RouteProvider,
   withRoute,
@@ -17,48 +16,6 @@ const routesConfig = [
 ];
 
 Enzyme.configure({ adapter: new Adapter() });
-describe("routeDispatcher", () => {
-  test("receiveRoute and addRouteListener work together", () => {
-    //given
-    const _window = createFakeWindow("/foo");
-    const routeDispatcher = createRouteDispatcher(routesConfig, _window);
-    let thing = null;
-    routeDispatcher.addRouteListener(r => {
-      thing = r;
-    });
-    //when
-    routeDispatcher.receiveRoute({ routeName: "foo" });
-    //then
-    expect(thing).toEqual({ routeName: "foo" });
-  });
-
-  test("when receiveLocation is called, routeListener gets route not action", () => {
-    //given
-    const _window = createFakeWindow("/foo");
-    const routeDispatcher = createRouteDispatcher(routesConfig, _window);
-    let thing = null;
-    routeDispatcher.addRouteListener(r => {
-      thing = r;
-    });
-    //when
-    routeDispatcher.receiveLocation(createLocation("/bar/hi"));
-    //then
-    expect(thing).toEqual({ routeName: "bar", id: "hi" });
-  });
-
-  test("currentRoute returns the correct route object", () => {
-    //given
-    const _window = createFakeWindow("/foo");
-    const routeDispatcher = createRouteDispatcher(routesConfig, _window);
-    //when
-    routeDispatcher.receiveLocation(createLocation("/bar/hi"));
-    //then
-    expect(routeDispatcher.currentRoute).toEqual({
-      routeName: "bar",
-      id: "hi",
-    });
-  });
-});
 
 describe("RouteProvider and helpers", () => {
   test("RouteProvider gives RouteLink correct info", () => {

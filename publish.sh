@@ -30,7 +30,7 @@ git add package.json
 git commit -v
 
 result=y
-read -p "npm publish, git tag and git push? [Y/n]? " -r result
+read -p "git tag and git push? [Y/n]? " -r result
 
 if [[ "${result/Y/y}" != 'y' ]]; then
   exit 1;
